@@ -16,12 +16,12 @@ class AllowNonRfcComplaintEmailPatchServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Swift::init(
-            function () {
-                Swift_DependencyContainer::getInstance()
-                    ->register('email.validator')
-                    ->asSharedInstanceOf(AllowNonRfcComplaintEmailValidator::class);
-            }
-        );
+        //Swift::init(
+        //    function () {
+        //        Swift_DependencyContainer::getInstance()
+        //            ->register('email.validator')
+        //            ->asSharedInstanceOf(AllowNonRfcComplaintEmailValidator::class);
+        //    }
+        //);
     }
 }

@@ -153,6 +153,8 @@ class CustomerController extends Controller
             $foldername                 = 'folder'. $str;
             $customer->foldername       = $foldername;
 
+            //2022/11/22
+            $customer->year             = $nowyear;
             // 2022/05/20
             //active_cancel アクティブ/解約 1:契約 2:SPOT 3:解約
             if($customer->active_cancel === 3) {

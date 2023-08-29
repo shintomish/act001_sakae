@@ -6,21 +6,22 @@ use DateTime;
 use Validator;
 use App\Models\Customer;
 use App\Models\Newsrepo;
-use App\Models\User;
-use App\Models\ControlUser;
+
 use Carbon\Carbon;
 
 use App\Mail\MailSend;      //Mailableクラス
 use Mail;
-// use Illuminate\Support\Facades\Mail;
+
+// 下記を追記
+use App\Services\MailAttachmentService;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class NewsrepoController extends Controller
 {
-
     /**
      * Create a new controller instance.
      *
@@ -39,6 +40,10 @@ class NewsrepoController extends Controller
     public function index(Request $request)
     {
         Log::info('newsrepos index START');
+
+        // ログインユーザーのユーザー情報を取得する
+        $user    = $this->auth_user_info();
+        $user_id = $user->id;
 
         // 今月の月を取得
         // $nowmonth = intval($this->get_now_month());
@@ -63,7 +68,7 @@ class NewsrepoController extends Controller
 
         $common_no = '02';
     //  Log::debug('user index $users = ' . print_r($users, true));
-        $compacts = compact( 'common_no','newsrepos' ,'organization_id','nowmonth');
+        $compacts = compact( 'user_id','common_no','newsrepos' ,'organization_id','nowmonth');
 
         Log::info('newsrepo index END');
         return view( 'newsrepo.index', $compacts );
@@ -74,9 +79,13 @@ class NewsrepoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         Log::info('newsrepo create START');
+
+        // ログインユーザーのユーザー情報を取得する
+        $user    = $this->auth_user_info();
+        $user_id = $user->id;
 
         $organization = $this->auth_user_organization();
         $organization_id = $organization->id;
@@ -121,7 +130,7 @@ class NewsrepoController extends Controller
         $announce_month = 1;
         $comment_out    = "";
 
-        $compacts = compact( 'organization_id','newsrepos','nowmonth','customers','individual','interim_mail','announce_month','comment_out','count' );
+        $compacts = compact( 'user_id','organization_id','newsrepos','nowmonth','customers','individual','interim_mail','announce_month','comment_out','count' );
 
         Log::info('newsrepo create END');
         return view( 'newsrepo.create', $compacts );
@@ -164,17 +173,41 @@ class NewsrepoController extends Controller
     //  Log::debug('newsrepo store $request = ' . print_r($request->all(), true));
             return redirect('newsrepo/create')->withErrors($validator)->withInput();
         }
+
     //  Log::debug('newsrepo store $request = ' . print_r($request->all(), true));
         DB::beginTransaction();
         Log::info('beginTransaction - newsrepo store start');
+        // 2022/12/31
+        $indiv = $request->individual_mail;
         try {
+            // 2022/12/31
+            $query = '';
+            $query .= 'UPDATE ';
+            $query .= 'newsrepos ';
+            $query .= 'SET newsrepos.urgent_flg = 1 ';
+            $query .= 'WHERE  ';
+            if($indiv == 3){
+                $query .= 'newsrepos.individual_mail BETWEEN 1 AND 3 ';
+            } elseif($indiv == 2) {
+                $query .= 'newsrepos.individual_mail BETWEEN 2 AND 3 ';
+            } elseif($indiv == 1) {
+                $query .= 'newsrepos.individual_mail != 2  ';
+            }
+            $query .= 'AND newsrepos.deleted_at is NULL ';
+            $query .= 'AND newsrepos.urgent_flg = 2 ';
+
+            DB::update($query);
+            // Log::debug('newsrepo store UPDATE $query = ' . $query);
+
             $newsrepo = new newsrepo();
             $newsrepo->organization_id   = $request->organization_id;
-            $newsrepo->mail_flg          = 2;
+            $newsrepo->mail_flg          = 2;                           // 1:Mail 2:登録
             $newsrepo->individual_mail   = $request->individual_mail;
             $newsrepo->interim_mail      = $request->interim_mail;
             $newsrepo->announce_month    = $request->announce_month;
             $newsrepo->comment           = $request->comment;
+            $newsrepo->file_name         = '';
+            $newsrepo->urgent_flg        = 2;   //2022/12/30 至急フラグ(1):通常 (2):至急
             $newsrepo->updated_at        = now();
             $newsrepo->save();           //  Inserts
             DB::commit();
@@ -256,6 +289,7 @@ class NewsrepoController extends Controller
             $newsrepo->individual_mail   = $request->individual_mail;
             $newsrepo->interim_mail      = $request->interim_mail;
             $newsrepo->announce_month    = $request->announce_month;
+            // $newsrepo->urgent_flg        = 2;   //2022/12/30 至急フラグ(1):通常 (2):至急
             $result = $newsrepo->save();
             DB::commit();
             Log::info('beginTransaction - newsrepo update end(commit)');
@@ -340,51 +374,27 @@ class NewsrepoController extends Controller
     {
         Log::info('newsrepo send START');
 
-        // $organization_id = 0;
-        // $newsrepos = Newsrepo::where('organization_id','>=',$organization_id)
-        //             ->whereNull('deleted_at')
-        //             ->sortable()
-        //             ->orderBy('created_at', 'desc')
-        //             ->paginate(300);
-
-        // $common_no = '02';
-        // $compacts = compact( 'common_no','newsrepos' ,'organization_id');
-
-        // $name      = '間庭税理士事務所事務局';
-        // $emails = [
-        //     'shintomi.sh@gmail.com',
-        //     'yshintomi12@gmail.com',
-        // ];
-
-        // foreach ($emails as $email) {
-
-        //     // Mail::send(new MailSend($name, $email));
-        // }
-
-        // session()->flash('toastr', config('toastr.mail_success'));
-
-        // Log::info('newsrepo send END');
-
-        // return view( 'newsrepo.index', $compacts );
-
-        // foreach ($emails as $email) {
-        //     Mail::to($email)->send(new MailSend());
-        // }
-        // return back();
+        Log::info('newsrepo send END');
     }
 
     public function sendmail(Request $request)
     {
         Log::info('newsrepo sendmail START');
 
-        // 今月の月を取得
-        $nowmonth = intval($this->get_now_month());
+        // ログインユーザーのユーザー情報を取得する
+        $user    = $this->auth_user_info();
+        $user_id = $user->id;
 
+        // ログインユーザーの組織情報を取得する
         $organization = $this->auth_user_organization();
         $organization_id = $organization->id;
 
+        // 今月の月を取得
+        $nowmonth = intval($this->get_now_month());
+
         $request->merge(
             ['organization_id'  => $organization->id],
+            ['user_id'          => $user_id],
             ['comment'          => $request->comment],
             ['mail_flg'         => $request->mail_flg],
             ['individual_mail'  => $request->individual_mail],
@@ -396,27 +406,12 @@ class NewsrepoController extends Controller
         if ($validator->fails()) {
             return redirect('newsrepo/create')->withErrors($validator)->withInput();
         }
-    //  Log::debug('newsrepo sendmail $request = ' . print_r($request->all(), true));
 
         // 法人/個人
         $individual = $request->individual_mail;
-        if($individual == 3){
-            $_indiv = [1,2];
-        } else {
-            $_indiv = [$individual];
-        }
 
         // 選択月
         $interim_mail = $request->interim_mail;
-        if($interim_mail == 13){
-            $_month = [1,2,3,4,5,6,7,8,9,10,11,12,13];
-        } else {
-            if($interim_mail == 12){
-                $_month = [12,13];
-            } else {
-                $_month = [$interim_mail];
-            }
-        }
 
         // 告知月 (1):ー (2):決算月1ケ月前 (3):決算月1ケ月後 (4):決算月2ケ月後 (5):決算月7ケ月後
         $announce_month = $request->announce_month;
@@ -424,170 +419,65 @@ class NewsrepoController extends Controller
             $annmonth = [1,2,3,4,5,6,7,8,9,10,11,12,13];
         } else {
             if($announce_month == 2){
-                // 今月を基準として1か月前が決算月の会社の表示(1月後)
-                // $annmonth = [intval($this->getbase_specify_month($nowmonth, 1 ))];
                 // 2022/10/17
                 // * 選択月($strmon)の１($mon)月後を取得
                 $annmonth = [intval($this->getbase_specify_month($interim_mail, 1 ))];
             } elseif($announce_month == 3) {
-                // * 選択月($strmon)の1月後を取得(1か月前)
-                // $annmonth = [intval($this->getbase_submonth($nowmonth, 1 ))];
                 // 2022/10/17
                 // * 選択月($strmon)の１($mon)月後を取得
                 $annmonth = [intval($this->getbase_submonth($interim_mail, 1 ))];
             } elseif($announce_month == 4) {
-                // * 選択月($strmon)の2月後を取得(2か月前)
-                // $annmonth = [intval($this->getbase_submonth($nowmonth, 2 ))];
                 // 2022/10/17
                 // * 選択月($strmon)の２($mon)月後を取得
                 $annmonth = [intval($this->getbase_submonth($interim_mail, 2 ))];
             } elseif($announce_month == 5) {
-                // * 選択月($strmon)の7月後を取得(7か月前)
-                // $annmonth = [intval($this->getbase_submonth($nowmonth, 7 ))];
                 // 2022/10/17
                 // * 選択月($strmon)の７($mon)月後を取得
                 $annmonth = [intval($this->getbase_submonth($interim_mail, 7 ))];
             }
         }
 
-        // 会計未処理
-        if($announce_month == 6){
-            // 3ヶ月前
-            $date = new Carbon(now());
-            $old  = $date->subMonths(3);
-            $str = ( new DateTime($old))->format('Y-m-d');
+        //count sqlを取得
+        $flg = 1;   // count sql
+        $query = $this->ret_query($organization_id, $individual, $interim_mail, $announce_month, $annmonth, $flg);
 
-            // count sql
-            $query = '';
-            $query .= 'select count(*) AS count ';
-            $query .= 'from customers ';
-            $query .= 'where deleted_at is NULL AND ';
-            $query .= 'organization_id >= %organization_id% AND ';
-            $query .= '(email != \'\' and email is not NULL) AND ';
-            $query .= 'active_cancel <> 3 AND ';
-            $query .= 'notificationl_flg = 2 AND ';
-            $query .= '(final_accounting_at < %str%  OR final_accounting_at is NULL) AND ';
-            if($individual == 3){
-                $query .= '(individual_class between 1 AND 2 ) ';
-            } elseif($individual == 1) {
-                $query .= '(individual_class = 1 ) ';
-            } elseif($individual == 2) {
-                $query .= '(individual_class = 2 ) ';
-            }
-            $query     = str_replace('%organization_id%', $organization_id, $query);
-            $query     = str_replace('%str%',             $str,             $query);
+        $customers = DB::select($query);
+        $count     = $customers[0]->count;
 
-            $customers = DB::select($query);
-            $count     = $customers[0]->count;
+        //select sqlを取得
+        $flg = 2;   // select sql
+        $query = $this->ret_query($organization_id, $individual, $interim_mail, $announce_month, $annmonth, $flg);
 
-            // select sql
-            $query = '';
-            $query .= 'select * ';
-            $query .= 'from customers ';
-            $query .= 'where deleted_at is NULL AND ';
-            $query .= 'organization_id >= %organization_id% AND ';
-            $query .= '(email != \'\' and email is not NULL) AND ';
-            $query .= 'active_cancel <> 3 AND ';
-            $query .= 'notificationl_flg = 2 AND ';
-            $query .= '(final_accounting_at < %str%  OR final_accounting_at is NULL) AND ';
-            if($individual == 3){
-                $query .= '(individual_class between 1 AND 2 ) ';
-            } elseif($individual == 1) {
-                $query .= '(individual_class = 1 ) ';
-            } elseif($individual == 2) {
-                $query .= '(individual_class = 2 ) ';
-            }
-            $query     = str_replace('%organization_id%', $organization_id, $query);
-            $query     = str_replace('%str%',             $str,             $query);
+        $customers = DB::select($query);
 
-            $customers = DB::select($query);
-
-        } else {
-            // count sql
-            $query = '';
-            $query .= 'select count(*) AS count ';
-            $query .= 'from customers ';
-            $query .= 'where deleted_at is NULL AND ';
-            $query .= 'organization_id >= %organization_id% AND ';
-            $query .= '(email != \'\' and email is not NULL) AND ';
-            $query .= 'active_cancel <> 3 AND ';
-            $query .= 'notificationl_flg = 2 AND ';
-
-            if($individual == 3){
-                $query .= '(individual_class between 1 AND 2 ) AND ';
-                if($interim_mail == 13){
-                    $query .= '(closing_month between 1 AND 13 ) ';
-                } else {
-                    $query .= '(closing_month = %annmonth% ) ';
-                    $query = str_replace_array('%annmonth%', $annmonth,        $query);
-                }
-            } elseif($individual == 1) {
-                $query .= '(individual_class between 1 AND 1 ) AND ';
-                if($interim_mail == 13){
-                    $query .= '(closing_month between 1 AND 12 ) ';
-                } else {
-                    if($announce_month == 13){
-                        $query .= '(closing_month between 1 AND 12 ) ';
-                    } else {
-                        $query .= '(closing_month = %annmonth% ) ';
-                        $query = str_replace_array('%annmonth%', $annmonth,        $query);
-                    }
-                }
-            } elseif($individual == 2) {
-                $query .= '(individual_class between 2 AND 2 ) AND ';
-                $query .= '(closing_month between 13 AND 13 ) ';
-            }
-            $query = str_replace('%organization_id%', $organization_id, $query);
-
-            $customers = DB::select($query);
-            $count     = $customers[0]->count;
-
-            // select sql
-            $query = '';
-            $query .= 'select * ';
-            $query .= 'from customers ';
-            $query .= 'where deleted_at is NULL AND ';
-            $query .= 'organization_id >= %organization_id% AND ';
-            $query .= '(email != \'\' and email is not NULL) AND ';
-            $query .= 'active_cancel <> 3 AND ';
-            $query .= 'notificationl_flg = 2 AND ';
-
-            if($individual == 3){
-                $query .= '(individual_class between 1 AND 2 ) AND ';
-                if($interim_mail == 13){
-                    $query .= '(closing_month between 1 AND 13 ) ';
-                } else {
-                    $query .= '(closing_month = %annmonth% ) ';
-                    $query = str_replace_array('%annmonth%', $annmonth,        $query);
-                }
-            } elseif($individual == 1) {
-                $query .= '(individual_class between 1 AND 1 ) AND ';
-                if($interim_mail == 13){
-                    $query .= '(closing_month between 1 AND 12 ) ';
-                } else {
-                    if($announce_month == 13){
-                        $query .= '(closing_month between 1 AND 12 ) ';
-                    } else {
-                        $query .= '(closing_month = %annmonth% ) ';
-                        $query = str_replace_array('%annmonth%', $annmonth,        $query);
-                    }
-                }
-            } elseif($individual == 2) {
-                $query .= '(individual_class between 2 AND 2 ) AND ';
-                $query .= '(closing_month between 13 AND 13 ) ';
-            }
-            $query = str_replace('%organization_id%', $organization_id, $query);
-
-            $customers = DB::select($query);
-        }
-
-        // Log::debug('newsrepo sendmail 法人/個人 $individual   = ' . print_r($individual, true));
-        // Log::debug('newsrepo sendmail 選択月    $interim_mail = ' . print_r($interim_mail, true));
+        //--- 2022/11/15 Mail添付 下記を追記
+        $postData = $request->all();
+        // if (isset($postData['file'])) {
+        //     $image     = $postData['file'];
+        //     $file_name = $image->getClientOriginalName();         // FileName
+        //     Log::info('newsrepo sendmail $count 添付あり = ' . print_r($count, true));
+        //     $postData['putFileInfo'] = $this->mailAttachmentService->saveFile($request->all());
+        // } else {
+        //     $file_name = '';
+        //     $postData['putFileInfo'] = '';
+        //     Log::info('newsrepo sendmail $count 添付なし = ' . print_r($count, true));
+        // }
+        //--- 2022/11/15 Mail添付 上記までを追記
 
         //139件 法人69  個人70
         Log::info('newsrepo sendmail $count = ' . print_r($count, true));
 
         if($count > 0){
+            $dbug  = 1;     // 1:Aizen 1以外:arkhe
+            $books = DB::table('books')->first();
+            $dbug  = $books->price;
+
+            if($dbug == 1){
+                $toadr   = "y-shintomi@aizen-sol.co.jp";
+            } else {
+                $toadr   = "system@arkhe-eco.com";
+            }
+
             //複数宛先をまとめて
             $comment = $request->input('comment');
             $name = "お客様各位";
@@ -600,15 +490,16 @@ class NewsrepoController extends Controller
                 }
             }
             Log::info('newsrepo sendmail $ret_val = ' . print_r($ret_val, true));
+            Log::info('newsrepo sendmail $toadr   = ' . print_r($toadr, true));
 
-            Mail::to('system@arkhe-eco.com')->bcc($ret_val)->send(new MailSend($name, $comment));
-            // Mail::to('y-shintomi@aizen-sol.co.jp')->bcc($ret_val)->send(new MailSend($name, $comment));
+            Mail::to($toadr)->bcc($ret_val)->send(new MailSend($name, $comment, $postData));
+
         } else {
             $validator = "送信先がありません。";
             return redirect('newsrepo/create')->withErrors($validator)->withInput();
         }
 
-//debug
+//debug---
         // $ret_val    = array();
         // $ret_val = [
         //     'shintomi.sh@gmail.com',
@@ -616,6 +507,7 @@ class NewsrepoController extends Controller
         //     // 'n.yabu@arkhe-eco.com',
         // ];
         // Log::debug('newsrepo sendmail debug $ret_val = ' . print_r($ret_val, true));
+
         //宛て先ごと
         // $cnt = 0;
         // foreach ($users as $user) {
@@ -626,18 +518,41 @@ class NewsrepoController extends Controller
         //     }
         // }
         // Log::debug('newsrepo sendmail $cnt = ' . print_r($cnt, true));
+//---debug
         // session()->flash('toastr', config('toastr.mail_success'));
 
         DB::beginTransaction();
         Log::info('beginTransaction - newsrepo sendmail start');
+
         try {
+            // 2022/12/31
+            $query = '';
+            $query .= 'UPDATE ';
+            $query .= 'newsrepos ';
+            $query .= 'SET newsrepos.urgent_flg = 1 ';
+            $query .= 'WHERE  ';
+            if($individual == 3){
+                $query .= 'newsrepos.individual_mail BETWEEN 1 AND 3 ';
+            } elseif($individual == 2) {
+                $query .= 'newsrepos.individual_mail BETWEEN 2 AND 3 ';
+            } elseif($individual == 1) {
+                $query .= 'newsrepos.individual_mail != 2  ';
+            }
+            $query .= 'AND newsrepos.deleted_at is NULL ';
+            $query .= 'AND newsrepos.urgent_flg = 2 ';
+
+            DB::update($query);
+            // Log::debug('newsrepo store UPDATE $query = ' . $query);
+
             $newsrepo = new newsrepo();
             $newsrepo->organization_id   = $request->organization_id;
             $newsrepo->comment           = $request->comment;
-            $newsrepo->mail_flg          = 1;
+            $newsrepo->mail_flg          = 1;                           // 1:Mail 2:登録
             $newsrepo->individual_mail   = $request->individual_mail;
             $newsrepo->interim_mail      = $request->interim_mail;
             $newsrepo->announce_month    = $request->announce_month;
+            // $newsrepo->file_name         = $file_name;
+            $newsrepo->urgent_flg        = 2;   //2022/12/30 至急フラグ(1):通常 (2):至急
             $newsrepo->updated_at        = now();
             $newsrepo->save();           //  Inserts
             DB::commit();
@@ -663,8 +578,12 @@ class NewsrepoController extends Controller
                         ->paginate(300);
         }
 
+        // Log::debug('newsrepo sendmail 法人/個人 $individual     = ' . print_r($individual, true));
+        // Log::debug('newsrepo sendmail 選択月    $interim_mail   = ' . print_r($interim_mail, true));
+        // Log::debug('newsrepo sendmail 告知月    $announce_month = ' . print_r($announce_month, true));
+
         $common_no = '02';
-        $compacts = compact( 'common_no','newsrepos' ,'organization_id','nowmonth');
+        $compacts = compact( 'user_id', 'common_no','newsrepos' ,'organization_id','nowmonth');
 
         Log::info('newsrepo sendmail END');
 
@@ -676,28 +595,22 @@ class NewsrepoController extends Controller
     {
         Log::info('newsrepo temp_serch START');
 
+        // ログインユーザーのユーザー情報を取得する
+        $user    = $this->auth_user_info();
+        $user_id = $user->id;
+
+        // ログインユーザーの組織情報を取得する
+        $organization    = $this->auth_user_organization();
+        $organization_id = $organization->id;
+
         // 今月の月を取得
         $nowmonth = intval($this->get_now_month());
 
         // 法人/個人
         $individual = $request->individual_mail;
-        if($individual == 3){
-            $_indiv = [1,2];
-        } else {
-            $_indiv = [$individual];
-        }
 
         // 選択月
         $interim_mail = $request->interim_mail;
-        if($interim_mail == 13){
-            $_month = [1,2,3,4,5,6,7,8,9,10,11,12,13];
-        } else {
-            if($interim_mail == 12){
-                $_month = [12,13];
-            } else {
-                $_month = [$interim_mail];
-            }
-        }
 
         // 告知月 (1):ー (2):決算月1ケ月前 (3):決算月1ケ月後 (4):決算月2ケ月後 (5):決算月7ケ月後
         $announce_month = $request->announce_month;
@@ -705,34 +618,69 @@ class NewsrepoController extends Controller
             $annmonth = [1,2,3,4,5,6,7,8,9,10,11,12,13];
         } else {
             if($announce_month == 2){
-                // 今月を基準として1か月前が決算月の会社の表示(1月後)
-                // $annmonth = [intval($this->getbase_specify_month($nowmonth, 1 ))];
-                // 2022/10/17
-                // * 選択月($strmon)の１($mon)月後を取得
+                // * 選択月($strmon)の１($mon)月前を取得
                 $annmonth = [intval($this->getbase_specify_month($interim_mail, 1 ))];
             } elseif($announce_month == 3) {
-                // * 選択月($strmon)の1月後を取得(1か月前)
-                // $annmonth = [intval($this->getbase_submonth($nowmonth, 1 ))];
-                // 2022/10/17
                 // * 選択月($strmon)の１($mon)月後を取得
                 $annmonth = [intval($this->getbase_submonth($interim_mail, 1 ))];
             } elseif($announce_month == 4) {
-                // * 選択月($strmon)の2月後を取得(2か月前)
-                // $annmonth = [intval($this->getbase_submonth($nowmonth, 2 ))];
-                // 2022/10/17
                 // * 選択月($strmon)の２($mon)月後を取得
                 $annmonth = [intval($this->getbase_submonth($interim_mail, 2 ))];
             } elseif($announce_month == 5) {
-                // * 選択月($strmon)の7月後を取得(7か月前)
-                // $annmonth = [intval($this->getbase_submonth($nowmonth, 7 ))];
-                // 2022/10/17
                 // * 選択月($strmon)の７($mon)月後を取得
                 $annmonth = [intval($this->getbase_submonth($interim_mail, 7 ))];
             }
         }
 
-        $organization = $this->auth_user_organization();
-        $organization_id = $organization->id;
+        //count sqlを取得
+        $flg = 1;   // count sql
+        $query = $this->ret_query($organization_id, $individual, $interim_mail, $announce_month, $annmonth, $flg);
+
+        $customers = DB::select($query);
+        $count     = $customers[0]->count;
+
+        //select sqlを取得
+        $flg = 2;   // select sql
+        $query = $this->ret_query($organization_id, $individual, $interim_mail, $announce_month, $annmonth, $flg);
+
+        $customers = DB::select($query);
+
+        //139件 法人69  個人70
+        Log::info('newsrepo temp_serch $count = ' . print_r($count, true));
+
+        //コメントを取得
+        $comment_out = $this->ret_comment($individual, $interim_mail, $announce_month, $count);
+
+        // Log::debug('newsrepo temp_serch 法人/個人 $individual     = ' . print_r($individual, true));
+        // Log::debug('newsrepo temp_serch 選択月    $interim_mail   = ' . print_r($interim_mail, true));
+        // Log::debug('newsrepo temp_serch 告知月    $announce_month = ' . print_r($announce_month, true));
+        // Log::debug('newsrepo temp_serch $query = ' . print_r($query,true));
+        // Log::info(' newsrepo temp_serch $count = ' . print_r($count, true));
+
+        $newsrepos = Newsrepo::where('organization_id','>=',$organization_id)
+                    ->whereNull('deleted_at')
+                    ->sortable()
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(300);
+
+        $compacts = compact( 'user_id','organization_id','newsrepos','nowmonth','customers','individual','interim_mail','announce_month','comment_out','count' );
+
+        Log::info('newsrepo temp_serch END');
+        return view( 'newsrepo.create', $compacts );
+    }
+
+    /**
+     *    ret_query()      : Queryを取得 2022/12/30
+     *    $organization_id : 組織ID
+     *    $individual      : 法人/個人
+     *    $interim_mail    : 選択月
+     *    $announce_month  : 告知月  (1):ー (2):決算月1ケ月前 (3):決算月1ケ月後 (4):決算月2ケ月後 (5):決算月7ケ月後
+     *    $announce        : 決算月
+     *    $flg             : 1:select count(*)  2:select *
+     */
+    public function ret_query($organization_id, $individual, $interim_mail, $announce_month, $annmonth, $flg)
+    {
+        Log::info('newsrepo ret_query START');
 
         // 会計未処理
         if($announce_month == 6){
@@ -741,9 +689,16 @@ class NewsrepoController extends Controller
             $old  = $date->subMonths(3);
             $str = ( new DateTime($old))->format('Y-m-d');
 
-            // count sql
-            $query = '';
-            $query .= 'select count(*) AS count ';
+            if($flg == 1){
+                // count sql
+                $query = '';
+                $query .= 'select count(*) AS count ';
+            } else {
+                // select sql
+                $query = '';
+                $query .= 'select * ';
+            }
+
             $query .= 'from customers ';
             $query .= 'where deleted_at is NULL AND ';
             $query .= 'organization_id >= %organization_id% AND ';
@@ -760,36 +715,19 @@ class NewsrepoController extends Controller
             }
             $query     = str_replace('%organization_id%', $organization_id, $query);
             $query     = str_replace('%str%',             $str,             $query);
-
-            $customers = DB::select($query);
-            $count     = $customers[0]->count;
-
-            // select sql
-            $query = '';
-            $query .= 'select * ';
-            $query .= 'from customers ';
-            $query .= 'where deleted_at is NULL AND ';
-            $query .= 'organization_id >= %organization_id% AND ';
-            $query .= '(email != \'\' and email is not NULL) AND ';
-            $query .= 'active_cancel <> 3 AND ';
-            $query .= 'notificationl_flg = 2 AND ';
-            $query .= '(final_accounting_at < %str%  OR final_accounting_at is NULL) AND ';
-            if($individual == 3){
-                $query .= '(individual_class between 1 AND 2 ) ';
-            } elseif($individual == 1) {
-                $query .= '(individual_class = 1 ) ';
-            } elseif($individual == 2) {
-                $query .= '(individual_class = 2 ) ';
-            }
-            $query     = str_replace('%organization_id%', $organization_id, $query);
-            $query     = str_replace('%str%',             $str,             $query);
-
-            $customers = DB::select($query);
 
         } else {
-            // count sql
-            $query = '';
-            $query .= 'select count(*) AS count ';
+
+            if($flg == 1){
+                // count sql
+                $query = '';
+                $query .= 'select count(*) AS count ';
+            } else {
+                // select sql
+                $query = '';
+                $query .= 'select * ';
+            }
+
             $query .= 'from customers ';
             $query .= 'where deleted_at is NULL AND ';
             $query .= 'organization_id >= %organization_id% AND ';
@@ -802,8 +740,12 @@ class NewsrepoController extends Controller
                 if($interim_mail == 13){
                     $query .= '(closing_month between 1 AND 13 ) ';
                 } else {
-                    $query .= '(closing_month = %annmonth% ) ';
-                    $query = str_replace_array('%annmonth%', $annmonth,        $query);
+                    if($announce_month == 1){   //告知月
+                        $query .= '(closing_month between 1 AND 13 ) ';
+                    } else {
+                        $query .= '(closing_month = %annmonth% ) ';
+                        $query = str_replace_array('%annmonth%', $annmonth,        $query);
+                    }
                 }
             } elseif($individual == 1) {
                 $query .= '(individual_class between 1 AND 1 ) AND ';
@@ -813,8 +755,12 @@ class NewsrepoController extends Controller
                     if($announce_month == 13){
                         $query .= '(closing_month between 1 AND 12 ) ';
                     } else {
-                        $query .= '(closing_month = %annmonth% ) ';
-                        $query = str_replace_array('%annmonth%', $annmonth,        $query);
+                        if($announce_month == 1){   //告知月
+                            $query .= '(closing_month between 1 AND 13 ) ';
+                        } else {
+                            $query .= '(closing_month = %annmonth% ) ';
+                            $query = str_replace_array('%annmonth%', $annmonth,        $query);
+                        }
                     }
                 }
             } elseif($individual == 2) {
@@ -822,63 +768,23 @@ class NewsrepoController extends Controller
                 $query .= '(closing_month between 13 AND 13 ) ';
             }
             $query = str_replace('%organization_id%', $organization_id, $query);
-
-            $customers = DB::select($query);
-            $count     = $customers[0]->count;
-
-            // select sql
-            $query = '';
-            $query .= 'select * ';
-            $query .= 'from customers ';
-            $query .= 'where deleted_at is NULL AND ';
-            $query .= 'organization_id >= %organization_id% AND ';
-            $query .= '(email != \'\' and email is not NULL) AND ';
-            $query .= 'active_cancel <> 3 AND ';
-            $query .= 'notificationl_flg = 2 AND ';
-
-            if($individual == 3){
-                $query .= '(individual_class between 1 AND 2 ) AND ';
-                if($interim_mail == 13){
-                    $query .= '(closing_month between 1 AND 13 ) ';
-                } else {
-                    $query .= '(closing_month = %annmonth% ) ';
-                    $query = str_replace_array('%annmonth%', $annmonth,        $query);
-                }
-            } elseif($individual == 1) {
-                $query .= '(individual_class between 1 AND 1 ) AND ';
-                if($interim_mail == 13){
-                    $query .= '(closing_month between 1 AND 12 ) ';
-                } else {
-                    if($announce_month == 13){
-                        $query .= '(closing_month between 1 AND 12 ) ';
-                    } else {
-                        $query .= '(closing_month = %annmonth% ) ';
-                        $query = str_replace_array('%annmonth%', $annmonth,        $query);
-                    }
-                }
-            } elseif($individual == 2) {
-                $query .= '(individual_class between 2 AND 2 ) AND ';
-                $query .= '(closing_month between 13 AND 13 ) ';
-            }
-            $query = str_replace('%organization_id%', $organization_id, $query);
-
-            $customers = DB::select($query);
         }
 
-        // Log::debug('newsrepo temp_serch 法人/個人 $individual     = ' . print_r($individual, true));
-        // Log::debug('newsrepo temp_serch 選択月    $interim_mail   = ' . print_r($interim_mail, true));
-        // Log::debug('newsrepo temp_serch 告知月    $announce_month = ' . print_r($announce_month, true));
-        // Log::debug('newsrepo temp_serch $query = ' . print_r($query,true));
-        // Log::info('newsrepo temp_serch $count  = ' . print_r($count, true));
+        Log::info('newsrepo ret_query END');
 
-        //139件 法人69  個人70
-        Log::info('newsrepo temp_serch $count = ' . print_r($count, true));
+        return $query;
+    }
 
-        $newsrepos = Newsrepo::where('organization_id','>=',$organization_id)
-                    ->whereNull('deleted_at')
-                    ->sortable()
-                    ->orderBy('created_at', 'desc')
-                    ->paginate(300);
+    /**
+     *    ret_comment() コメントを取得 2022/12/30
+     *    $individual     : 法人/個人
+     *    $interim_mail   : 選択月
+     *    $announce_month : 告知月
+     *    $count          : データ数
+     */
+    public function ret_comment($individual, $interim_mail, $announce_month, $count)
+    {
+        Log::info('newsrepo ret_comment START');
 
         $comment_out = "";
 
@@ -889,7 +795,7 @@ class NewsrepoController extends Controller
         } elseif($individual == 1) {
             // "－"
             if($announce_month == 1){
-                $comment_out = "";
+
             } else {
                 // 今月を基準として1か月前が決算月の会社の表示
                 if($announce_month == 2){
@@ -909,7 +815,6 @@ class NewsrepoController extends Controller
                 }
             }
         } elseif($individual == 2) {
-            $comment_out = "";
 
             if($interim_mail == 13){
 
@@ -950,28 +855,22 @@ class NewsrepoController extends Controller
             }
         }
 
-        // 2022/10/22
-        // if($individual == 3 && $interim_mail && $announce_month == 6 && $count > 0){
         if($announce_month == 6 && $count > 0){
             $comment_out = "「３か月以上会計データが提出されてません。会計データを提出してください」";
         }
 
-        // Log::debug('newsrepo temp_serch 法人/個人 $individual     = ' . print_r($individual, true));
-        // Log::debug('newsrepo temp_serch 選択月    $interim_mail   = ' . print_r($interim_mail, true));
-        // Log::debug('newsrepo temp_serch 告知月    $announce_month = ' . print_r($announce_month, true));
-        // Log::debug('newsrepo temp_serch comment  $comment_out     = ' . print_r($comment_out, true));
+        Log::info('newsrepo ret_comment END');
 
-        $compacts = compact( 'organization_id','newsrepos','nowmonth','customers','individual','interim_mail','announce_month','comment_out','count' );
-
-        Log::info('newsrepo temp_serch END');
-        return view( 'newsrepo.create', $compacts );
+        return $comment_out;
     }
 
     public function non_serch(Request $request)
     {
         Log::info('newsrepo non_serch START');
 
+
         Log::info('newsrepo non_serch END');
+
     }
 
 

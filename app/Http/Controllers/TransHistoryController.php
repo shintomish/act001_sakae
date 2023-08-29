@@ -100,13 +100,20 @@ class TransHistoryController extends Controller
         //-------------------------------------------------------------
         $keyword = $request->Input('keyword');
         $customer_id = $request->Input('customer_id');
-        
+
         // 2022/11/10
         // Customer(複数レコード)情報を取得する
         $customer_findrec = $this->auth_customer_findrec();
 
+        // 2022/11/30
+        $customers = Customer::where('id',$customer_id)
+            ->orderBy('id', 'asc')
+            ->first();
+
+        // 2022/11/30
         // 2022/11/10
-        $indiv_class = $customer_findrec[0]['individual_class'];
+        // $indiv_class = $customer_findrec[0]['individual_class'];
+        $indiv_class = $customers->individual_class;
 
 // Log::debug('transhistory serch  keyword     = ' . print_r($keyword,true));
 // Log::debug('transhistory serch  customer_id = ' . print_r($customer_id,true));

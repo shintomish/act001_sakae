@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use DateTime;
-use App\Models\User;
-use App\Models\ImageUpload;
+
 use App\Models\UploadUser;
-use App\Models\Customer;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -14,12 +12,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
-// use Illuminate\Support\Facades\Input;
-
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
 
 class UploadUserController extends Controller
 {
@@ -37,15 +29,21 @@ class UploadUserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(UploadUser $uploaduser)
+    // public function index(UploadUser $uploaduser) 2022/12/12
+    public function index()
     {
         Log::info('uploaduser index START');
+
+        // 2022/12/12
+        $organization  = $this->auth_user_organization();
+        $organization_id = $organization->id;
 
         // 年月取得
         $now = DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
         $dateNew = ($now->format('Y/m'));
 
         $uploadusers = DB::table('uploadusers')
+                    ->where('organization_id','>=',$organization_id) // 2022/12/12
                     ->whereNull('deleted_at')
                     ->where('check_flg', 2)     // ファイル無し(1):ファイル有り(2)
                     ->get();
@@ -70,8 +68,8 @@ class UploadUserController extends Controller
                                     // {{-- ファイル無し(1):ファイル有り(2) --}}
                                     'check_flg'  =>  1,
                                     // 優先順位 -(1): 低(2): 中(3): 高(4) 2022/11/05
-                                    'prime_flg'  =>  1, 
-                                    'updated_at' =>  now()
+                                    // 'prime_flg'  =>  1,
+                                    // 'updated_at' =>  now()
                                 ]);
 // Log::debug('uploaduser file_check $dateNew = ' .print_r($dateNew,true));
                 }
@@ -84,13 +82,14 @@ class UploadUserController extends Controller
         // Customer情報を取得する
         $customers  = $this->auth_customer_all();
 
-        $uploadusers = $uploaduser
-            ->whereNull('deleted_at')
-            ->sortable()
-            ->orderBy('prime_flg', 'desc')
-            ->orderBy('updated_at', 'asc')
-            ->orderBy('check_flg', 'desc')
-            ->paginate(300);
+        // $uploadusers = $uploaduser 2022/12/12
+        $uploadusers = Uploaduser::where('organization_id','>=',$organization_id)
+                    ->whereNull('deleted_at')
+                    ->sortable()
+                    ->orderBy('prime_flg', 'desc')
+                    ->orderBy('updated_at', 'asc')
+                    ->orderBy('check_flg', 'desc')
+                    ->paginate(300);
 
         $common_no = '01';
         $keyword2  = null;
@@ -106,15 +105,21 @@ class UploadUserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function custum(UploadUser $uploaduser,Request $request)
+    // public function custum(UploadUser $uploaduser,Request $request) 2022/12/12
+    public function custum(Request $request)
     {
         Log::info('uploaduser custum START');
+
+        // 2022/12/12
+        $organization  = $this->auth_user_organization();
+        $organization_id = $organization->id;
 
         // 年月取得
         $now = DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
         $dateNew = ($now->format('Y/m'));
 
         $uploadusers = DB::table('uploadusers')
+                    ->where('organization_id','>=',$organization_id) // 2022/12/12
                     ->whereNull('deleted_at')
                     ->where('check_flg', 2)     // ファイル無し(1):ファイル有り(2)
                     ->get();
@@ -138,7 +143,7 @@ class UploadUserController extends Controller
                                     'yearmonth'  =>  $dateNew,
                                     // {{-- ファイル無し(1):ファイル有り(2) --}}
                                     'check_flg'  =>  1,
-                                    'updated_at' =>  now()
+                                    // 'updated_at' =>  now()
                                 ]);
 // Log::debug('uploaduser file_check $dateNew = ' .print_r($dateNew,true));
                 }
@@ -161,23 +166,26 @@ class UploadUserController extends Controller
             $_indiv = [$individual_mail];
         }
 
-        $organization_id = 1;
+        // $organization_id = 1; 2022/12/12
         $uploadusers = Uploaduser::select(
                     'uploadusers.id as id'
                     ,'uploadusers.foldername as foldername'
                     ,'uploadusers.business_name as business_name'
                     ,'uploadusers.organization_id as organization_id'
-                    ,'uploadusers.customer_id as custm_id'
+                    ,'uploadusers.customer_id as customer_id'
                     ,'uploadusers.yearmonth as yearmonth'
                     ,'uploadusers.check_flg as check_flg'
                     ,'uploadusers.prime_flg as prime_flg'
+                    // 2023/08/18
+                    ,'uploadusers.txt_memo as txt_memo'
                     ,'customers.id as cus_id'
                 )
                 ->leftJoin('customers', function ($join) {
                     $join->on('uploadusers.customer_id', '=', 'customers.id');
                 })
-                ->where('customers.active_cancel','!=', 3)    // `active_cancel` 1:契約 2:SPOT 3:解約',
-                ->where('customers.notificationl_flg','=',2 ) // 通知しない(1):通知する(2)
+                ->where('customers.organization_id','>=',$organization_id) // 2022/12/12
+                ->where('customers.active_cancel','!=', 3)      // `active_cancel` 1:契約 2:SPOT 3:解約',
+                // ->where('customers.notificationl_flg','=',2 )   // 通知しない(1):通知する(2)
                 ->whereIn('customers.individual_class',$_indiv )
                 ->sortable()
                 ->orderBy('uploadusers.prime_flg', 'desc')
@@ -191,6 +199,7 @@ class UploadUserController extends Controller
         $compacts = compact( 'uploadusers', 'customers','common_no','keyword2','individual_mail' );
 
         Log::info('uploaduser custum END');
+
         return view('uploaduser.index', $compacts );
     }
 
@@ -199,9 +208,14 @@ class UploadUserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function serch(UploadUser $uploaduser, Request $request)
+    // public function serch(UploadUser $uploaduser, Request $request) 2022/12/12
+    public function serch(Request $request)
     {
         Log::info('uploaduser serch START');
+
+        // 2022/12/12
+        $organization  = $this->auth_user_organization();
+        $organization_id = $organization->id;
 
         //-------------------------------------------------------------
         //- Request パラメータ
@@ -214,23 +228,25 @@ class UploadUserController extends Controller
 
         // 日付が入力された
         if($keyword) {
-            $uploadusers = $uploaduser
-            // ($keyword)日付の絞り込み
-            ->whereDate('created_at',$keyword)
-            ->whereNull('deleted_at')
-            ->sortable()
-            ->orderBy('prime_flg', 'desc')
-            ->orderBy('updated_at', 'asc')
-            ->orderBy('check_flg', 'desc')
-            ->paginate(300);
+            // $uploadusers = $uploaduser 2022/12/12
+            $uploadusers = Uploaduser::where('organization_id','>=',$organization_id)
+                        // ($keyword)日付の絞り込み
+                        ->whereDate('created_at',$keyword)
+                        ->whereNull('deleted_at')
+                        ->sortable()
+                        ->orderBy('prime_flg', 'desc')
+                        ->orderBy('updated_at', 'asc')
+                        ->orderBy('check_flg', 'desc')
+                        ->paginate(300);
         } else {
-            $uploadusers = $uploaduser
-            ->whereNull('deleted_at')
-            ->sortable()
-            ->orderBy('prime_flg', 'desc')
-            ->orderBy('updated_at', 'asc')
-            ->orderBy('check_flg', 'desc')
-            ->paginate(300);
+            // $uploadusers = $uploaduser 2022/12/12
+            $uploadusers = Uploaduser::where('organization_id','>=',$organization_id)
+                        ->whereNull('deleted_at')
+                        ->sortable()
+                        ->orderBy('prime_flg', 'desc')
+                        ->orderBy('updated_at', 'asc')
+                        ->orderBy('check_flg', 'desc')
+                        ->paginate(300);
         };
         // toastrというキーでメッセージを格納
         // session()->flash('toastr', config('toastr.serch'));
@@ -245,9 +261,14 @@ class UploadUserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function serch_customer(UploadUser $uploaduser, Request $request)
+    // public function serch_customer(UploadUser $uploaduser, Request $request) 2022/12/12
+    public function serch_customer(Request $request)
     {
         Log::info('uploaduser serch_customer START');
+
+        // 2022/12/12
+        $organization  = $this->auth_user_organization();
+        $organization_id = $organization->id;
 
         //-------------------------------------------------------------
         //- Request パラメータ
@@ -260,23 +281,25 @@ class UploadUserController extends Controller
 
         // 日付が入力された
         if($keyword) {
-            $uploadusers = $uploaduser
-            // ($keyword)の絞り込み
-            ->where('business_name', 'like', "%$keyword%")
-            ->whereNull('deleted_at')
-            ->sortable()
-            ->orderBy('prime_flg', 'desc')
-            ->orderBy('updated_at', 'asc')
-            ->orderBy('check_flg', 'desc')
-            ->paginate(300);
+            // $uploadusers = $uploaduser 2022/12/12
+            $uploadusers = Uploaduser::where('organization_id','>=',$organization_id)
+                        // ($keyword)の絞り込み
+                        ->where('business_name', 'like', "%$keyword%")
+                        ->whereNull('deleted_at')
+                        ->sortable()
+                        ->orderBy('prime_flg', 'desc')
+                        ->orderBy('updated_at', 'asc')
+                        ->orderBy('check_flg', 'desc')
+                        ->paginate(300);
         } else {
-            $uploadusers = $uploaduser
-            ->whereNull('deleted_at')
-            ->sortable()
-            ->orderBy('prime_flg', 'desc')
-            ->orderBy('updated_at', 'asc')
-            ->orderBy('check_flg', 'desc')
-            ->paginate(300);
+            // $uploadusers = $uploaduser 2022/12/12
+            $uploadusers = Uploaduser::where('organization_id','>=',$organization_id)
+                        ->whereNull('deleted_at')
+                        ->sortable()
+                        ->orderBy('prime_flg', 'desc')
+                        ->orderBy('updated_at', 'asc')
+                        ->orderBy('check_flg', 'desc')
+                        ->paginate(300);
         };
         // toastrというキーでメッセージを格納
         // session()->flash('toastr', config('toastr.serch'));
@@ -285,9 +308,10 @@ class UploadUserController extends Controller
         $common_no = '01';
         $keyword2  = $keyword;
         $individual_mail = 3;
+
         $compacts = compact( 'uploadusers','common_no','keyword2','individual_mail' );
+
         return view('uploaduser.index',  $compacts );
-        // return view('uploaduser.index', ['uploadusers' => $uploadusers]);
     }
 
     /**
@@ -295,17 +319,23 @@ class UploadUserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // public function file_check(UploadUser $uploaduser) 2022/12/12
     public function file_check(UploadUser $uploaduser)
     {
         Log::info('uploaduser file_check START');
+
+        // 2022/12/12
+        $organization  = $this->auth_user_organization();
+        $organization_id = $organization->id;
 
         // 年月取得
         $now = DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
         $dateNew = ($now->format('Y/m'));
 
         $uploadusers = DB::table('uploadusers')
+                    ->where('organization_id','>=',$organization_id) // 2022/12/12
                     ->whereNull('deleted_at')
-                    ->where('check_flg', 2)     // ファイル無し(1):ファイル有り(2)
+                    // ->where('check_flg', 2)     // ファイル無し(1):ファイル有り(2) 2022/12/13
                     ->get();
 
         $data['count'] = $uploadusers->count();
@@ -319,18 +349,22 @@ class UploadUserController extends Controller
                 // dir配下のファイル一覽を取得する
                 $dir   = storage_path($folderpath);
                 $files = glob($dir);
-// Log::debug('uploaduser file_check $files = ' .print_r($files,true));
                 if (empty($files)) {
-                    $up_users = DB::table('uploadusers')
-                                ->where('id',$val->id)
-                                ->update([
-                                    'yearmonth'  =>  $dateNew,
-                                    // {{-- ファイル無し(1):ファイル有り(2) --}}
-                                    'check_flg'  =>  1,
-                                    'updated_at' =>  now()
-                                ]);
-// Log::debug('uploaduser file_check $dateNew = ' .print_r($dateNew,true));
+                    $check_flg = 1;     //無し(1)
+                } else {
+                    $check_flg = 2;     //有り(2)
                 }
+// Log::debug('uploaduser file_check $dir       = ' .print_r($dir,true));
+// Log::debug('uploaduser file_check $check_flg = ' .print_r($check_flg,true));
+                $up_users = DB::table('uploadusers')
+                    ->where('id',$val->id)
+                    ->update([
+                        'yearmonth'  =>  $dateNew,
+                        // {{-- ファイル無し(1):ファイル有り(2) --}}
+                        // 'check_flg'  =>  1, 2022/12/13
+                        'check_flg'  =>  $check_flg,
+                        // 'updated_at' =>  now()
+                    ]);
             }
         } else {
             // 対象データがありません
@@ -340,19 +374,21 @@ class UploadUserController extends Controller
         // Customer情報を取得する
         $customers  = $this->auth_customer_all();
 
-        $uploadusers = $uploaduser
-            ->whereNull('deleted_at')
-            ->sortable()
-            ->orderBy('prime_flg', 'desc')
-            ->orderBy('updated_at', 'asc')
-            ->orderBy('check_flg', 'desc')
-            ->paginate(300);
+        $uploadusers = Uploaduser::where('organization_id','>=',$organization_id)
+                    ->whereNull('deleted_at')
+                    ->sortable()
+                    ->orderBy('prime_flg', 'desc')
+                    ->orderBy('updated_at', 'asc')
+                    ->orderBy('check_flg', 'desc')
+                    ->paginate(300);
 
         $common_no = '01';
         $keyword2  = null;
         $individual_mail = 3;
         $compacts = compact( 'uploadusers', 'customers','common_no','keyword2','individual_mail' );
+
         Log::info('uploaduser file_check END');
+
         return view('uploaduser.index', $compacts );
     }
     /**
@@ -366,12 +402,17 @@ class UploadUserController extends Controller
         $id = $request->input('id');
 
         $prime_flg      = $request->input('prime_flg');
+        // 2023/08/18
+        $txt_memo       = $request->input('txt_memo');
 
-        // Log::debug('prime_flg        : ' . $prime_flg);
+        // Log::debug('prime_flg       : ' . $prime_flg);
+        // Log::debug('txt_memo        : ' . $txt_memo);
 
         $counts = array();
         $update = [];
-        if( $request->exists('prime_flg')       ) $update['prime_flg']      = $request->input('prime_flg');
+        if( $request->exists('prime_flg')      ) $update['prime_flg']     = $request->input('prime_flg');
+        // 2023/08/18
+        if( $request->exists('txt_memo')       ) $update['txt_memo']      = $request->input('txt_memo');
 
         // $update['updated_at'] = date('Y-m-d H:i:s');
         // Log::debug('update_api update : ' . print_r($update,true));

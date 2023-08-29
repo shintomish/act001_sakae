@@ -823,7 +823,7 @@ class BusinesnameController extends Controller
                     ->whereNull('businesnames.deleted_at')
                     // ($keyword)の絞り込み
                     ->where('customers.business_name', 'like', "%$keyword%")
-                    ->where('year', '=', $keyyear)
+                    ->where('businesnames.year', '=', $keyyear)
                     ->sortable()
                     ->paginate(5);
             } else {
@@ -870,7 +870,7 @@ class BusinesnameController extends Controller
                     ->whereNull('businesnames.deleted_at')
                     // ($keyword)の絞り込み
                     ->where('customers.business_name', 'like', "%$keyword%")
-                    ->where('year', '=', $keyyear)
+                    ->where('businesnames.year', '=', $keyyear)
                     ->sortable()
                     ->paginate(5);
             }

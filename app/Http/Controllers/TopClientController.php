@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DateTime;
 use App\Models\Newsrepo;
+use App\Models\Customer;
 
 use Illuminate\Http\Request;
 
@@ -96,7 +97,7 @@ class TopClientController extends Controller
                         // ：    「今月、個人事業税の支払い（所得税：１回目）があります」
         $notice_18 = 1; // ８月：「今月、住民税の支払い（２回目）があります」
                         //     ：「今月、予定納税の支払い（消費税）があります」
-                        //     ：「今月、個人事業税の支払い（１回目）があります」　
+                        //     ：「今月、個人事業税の支払い（１回目）があります」
         $notice_20 = 1; // 10月：「今月、住民税の支払い（３回目）があります」
         $notice_21 = 1; // 11月：「今月、予定納税の支払い（所得税：２回目）があります」
                         //     ：「今月、個人事業税の支払い（２回目）があります」
@@ -225,6 +226,9 @@ class TopClientController extends Controller
                         $notice_4 = 2;
                     }
 
+                //2022/12/27
+                } else {
+                    $individual_class = $costomer2['individual_class'];
                 }
             }
         }
@@ -285,10 +289,16 @@ class TopClientController extends Controller
 
         // Customer(複数レコード)情報を取得する
         $customer_findrec = $this->auth_customer_findrec();
-        // $customer_id = $customer_findrec[0]['id'];
 
+        // 2022/11/30
+        $customers = Customer::where('id',$customer_id)
+            ->orderBy('id', 'asc')
+            ->first();
+
+        // 2022/11/30
         // 2022/11/10
-        $indiv_class = $customer_findrec[0]['individual_class'];
+        // $indiv_class = $customer_findrec[0]['individual_class'];
+        $indiv_class = $customers->individual_class;
 
         $notice_0 = 1;
         $notice_1 = 1;  // ①決算月の数字を参照し、決算月１カ月前になると画面に「決算月１カ月前です」のように表示
@@ -449,6 +459,9 @@ class TopClientController extends Controller
                         $notice_4 = 2;
                     }
 
+                //2022/12/27
+                } else {
+                    $individual_class = $costomer2['individual_class'];
                 }
             }
         }
@@ -571,6 +584,73 @@ class TopClientController extends Controller
 
         return response($file, 200)
             ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'inline; filename="' . $file_name . '"');
+
+    }
+    // 2022/12/30
+    public function show_alert($alert_id)
+    {
+        Log::info('topclient show_alert START');
+
+        // Log::debug('topclient show_alert $id  = ' . print_r($alert_id ,true));
+
+        $newsrepo = Newsrepo::find($alert_id);
+
+        Log::info('topclient show_alert END');
+
+        return view('components.alert', [
+            'comment' => $newsrepo->comment,
+        ]);
+    }
+
+    // 2023/08/20
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show_up01()
+    {
+        Log::info('topclient show_up01 インボイス START');
+
+        $disk = 'local';  // or 's3'
+        $storage = Storage::disk($disk);
+        $file_name = 'インボイス制度開始にあたってやるべきこと.pdf';
+        $pdf_path = 'public/pdf/' . $file_name;
+        $file = $storage->get($pdf_path);
+
+        Log::info('topclient show_up01 インボイス END');
+
+        return response($file, 200)
+            ->header('Content-Type', 'application/pdf')
+            // ->header('Content-Type', 'application/zip')
+            ->header('Content-Disposition', 'inline; filename="' . $file_name . '"');
+
+    }
+
+    // 2023/08/20
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show_up02()
+    {
+        Log::info('topclient show_up02 電子帳簿保存法 START');
+
+        $disk = 'local';  // or 's3'
+        $storage = Storage::disk($disk);
+        $file_name = '改正電子帳簿保存法の開始にあたってやるべきこと.pdf';
+        $pdf_path = 'public/pdf/' . $file_name;
+        $file = $storage->get($pdf_path);
+
+        Log::info('topclient show_up02 電子帳簿保存法 END');
+
+        return response($file, 200)
+            ->header('Content-Type', 'application/pdf')
+            // ->header('Content-Type', 'application/zip')
             ->header('Content-Disposition', 'inline; filename="' . $file_name . '"');
 
     }

@@ -107,7 +107,7 @@ class WokprocbookController extends Controller
                             ->where('wokprocbooks.year','=',$nowyear)
                             ->sortable('refnumber','id','business_name','name','business_address')
                             ->orderBy('wokprocbooks.refnumber', 'asc')
-                            ->paginate(300);
+                            ->paginate(500);
         } else {
             $customers = Customer::where('organization_id','=',$organization_id)
                             // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
@@ -153,7 +153,7 @@ class WokprocbookController extends Controller
                             ->where('wokprocbooks.year','=',$nowyear)
                             ->sortable('refnumber','id','business_name','name','business_address')
                             ->orderBy('wokprocbooks.refnumber', 'asc')
-                            ->paginate(300);
+                            ->paginate(500);
         }
 
         $common_no = '07';
@@ -232,6 +232,7 @@ class WokprocbookController extends Controller
                             ->whereNull('users.deleted_at')
                             ->whereNull('customers.deleted_at')
                             ->whereNull('wokprocbooks.deleted_at')
+                            ->where('wokprocbooks.year','=',$nowyear)   // 2023/03/13
                             // ($keyword)の絞り込み '%'.$keyword.'%'
                             // sortable()を追加
                             ->sortable('business_name','refnumber','id','name','business_address')
@@ -281,6 +282,7 @@ class WokprocbookController extends Controller
                             ->whereNull('users.deleted_at')
                             ->whereNull('customers.deleted_at')
                             ->whereNull('wokprocbooks.deleted_at')
+                            ->where('wokprocbooks.year','=',$nowyear)   // 2023/03/13
                             // ($keyword)の絞り込み '%'.$keyword.'%'
                             ->sortable('business_name','refnumber','id','name','business_address')
                             // ->orderBy('wokprocbooks.id', 'desc') 2022/08/26
@@ -1044,7 +1046,7 @@ class WokprocbookController extends Controller
         //- Request パラメータ
         //-------------------------------------------------------------
         $keyword = $request->Input('keyword');
-        $keyyear = $request->Input('year');
+        $keyyear = $request->Input('year');     // 2023/03/13 ADD
 
         $organization  = $this->auth_user_organization();
         $organization_id = $organization->id;
@@ -1108,7 +1110,7 @@ class WokprocbookController extends Controller
                                     ->orderBy('customers.business_name', 'asc')  // 2022/10/17
                                     ->orderBy('wokprocbooks.refnumber', 'asc')
                                     ->orderBy('wokprocbooks.proc_date', 'asc')
-                                    ->paginate(10);
+                                    ->paginate(500);
             } else {
                 // usersを取得
                 $users = User::where('organization_id','=',$organization_id)
@@ -1166,7 +1168,7 @@ class WokprocbookController extends Controller
                                         ->orderBy('customers.business_name', 'asc')  // 2022/10/17
                                         ->orderBy('wokprocbooks.refnumber', 'asc')
                                         ->orderBy('wokprocbooks.proc_date', 'asc')
-                                        ->paginate(10);
+                                        ->paginate(500);
             }
         } else {
             if($organization_id == 0) {
@@ -1191,7 +1193,7 @@ class WokprocbookController extends Controller
                                     ->sortable()
                                     ->orderBy('refnumber', 'asc')   //2022/10/17
                                     ->orderBy('proc_date', 'asc')
-                                    ->paginate(300);
+                                    ->paginate(500);
             } else {
                 // usersを取得
                 $users = User::where('organization_id','>=',$organization_id)
@@ -1214,7 +1216,7 @@ class WokprocbookController extends Controller
                                     ->sortable()
                                     ->orderBy('refnumber', 'asc')   //2022/10/17
                                     ->orderBy('proc_date', 'asc')
-                                    ->paginate(300);
+                                    ->paginate(500);
             }
         };
 
@@ -1225,8 +1227,11 @@ class WokprocbookController extends Controller
         $keyword2  = $keyword;
         $frdate    = null;
         $todate    = null;
-        // * 今年の年を取得
-        $nowyear = $this->get_now_year();
+
+        // * 今年の年を取得 inputに変更 2023/03/13
+        // $nowyear = $this->get_now_year();
+        $nowyear  = $keyyear;
+
         // Log::debug('wokprocbookrs store $wokprocbookrs = ' . print_r($wokprocbookrs, true));
         $compacts = compact( 'userid','common_no','users','customers','wokprocbooks','nowyear','keyword2','frdate','todate' );
         Log::info('wokprocbookr serch END');
@@ -1251,6 +1256,7 @@ class WokprocbookController extends Controller
         //- Request パラメータ
         //-------------------------------------------------------------
         $keyword = $request->Input('keyword');
+        $keyyear = $request->Input('year');     // 2023/03/13 ADD
 
         $organization  = $this->auth_user_organization();
         $organization_id = $organization->id;
@@ -1307,12 +1313,14 @@ class WokprocbookController extends Controller
                                     ->whereNull('wokprocbooks.deleted_at')
                                     // ($keyword)の絞り込み
                                     ->where('customers.business_name', 'like', "%$keyword%")
-                                    ->sortable('id','business_name','name','business_address')
+                                    ->where('wokprocbooks.year', '=', $keyyear) // 2023/03/13 ADD
+                                    // ->sortable('id','business_name','name','business_address') // 2023/03/13 
+                                    ->sortable('business_name','refnumber','id','name','business_address')
 
                                     ->orderBy('customers.business_name', 'asc')  // 2022/10/17
                                     ->orderBy('wokprocbooks.refnumber', 'asc')
                                     ->orderBy('wokprocbooks.proc_date', 'asc')
-                                    ->paginate(300);
+                                    ->paginate(500);
             } else {
                 // usersを取得
                 $users = User::where('organization_id','=',$organization_id)
@@ -1363,12 +1371,15 @@ class WokprocbookController extends Controller
                                         ->whereNull('wokprocbooks.deleted_at')
                                         // ($keyword)の絞り込み
                                         ->where('customers.business_name', 'like', "%$keyword%")
-                                        ->sortable('id','business_name','name','business_address')
+                                        ->where('wokprocbooks.year', '=', $keyyear) // 2023/03/13 ADD
+
+                                        // ->sortable('id','business_name','name','business_address') // 2023/03/13 
+                                        ->sortable('business_name','refnumber','id','name','business_address')
 
                                         ->orderBy('customers.business_name', 'asc')  // 2022/10/17
                                         ->orderBy('wokprocbooks.refnumber', 'asc')
                                         ->orderBy('wokprocbooks.proc_date', 'asc')
-                                        ->paginate(300);
+                                        ->paginate(500);
             }
         } else {
             if($organization_id == 0) {
@@ -1386,14 +1397,58 @@ class WokprocbookController extends Controller
                                     ->whereNull('deleted_at')
                                     ->get();
                 // wokprocbooksを取得
-                $wokprocbooks = Wokprocbook::where('organization_id','>=',$organization_id)
-                                    // 削除されていない
-                                    ->whereNull('deleted_at')
-                                    // sortable()を追加
-                                    ->sortable()
-                                    ->orderBy('refnumber', 'asc')   //2022/10/17
-                                    ->orderBy('proc_date', 'asc')
-                                    ->paginate(300);
+                // $wokprocbooks = Wokprocbook::where('organization_id','>=',$organization_id)
+                //                     // 削除されていない
+                //                     ->whereNull('deleted_at')
+                //                     ->where('year', '=', $keyyear) // 2023/03/13 ADD
+                //                     // sortable()を追加
+                //                     ->sortable()
+                //                     ->orderBy('refnumber', 'asc')   //2022/10/17
+                //                     ->orderBy('proc_date', 'asc')
+                //                     ->paginate(300);
+                // wokprocbooksを取得 並び順を合わせる 2023/03/13
+                $wokprocbooks = Wokprocbook::select(
+                                        'wokprocbooks.id as id'
+                                        ,'wokprocbooks.organization_id as organization_id'
+                                        ,'wokprocbooks.custm_id as custm_id'
+                                        ,'wokprocbooks.refnumber as refnumber'
+                                        ,'wokprocbooks.busi_class as busi_class'
+                                        ,'wokprocbooks.contents_class as contents_class'
+                                        ,'wokprocbooks.facts_class as facts_class'
+                                        ,'wokprocbooks.proc_date as proc_date'
+                                        ,'wokprocbooks.attach_doc as attach_doc'
+                                        ,'wokprocbooks.filing_date as filing_date'
+                                        ,'wokprocbooks.staff_no as staff_no'
+                                        ,'wokprocbooks.remarks as remarks'
+
+                                        ,'customers.id as customers_id'
+                                        ,'customers.business_name as business_name'
+                                        ,'customers.business_address as business_address'
+
+                                        ,'users.id as u_id'
+                                        ,'users.login_flg as login_flg'
+                                        ,'users.name as name'
+                                        ,'users.user_id as user_id'
+                                        )
+                                        ->leftJoin('customers', function ($join) {
+                                            $join->on('wokprocbooks.custm_id', '=', 'customers.id');
+                                        })
+                                        ->leftJoin('users', function ($join) {
+                                            $join->on('wokprocbooks.staff_no', '=', 'users.id');
+                                        })
+                                        ->where('wokprocbooks.organization_id','>=',$organization_id)
+                                        ->whereNull('users.deleted_at')
+                                        ->whereNull('customers.deleted_at')
+                                        ->whereNull('wokprocbooks.deleted_at')
+                                        ->where('wokprocbooks.year', '=', $keyyear) // 2023/03/13 ADD
+
+                                        // ->sortable('id','business_name','name','business_address') // 2023/03/13 
+                                        ->sortable('business_name','refnumber','id','name','business_address')
+
+                                        ->orderBy('customers.business_name', 'asc')  // 2022/10/17
+                                        ->orderBy('wokprocbooks.refnumber', 'asc')
+                                        ->orderBy('wokprocbooks.proc_date', 'asc')
+                                        ->paginate(500);
             } else {
                 // usersを取得
                 $users = User::where('organization_id','>=',$organization_id)
@@ -1408,15 +1463,59 @@ class WokprocbookController extends Controller
                                     // ->where('active_cancel','!=', 3)
                                     ->whereNull('deleted_at')
                                     ->get();
-                // wokprocbooksを取得
-                $wokprocbooks = Wokprocbook::where('organization_id','=',$organization_id)
-                                    // 削除されていない
-                                    ->whereNull('deleted_at')
-                                    // sortable()を追加
-                                    ->sortable()
-                                    ->orderBy('refnumber', 'asc')   //2022/10/17
-                                    ->orderBy('proc_date', 'asc')
-                                    ->paginate(300);
+                // // wokprocbooksを取得
+                // $wokprocbooks = Wokprocbook::where('organization_id','=',$organization_id)
+                //                     // 削除されていない
+                //                     ->whereNull('deleted_at')
+                //                     ->where('year', '=', $keyyear) // 2023/03/13 ADD
+                //                     // sortable()を追加
+                //                     ->sortable()
+                //                     ->orderBy('refnumber', 'asc')   //2022/10/17
+                //                     ->orderBy('proc_date', 'asc')
+                //                     ->paginate(300);
+                // wokprocbooksを取得 並び順を合わせる 2023/03/13
+                $wokprocbooks = Wokprocbook::select(
+                                        'wokprocbooks.id as id'
+                                        ,'wokprocbooks.organization_id as organization_id'
+                                        ,'wokprocbooks.custm_id as custm_id'
+                                        ,'wokprocbooks.refnumber as refnumber'
+                                        ,'wokprocbooks.busi_class as busi_class'
+                                        ,'wokprocbooks.contents_class as contents_class'
+                                        ,'wokprocbooks.facts_class as facts_class'
+                                        ,'wokprocbooks.proc_date as proc_date'
+                                        ,'wokprocbooks.attach_doc as attach_doc'
+                                        ,'wokprocbooks.filing_date as filing_date'
+                                        ,'wokprocbooks.staff_no as staff_no'
+                                        ,'wokprocbooks.remarks as remarks'
+
+                                        ,'customers.id as customers_id'
+                                        ,'customers.business_name as business_name'
+                                        ,'customers.business_address as business_address'
+
+                                        ,'users.id as u_id'
+                                        ,'users.login_flg as login_flg'
+                                        ,'users.name as name'
+                                        ,'users.user_id as user_id'
+                                        )
+                                        ->leftJoin('customers', function ($join) {
+                                            $join->on('wokprocbooks.custm_id', '=', 'customers.id');
+                                        })
+                                        ->leftJoin('users', function ($join) {
+                                            $join->on('wokprocbooks.staff_no', '=', 'users.id');
+                                        })
+                                        ->where('wokprocbooks.organization_id','=',$organization_id)
+                                        ->whereNull('users.deleted_at')
+                                        ->whereNull('customers.deleted_at')
+                                        ->whereNull('wokprocbooks.deleted_at')
+                                        ->where('wokprocbooks.year', '=', $keyyear) // 2023/03/13 ADD
+
+                                        // ->sortable('id','business_name','name','business_address') // 2023/03/13 
+                                        ->sortable('business_name','refnumber','id','name','business_address')
+
+                                        ->orderBy('customers.business_name', 'asc')  // 2022/10/17
+                                        ->orderBy('wokprocbooks.refnumber', 'asc')
+                                        ->orderBy('wokprocbooks.proc_date', 'asc')
+                                        ->paginate(500);
             }
         };
 
@@ -1427,11 +1526,14 @@ class WokprocbookController extends Controller
         $keyword2  = $keyword;
         $frdate    = null;
         $todate    = null;
-        // * 今年の年を取得
-        $nowyear = $this->get_now_year();
+
+        // * 今年の年を取得 inputに変更 2023/03/13
+        // $nowyear = $this->get_now_year();
+        $nowyear  = $keyyear;
+
         // Log::debug('wokprocbookrs store $wokprocbookrs = ' . print_r($wokprocbookrs, true));
         $compacts = compact( 'userid','common_no','users','customers','wokprocbooks','nowyear','keyword2','frdate','todate' );
-        Log::info('wokprocbookr serch_custom END');
+        Log::info('wokprocbook serch_custom END');
 
         // return view('wokprocbook.index', ['wokprocbooks' => $wokprocbooks]);
         return view('wokprocbook.input', $compacts);

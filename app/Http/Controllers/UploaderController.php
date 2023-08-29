@@ -206,10 +206,11 @@ class UploaderController extends Controller
             mkdir( storage_path() . $filedir, $mode = 0777, true);
         }
 
-        $identifier = md5($uploadFile['name']).'-' . time() ;
-        $p = pathinfo($uploadFile['name']);
-        /* hashファイル名と拡張子を結合 */
-        $identifier .= "." . $p['extension'];
+        // 2023/02/13 ERROR: Undefined array key "extension"
+        // $identifier = md5($uploadFile['name']).'-' . time() ;
+        // $p = pathinfo($uploadFile['name']);
+        // /* hashファイル名と拡張子を結合 */
+        // $identifier .= "." . $p['extension'];
 
         /* アップロードパス */
         // $path =  $filedir . $identifier;
@@ -247,7 +248,8 @@ class UploaderController extends Controller
                         'yearmonth'  =>  $compacts['dateNew'],
                         'check_flg'  =>  2,                     // ファイル無し(1):ファイル有り(2)
                         'prime_flg'  =>  3,                     // 優先順位 -(1): 低(2): 中(3): 高(4) 2022/11/04
-                        'created_at' =>  now()
+                        // 'created_at' =>  now()  2022/12/16
+                        'updated_at' =>  now()
                     ]);
                 //追加
                 } else {

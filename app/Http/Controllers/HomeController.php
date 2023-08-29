@@ -24,7 +24,11 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // ログインユーザーのユーザー情報を取得する
+        $user  = $this->auth_user_info();
+
         Log::info('HomeController index START');
+        Log::info('HomeController index $user->name = ' . print_r($user->name ,true));
         Log::info('HomeController index END');
 
         // return view('home');

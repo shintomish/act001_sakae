@@ -84,7 +84,7 @@ class Customer extends Model
      * @param string $encoding
      * @return string|null
      */
-    public static function retrieveCustomerColumnsByValue(string $header ,string $encoding)
+    public static function retrieveCustomerColumnsByValue(string $header)
     {
         // CSVヘッダとテーブルのカラムを関連付けておく
         $list = [
@@ -92,6 +92,8 @@ class Customer extends Model
             'business_code'					=> "事業者コード",
             'business_kana'					=> "事業者名フリガナ",
             'business_name'					=> "事業者名",
+            'email'			 		        => "メールアドレス",
+            'active_cancel'			 		=> "状態",
             'closing_month'					=> "事業者法人個人区分",
             'blue_declaration'			 	=> "事業者青白区分",
             'business_zipcode'			 	=> "事業者郵便番号1",
@@ -181,7 +183,8 @@ class Customer extends Model
         ];
 
         foreach ($list as $key => $value) {
-            if ($header === mb_convert_encoding($value, $encoding)) {
+            // if ($header === mb_convert_encoding($value, $encoding,$encoding2)) {
+                if ( $value === $header ) {
                 return $key;
             }
         }

@@ -415,6 +415,10 @@ class ScheduleController extends Controller
     {
         Log::info('schedule serch_custom START');
 
+        // ログインユーザーのユーザー情報を取得する
+        $user  = $this->auth_user_info();
+        $userid = $user->id;
+
         //-------------------------------------------------------------
         //- Request パラメータ
         //-------------------------------------------------------------
@@ -592,7 +596,7 @@ class ScheduleController extends Controller
         $nowmonth = intval($this->get_now_month());
 
         // Log::debug('schedulers store $schedulers = ' . print_r($schedulers, true));
-        $compacts = compact( 'common_no','customers','progrechecks','customselects','int_custom','int_year','nowmonth','nowyear'  );
+        $compacts = compact( 'userid','common_no','customers','progrechecks','customselects','int_custom','int_year','nowmonth','nowyear'  );
         Log::info('scheduler serch_custom END');
 
         // return view('schedule.index', ['schedules' => $schedules]);

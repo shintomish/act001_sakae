@@ -2,11 +2,14 @@
 
 namespace App\Console\Commands;
 
+use DateTime;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 use \RecursiveIteratorIterator;
 use \RecursiveDirectoryIterator;
@@ -82,6 +85,11 @@ class File90Delete extends Command
         // Log::info('schedule File90Delete END');
         // Log::useFiles(storage_path().'/logs/actver-File90Delete-ed'.__CLASS__.'-'.Carbon::now()->format('Y-m-d').'.log');
 
+        //  *    2023/01/03
+        //  *    news_check()     : newsreposのcreated_atが30日以降なら
+        //  *                       urgent_flg = 1 にする
+        $this->news_check();
+
         return 0;
     }
 
@@ -105,4 +113,46 @@ class File90Delete extends Command
         }
     }
 
+    /**
+     *    2023/01/03
+     *    news_check()     : newsreposのcreated_atが30日以降なら
+     *                       urgent_flg = 1 にする
+     *
+     */
+    function news_check() {
+
+        // Log::info('schedule File90Delete news_check START');
+
+        // 1ヶ月前
+        $date = new Carbon(now());
+        $old  = $date->subMonths(1);
+        $str = ( new DateTime($old) )->format('Y-m-d');
+
+        // Log::debug('schedule File90Delete news_check $str = ' . print_r($str ,true));
+
+        try {
+            $query = '';
+            $query .= 'UPDATE ';
+            $query .= 'newsrepos ';
+            $query .= 'SET newsrepos.urgent_flg = 1 ';
+            $query .= ', newsrepos.updated_at=NOW() ';
+            $query .= 'WHERE ';
+            $query .= 'deleted_at is NULL AND ';
+            $query .= 'created_at < \'%str%\' AND ';
+            $query .= 'newsrepos.urgent_flg = 2 ';
+            $query  = str_replace('%str%',  $str, $query);
+        // Log::debug('schedule File90Delete news_check $query = ' . print_r($query ,true));
+
+            DB::update($query);
+            DB::commit();
+            // Log::info('beginTransaction - schedule File90Delete news_check end(commit)');
+        }
+        catch(\QueryException $e) {
+            Log::error('exception : ' . $e->getMessage());
+            DB::rollback();
+            // Log::info('beginTransaction - schedule File90Delete news_check end(rollback)');
+        }
+
+        // Log::info('schedule File90Delete news_check END');
+    }
 }

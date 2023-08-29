@@ -94,9 +94,18 @@ class Controller extends BaseController
         Log::info('auth_customer_findrec START');
 
         $u_id = auth::user()->id;
-        // $user = User::find($id);
 
-        // $u_id = $user->id;
+        Log::info('auth_customer_findrec START $u_id = ' . print_r($u_id ,true));
+        if($u_id == 10) {
+            $ret_val = Customer::whereNull('deleted_at')
+                            // `active_cancel` 1:契約 2:SPOT 3:解約',
+                            ->where('active_cancel','!=', 3)
+                            ->orderBy('customers.business_name', 'asc')
+                            ->get();
+            Log::info('auth_customer_findrec END $u_id = ' . print_r($u_id ,true));
+            Log::info('auth_customer_findrec END');
+            return $ret_val;
+        }
 
         $controlusers = ControlUser::where('user_id',$u_id)
             ->whereNull('deleted_at')
@@ -126,6 +135,7 @@ class Controller extends BaseController
             $conusers->save();               //  Inserts
         }
         // Log::debug('auth_customer_findrec ret_val = ' . print_r($ret_val,true));
+        Log::info('auth_customer_findrec END $u_id = ' . print_r($u_id ,true));
         Log::info('auth_customer_findrec END');
         return $ret_val;
     }

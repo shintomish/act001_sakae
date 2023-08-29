@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\UploadUser;
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
@@ -69,7 +70,15 @@ class FilemngController extends Controller
         // $customers  = $this->auth_user_foldername($u_id);
         $customers  = $this->auth_user_foldername($customer_id);
 
-        $compacts = compact( 'customers','admin_flg' );
+        // 2023/08/18
+        $uploadusers = DB::table('uploadusers')
+            ->where('customer_id','=',$customer_id)
+            ->whereNull('deleted_at')
+            ->first();
+
+        // Log::info('filemng index $txt_memo = ' . print_r($txt_memo, true));
+
+        $compacts = compact( 'customers','admin_flg','uploadusers' );
         Log::info('filemng index END');
 
         return view('filemng.post', $compacts );
@@ -114,8 +123,16 @@ class FilemngController extends Controller
 
         // 選択された顧客IDからCustomer情報(フォルダー名)を取得する
         $customers = Customer::where('id',$customer_id)->first();
+        
+        // 2023/08/18
+        $uploadusers = DB::table('uploadusers')
+            ->where('customer_id','=',$customer_id)
+            ->whereNull('deleted_at')
+            ->first();
 
-        $compacts = compact( 'customers','admin_flg' );
+        // Log::info('filemng post $txt_memo = ' . print_r($txt_memo, true));
+
+        $compacts = compact( 'customers','admin_flg','uploadusers' );
         Log::info('filemng post END');
 
         return view('filemng.post', $compacts );
@@ -171,12 +188,19 @@ class FilemngController extends Controller
         // 選択された顧客IDからCustomer情報(フォルダー名)を取得する
         // $customers  = $this->auth_user_foldername($u_id);
         $customers  = $this->auth_user_foldername($customer_id);
+                
+        // 2023/08/18
+        $uploadusers = DB::table('uploadusers')
+            ->where('customer_id','=',$customer_id)
+            ->whereNull('deleted_at')
+            ->first();
 
-        $compacts = compact( 'customers','admin_flg' );
-        Log::info('filemng post END');
+        $compacts = compact( 'customers','admin_flg','uploadusers' );
+
+        Log::info('filemng store END');
 
         return view('filemng.post', $compacts );
-        // return view('filemng.store', $compacts );
+
     }
     /**
      * Store a newly created resource in storage.
@@ -266,27 +290,18 @@ class FilemngController extends Controller
             }
         }
 
-        // foreach($files as $file) {
-        //     // ファイルフルパス
-        //     $file_path = $file->getpathName();
-        //     // 追加するファイル名をmb_convert_encodingでエンコードする。
-        //     $zip->addFile($file_path, mb_convert_encoding($file->getfileName(), 'CP932', 'UTF-8'));
-        // }
-
-        // Log::debug('filemng alldwonload $fpath_array = ' . print_r($fpath_array, true));
         //Zip追加処理
         foreach ($fpath_array as $filepath) {
-            // /var/www/html/actver/storage/app/userdata/folder0074/test.txt
-            // /var/www/html/storage/app/userdata/folder0001/laravel_act-2022-10-20 - コピー (2).log
-            // Log::debug('filemng alldwonload $filepath = ' . print_r($filepath, true));
-            // $fname = mb_substr($filepath,46);
             $fname    = pathinfo( $filepath, PATHINFO_FILENAME  );
             $exten    = pathinfo( $filepath, PATHINFO_EXTENSION );
             $filename = $fname .'.'. $exten;
 
-            Log::info('filemng alldwonload $filename = ' . print_r($filename, true));
+            // 2022/12/13 iconv — ある文字エンコーディングの文字列を、別の文字エンコーディングに変換する
+            $str    = iconv('UTF-8', 'UTF-8//IGNORE', $filename);
+Log::info('filemng alldwonload after $str = ' . print_r($str, true));
 
-            $zip->addFile($filepath, mb_convert_encoding($filename, 'CP932', 'UTF-8'));
+            // $zip->addFile($filepath, mb_convert_encoding($filename, 'CP932', 'UTF-8'));
+            $zip->addFile($filepath, $str);
         }
         $zip->close();
 
@@ -301,8 +316,14 @@ class FilemngController extends Controller
         } else {
             // 選択された顧客IDからCustomer情報(フォルダー名)を取得する
             $customers  = $this->auth_user_foldername($customer_id);
+                
+            // 2023/08/18
+            $uploadusers = DB::table('uploadusers')
+                ->where('customer_id','=',$customer_id)
+                ->whereNull('deleted_at')
+                ->first();
 
-            $compacts = compact( 'customers','admin_flg' );
+            $compacts = compact( 'customers','admin_flg','uploadusers' );
 
             Log::info('filemng alldwonload $rtn == false  END');
 
@@ -358,12 +379,14 @@ class FilemngController extends Controller
         // directory delete
         // $path   = storage_path($folderpath);
         // $this->remove_delete_directory($path);
+                
+        // 2023/08/18
+        $uploadusers = DB::table('uploadusers')
+            ->where('customer_id','=',$customer_id)
+            ->whereNull('deleted_at')
+            ->first();
 
-        // 選択された顧客IDからCustomer情報(フォルダー名)を取得する
-        // $customers  = $this->auth_user_foldername($u_id);
-        $customers  = $this->auth_user_foldername($customer_id);
-
-        $compacts = compact( 'customers','admin_flg' );
+        $compacts = compact( 'customers','admin_flg','uploadusers' );
 
         Log::info('filemng alldelete END');
 
@@ -443,19 +466,88 @@ Log::debug('filemng remove_delete_directory $fname         = ' . print_r($fname 
         Log::info('filemng remove_delete_directory END');
     }
 
-// [2022-11-01 14:10:30] local.DEBUG: filemng remove_delete_directory $it->getSubPathName() = QW/.  
-// [2022-11-01 14:10:30] local.DEBUG: filemng remove_delete_directory $it->getSubPath()     = QW  
-// [2022-11-01 14:10:30] local.DEBUG: filemng remove_delete_directory $it->key()            = /var/www/html/storage/app/userdata/folder0001/QW/.  
+    /** 
+     * 2023/08/21
+     * Uploaduserテーブルの更新
+     */
+    public function update_api(Request $request)
+    {
+        Log::info('update_api Filemng Uploaduser START');
 
-    // $directory = '/tmp';
-    // $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory));
-    // $it->rewind();
-    // while($it->valid()) {
-    //     if (!$it->isDot()) {
-    //         echo 'SubPathName: ' . $it->getSubPathName() . "\n";
-    //         echo 'SubPath:     ' . $it->getSubPath() . "\n";
-    //         echo 'Key:         ' . $it->key() . "\n\n";
-    //     }
-    //     $it->next();
-    // }
+        // Log::debug('update_api request = ' .print_r($request->all(),true));
+        $id = $request->input('id');
+        $txt_memo  = $request->input('txt_memo');
+
+        $counts = array();
+        $update = [];
+        if( $request->exists('txt_memo')  ) $update['txt_memo']  = $request->input('txt_memo');
+
+        // $update['updated_at'] = date('Y-m-d H:i:s');
+        // Log::debug('update_api update : ' . print_r($update,true));
+
+        $status = array();
+        DB::beginTransaction();
+        Log::info('update_api Filemng Uploaduser beginTransaction - start');
+        try{
+            // 更新処理
+            Uploaduser::where( 'id', $id )->update($update);
+
+            $status = array( 'error_code' => 0, 'message'  => 'Your data has been changed!' );
+
+            DB::commit();
+            Log::info('update_api Filemng Uploaduser beginTransaction - end');
+        }
+        catch(Exception $e){
+            Log::error('update_api Filemng Uploaduser exception : ' . $e->getMessage());
+            DB::rollback();
+            Log::info('update_api Filemng Uploaduser beginTransaction - end(rollback)');
+            echo "エラー：" . $e->getMessage();
+            $status = array( 'error_code' => 501, 'message'  => $e->getMessage() );
+        }
+
+        // ログインユーザーのユーザー情報Userを取得する
+        $users = $this->auth_user_info();
+        $admin_flg = $users->admin_flg;
+
+        // Jsonより取得
+        $jsonfile = storage_path() . "/app/userdata/customer_info_". $users->id. ".json";
+        $jsonUrl = $jsonfile; //JSONファイルの場所とファイル名を記述
+        $customer_id = 0;
+        if (file_exists($jsonUrl)) {
+            $json = file_get_contents($jsonUrl);
+            $json = mb_convert_encoding($json, 'UTF8', 'ASCII,JIS,UTF-8,EUC-JP,SJIS-WIN');
+            $obj = json_decode($json, true);
+            $obj = $obj["res"]["info"];
+            foreach($obj as $key => $val) {
+                $customer_id = $val["status"];
+            }
+            // Log::info('client postUpload  jsonUrl OK');
+        } else {
+            // echo "データがありません";
+            // Log::info('client postUpload  jsonUrl NG');
+
+        }
+
+        // 選択された顧客IDからCustomer情報(フォルダー名)を取得する
+        $customers  = $this->auth_user_foldername($customer_id);
+
+        $uploadusers = DB::table('uploadusers')
+            ->where('customer_id','=',$customer_id)
+            ->whereNull('deleted_at')
+            ->first();
+
+        // Log::info('filemng index $txt_memo = ' . print_r($txt_memo, true));
+
+        $compacts = compact( 'customers','admin_flg','uploadusers' );
+
+        // toastrというキーでメッセージを格納
+        // session()->flash('toastr', config('toastr.update'));
+
+        Log::info('update_api Filemng Uploaduser END');
+
+        return view('filemng.post', $compacts );
+
+        // return response()->json([ compact('status','counts') ]);
+    }
+
 }

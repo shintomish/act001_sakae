@@ -32,8 +32,8 @@ class Kernel extends ConsoleKernel
         // $schedule->call(new FileTmpDelete($schedule))   // uploadfileのtmpを削除
         //             ->dailyAt('03:55');                 // 毎日AM3:55に実行する
 
-        $schedule->command('command:FileTmpDelete')     // uploadfileのtmpを削除
-                    ->dailyAt('03:55');                 // 毎日AM3:55に実行する
+        // $schedule->command('command:FileTmpDelete')     // uploadfileのtmpを削除
+        //             ->dailyAt('03:55');                 // 毎日AM3:55に実行する
 
         $schedule->command('cache:clear')
                     ->dailyAt('04:00');                 // 毎日AM4:05に実行する
@@ -46,6 +46,12 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('backup:clean')              // 古いバックアップファイルを削除
                  ->dailyAt('04:55');                    // 毎日AM4:55に実行する
+
+        // DemoSv mail 通知しない 2023/01/12
+        // DBのみのバックアップにはオプション「–only-db」を指定
+        // DBのMAIL通知しないオプション「--disable-notifications」を指定
+        // $schedule->command('backup:run  --disable-notifications --only-db')
+        // config/backup.php notificationsを変更したらOK
         $schedule->command('backup:run --only-db')      // DBのみのバックアップにはオプション「–only-db」を指定します。
                  ->dailyAt('05:00');                    // 毎日AM5:00に実行する
 

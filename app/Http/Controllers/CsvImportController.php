@@ -2,7 +2,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
-use App\Models\Advisorsfee;
+use App\Models\User;
+use App\Models\ControlUser;
 use App\Models\Spedelidate;
 use App\Models\Yrendadjust;
 use App\Models\Wokprocbook;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
 
 // use Illuminate\Session\Middleware\StartSession;
 // use Illuminate\View\Middleware\ShareErrorsFromSession;
@@ -57,12 +59,15 @@ class CsvImportController extends Controller
 
         $column_ok = [];
 
-        // Log::debug('csvimport CSVヘッダ $headers : ' . print_r($headers,true));
+        // 2022/12/27
+        $encoding    = mb_convert_encoding($headers, "utf-8", "sjis");
+        // Log::debug('csvimport CSVヘッダ $headers : ' . print_r($encoding,true));
 
         // CSVヘッダ確認
-        foreach ($headers as $header) {
+        foreach ($encoding as $header) {
             // Log::debug('csvimport CSVヘッダ $header   : ' . $header);
-            $result = Customer::retrieveCustomerColumnsByValue($header, 'SJIS-win');
+            // $result = Customer::retrieveCustomerColumnsByValue($header, "utf-8", "sjis");
+            $result = Customer::retrieveCustomerColumnsByValue($header);
             // Log::debug('csvimport CSVヘッダ $result   : ' . $result);
                 switch($result) {
                     case ('');
@@ -141,7 +146,8 @@ class CsvImportController extends Controller
                 }
             }
 
-            if($detail_column_no == 88 ) {
+            // if($detail_column_no == 88 ) {
+            if($detail_column_no == 90 ) {
                 // ～CustomerTable 挿入処理～
                 if ($this->detailUploadFile($detail) === false) {
                     // session()->flash('toastr', config('toastr.upload_error3'));
@@ -224,10 +230,10 @@ class CsvImportController extends Controller
         try {
             $customer = new Customer();
             $customer->organization_id     = $organization->id;
-            $customer->year                 = $nowyear;
+            $customer->year                = $nowyear;
 
             if (isset($detail[0]) === true) {
-                $customer->business_code       = $detail[0];    //事業者コード sprintf($format, $detail[0])
+                $customer->business_code   = $detail[0]; //事業者コード sprintf($format, $detail[0])
             } else {
                 $customer->business_code       = "0000000000";
             }
@@ -236,8 +242,8 @@ class CsvImportController extends Controller
             $customer->business_name       = $detail[2];
 
             //法人(1):個人事業主(2)
-            if (isset($detail[3]) === true) {
-                if($detail[3] === "個人") {
+            if (isset($detail[3+2]) === true) {
+                if($detail[3+2] === "個人") {
                     $customer->individual_class    = 2;	    //法人(1):個人事業主(2)
                     $customer->closing_month       = 13;	//法人(1-12)[1月～12月]:個人:確定申告(13)
                 } else {
@@ -245,8 +251,9 @@ class CsvImportController extends Controller
                     $customer->closing_month       = 1;	    //法人(1-12)[1月～12月]:個人:確定申告(13)
 
                     //決算月 法人(1-12)[1月～12月]:個人:確定申告(13)
-                    if(isset($detail[36]) === true && intval($detail[36]) != 0 ){
-                        $customer->closing_month   = intval($detail[36]);	//法人(1-12)[1月～12月]:個人:確定申告(13)
+                    // if(isset($detail[36+2]) === true && intval($detail[36+2]) != 0 ){
+                    if(isset($detail[36+2]) === true ){
+                        $customer->closing_month   = intval($detail[36+2]);	//法人(1-12)[1月～12月]:個人:確定申告(13)
                         // $customer->closing_month       = 13;	//法人(1-12)[1月～12月]:個人:確定申告(13)
                     }
                 }
@@ -255,8 +262,8 @@ class CsvImportController extends Controller
             }
 
             //青色申告 (1):青色 (2):白色'
-            if(isset($detail[4]) === true) {
-                if($detail[4] === "青色") {
+            if(isset($detail[4+2]) === true) {
+                if($detail[4+2] === "青色") {
                     $customer->blue_declaration    = 1;	//青色申告 (1):青色 (2):白色',
                 } else {
                     $customer->blue_declaration    = 2;	//青色申告 (1):青色 (2):白色',
@@ -268,19 +275,21 @@ class CsvImportController extends Controller
                     $customer->blue_declaration    = 2;	//青色申告 (1):青色 (2):白色',
                 }
             }
+            $customer->email               = $detail[3];    //2022/12/27
+            $customer->business_zipcode    = $detail[5+2].'-'.$detail[6+2];
+            $customer->business_address    = $detail[8+2];
+            $customer->business_tell       = $detail[9+2].'-'.$detail[10+2].'-'.$detail[11+2];
+            $customer->memo_1  		       = $detail[26+2];
+            $customer->industry  	       = $detail[31+2];   //2022/05/22
+            $customer->tax_office  	       = $detail[35+2];
+            $customer->represent_name      = $detail[40+2];
+            $customer->represent_kana      = $detail[41+2];
+            $customer->represent_zipcode   = $detail[42+2].'-'.$detail[43+2];
+            $customer->represent_address   = $detail[45+2];
+            $customer->represent_tell      = $detail[46+2].'-'.$detail[47+2].'-'.$detail[48+2];
 
-            $customer->business_zipcode    = $detail[5].'-'.$detail[6];
-            $customer->business_address    = $detail[8];
-            $customer->business_tell       = $detail[9].'-'.$detail[10].'-'.$detail[11];
-            $customer->memo_1  		       = $detail[26];
-            $customer->industry  	       = $detail[31];   //2022/05/22
-            $customer->tax_office  	       = $detail[35];
-            $customer->represent_name      = $detail[40];
-            $customer->represent_kana      = $detail[41];
-            $customer->represent_zipcode   = $detail[42].'-'.$detail[43];
-            $customer->represent_address   = $detail[45];
-            $customer->represent_tell      = $detail[46].'-'.$detail[47].'-'.$detail[48];
-
+            $customer->active_cancel       = 1;
+            $customer->notificationl_flg   = 2;
             $customer->consumption_tax     = 1;
             $customer->save();                  //  Inserts
 
@@ -347,6 +356,30 @@ class CsvImportController extends Controller
                     $new_data->save();           //  Inserts
                     Log::info('beginTransaction - detailUploadFile Wokprocbook(commit)');
                 }
+                //E-Mailが入っていたら
+                if(isset($detail[3]) === true) {
+                    //User
+                    $user = new User();
+                    $user->organization_id  = $organization->id;
+                    $user->user_id          = $customer->id;
+                    $user->name             = $customer->represent_name;
+                    $user->email            = $customer->email;
+                    $user->login_flg        = 1;
+                    $user->admin_flg        = 1;
+                    $user->password         = Hash::make("user1234");
+                    $user->save();           //  Inserts
+
+                    //ControlUser
+                    $users = DB::table('users')->get();
+                    $count = $users->count();
+
+                    $controluser = new ControlUser();
+                    $controluser->organization_id  = $organization->id;
+                    $controluser->user_id          = $count;
+                    $controluser->customer_id      = $customer->id;
+                    $controluser->save();           //  Inserts
+                }
+
             }
 
             DB::commit();
