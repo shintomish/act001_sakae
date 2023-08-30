@@ -217,6 +217,19 @@
                         </ul>
                         {{-- 2023/08/17 上追加 --}}
 
+                        {{-- 2023/08/30 以下追加 --}}
+                        <ul class="nav flex-column mb-2">
+                            <li class="nav-item">
+                                <a class="nav-link" target="_blank" href="{{route('topcli_pdf03')}}">
+                                {{-- <a class="nav-link" href=""> --}}
+                                    {{-- <span data-feather="file"></span> --}}
+                                    <i class="fas fa-download"></i>
+                                    法人設立・法人成したタイミングで知っておくべき知識
+                                </a>
+                            </li>
+                        </ul>
+                        {{-- 2023/08/30 上追加 --}}
+
                         <ul class="nav flex-column mb-2">
                             <li class="nav-item">
                                 <a class="nav-link" target="_blank" href="{{route('topclientpdf')}}">

@@ -654,5 +654,31 @@ class TopClientController extends Controller
             ->header('Content-Disposition', 'inline; filename="' . $file_name . '"');
 
     }
+    // 2023/08/30
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show_up03()
+    {
+        Log::info('topclient show_up03 法人設立 START');
+
+        $disk = 'local';  // or 's3'
+        $storage = Storage::disk($disk);
+        $file_name = '法人設立・法人成したタイミングで知っておくべき知識.pdf';
+        $pdf_path = 'public/pdf/' . $file_name;
+        $file = $storage->get($pdf_path);
+
+        Log::info('topclient show_up03 法人設立 END');
+
+        return response($file, 200)
+            ->header('Content-Type', 'application/pdf')
+            // ->header('Content-Type', 'application/zip')
+            ->header('Content-Disposition', 'inline; filename="' . $file_name . '"');
+
+    }
+
 
 }
