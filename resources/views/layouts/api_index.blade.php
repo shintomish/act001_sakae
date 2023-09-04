@@ -166,14 +166,20 @@
                                 </a>
                             </li>
                             {{-- 2022/11/05 actlogindex --}}
-                            @if($userid == 1 || $userid == 9 )
+                            {{-- @if($userid == 1 || $userid == 9 )
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{route('actlogindex')}}">
                                         <i class="fas fa-clipboard"></i>
                                         操作履歴
                                     </a>
                                 </li>
-                            @endif
+                            @endif --}}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{route('operation.index')}}">
+                                    <i class="fas fa-clipboard"></i>
+                                    顧客ログイン状態
+                                </a>
+                            </li>
                         </ul>
 
                         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
@@ -265,6 +271,12 @@
 
                         <!-- 検索エリア -->
                         @switch ($common_no)
+                        {{-- 2023/09/04 --}}
+                            @case ('00_ope')
+                                <!-- タイトル -->
+                                <h3>顧客ログイン状態</h3>
+                                <form  class="form-inline my-2 my-lg-0 ml-2" action="{{route('userserch')}}" method="GET">
+                                @break;
                             @case ('00_1')
                                 <!-- タイトル -->
                                 <h3>利用者管理</h3>

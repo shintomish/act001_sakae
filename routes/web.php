@@ -99,6 +99,12 @@ Route::resource('top',         'App\Http\Controllers\TopController');
 Route::resource('organization', 'App\Http\Controllers\OrganizationController');
 
 //-----------------------------------------------------------------------------------------------
+//- 事務所 Operation ログイン情報 00_ope
+//-----------------------------------------------------------------------------------------------
+Route::get('operation',      'App\Http\Controllers\OperationController@index')->name('operationindex');
+Route::resource('operation', 'App\Http\Controllers\OperationController');
+
+//-----------------------------------------------------------------------------------------------
 //- 事務所 user 利用ユーザー 00_1
 //-----------------------------------------------------------------------------------------------
 Route::get('userserch', 'App\Http\Controllers\UserController@serch')->name('userserch');
