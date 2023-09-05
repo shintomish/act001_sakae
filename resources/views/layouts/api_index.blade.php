@@ -165,6 +165,7 @@
                                     年度更新
                                 </a>
                             </li>
+                            {{-- 2023/09/04 以下コメント--}}
                             {{-- 2022/11/05 actlogindex --}}
                             {{-- @if($userid == 1 || $userid == 9 )
                                 <li class="nav-item">
@@ -174,8 +175,9 @@
                                     </a>
                                 </li>
                             @endif --}}
+                            {{-- 2023/09/04 以下「顧客ログイン状態」追加--}}
                             <li class="nav-item">
-                                <a class="nav-link" href="{{route('operation.index')}}">
+                                <a class="nav-link" href="{{route('operationindex')}}">
                                     <i class="fas fa-clipboard"></i>
                                     顧客ログイン状態
                                 </a>
@@ -271,11 +273,11 @@
 
                         <!-- 検索エリア -->
                         @switch ($common_no)
-                        {{-- 2023/09/04 --}}
+                            {{-- 2023/09/04 以下「顧客ログイン状態」追加--}}
                             @case ('00_ope')
                                 <!-- タイトル -->
                                 <h3>顧客ログイン状態</h3>
-                                <form  class="form-inline my-2 my-lg-0 ml-2" action="{{route('userserch')}}" method="GET">
+                                <form  class="form-inline my-2 my-lg-0 ml-2" action="{{route('operationserch')}}" method="GET">
                                 @break;
                             @case ('00_1')
                                 <!-- タイトル -->

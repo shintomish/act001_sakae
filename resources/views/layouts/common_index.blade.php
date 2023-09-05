@@ -157,7 +157,13 @@
                                     年度更新
                                 </a>
                             </li>
-
+                            {{-- 2023/09/04 以下「顧客ログイン状態」追加--}}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{route('operationindex')}}">
+                                    <i class="fas fa-clipboard"></i>
+                                    顧客ログイン状態
+                                </a>
+                            </li>
                         </ul>
 
                         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
@@ -249,6 +255,12 @@
 
                         <!-- 検索エリア -->
                         @switch ($common_no)
+                            {{-- 2023/09/04 以下「顧客ログイン状態」追加--}}
+                            @case ('00_ope')
+                                <!-- タイトル -->
+                                <h3>顧客ログイン状態</h3>
+                                <form  class="form-inline my-2 my-lg-0 ml-2" action="{{route('operationserch')}}" method="GET">
+                                @break;
                             @case ('00_1')
                                 <!-- タイトル -->
                                 <h3>利用者管理</h3>
@@ -400,7 +412,7 @@
                                         </div>
                                     <!-- 年なし 名前あり -->
                                     <!-- 利用者管理 00_1 -->    
-                                    @elseif($common_no == '00_1')
+                                    @elseif($common_no == '00_1'||$common_no == '00_ope')
 <input style="margin-right:5px;" type="text" value="{{$keyword}}" name="keyword" class="form-control" placeholder="名前検索">
 <input style="margin-right:5px;" type="text" value="{{$keyword2}}" name="keyword2" class="form-control" placeholder="顧客名検索">
                                     

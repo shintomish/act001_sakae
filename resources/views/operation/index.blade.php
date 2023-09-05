@@ -42,7 +42,7 @@
             width: 1800px;
         }
         th,td{
-            width: 200px;
+            width: 250px;
             height: 10px;
             vertical-align: middle;
             padding: 0 15px;
@@ -82,12 +82,13 @@
         <table class="table table-responsive text-nowrap table-striped table-borderd table_sticky">
             <thead>
                 <tr>
-                    <th scope="row" class ="fixed01">@sortablelink('id', 'ID')</th>
-                    <th scope="row" class ="fixed01">@sortablelink('name', 'ユーザー名')</th>
-                    <th scope="row" class ="fixed01">@sortablelink('business_name', '顧客名')</th>
-                    <th scope="row" class ="fixed01">@sortablelink('status_flg', '状態')</th>
-                    <th scope="row" class ="fixed01">@sortablelink('login_verified_at', 'ログイン日時')</th>
-                    <th scope="row" class ="fixed01">@sortablelink('logout_verified_at', 'ログアウト日時')</th>
+                    {{-- <th scope="col" class ="fixed01">@sortablelink('id', 'ID')</th> --}}
+                    <th scope="col" class ="fixed02">ID</th>
+                    <th scope="col" class ="fixed01">@sortablelink('name', 'ユーザー名')</th>
+                    <th scope="col" class ="fixed01">@sortablelink('business_name', '顧客名')</th>
+                    <th scope="col" class ="fixed01">@sortablelink('status_flg', '状態')</th>
+                    <th scope="col" class ="fixed01">@sortablelink('login_verified_at', 'ログイン日時')</th>
+                    {{-- <th scope="col" class ="fixed01">@sortablelink('logout_verified_at', 'ログアウト日時')</th> --}}
                 </tr>
             </thead>
 
@@ -123,7 +124,7 @@
                             <option value="3" {{ $operation->status_flg == 3 ? 'selected' : '' }}>ログインなし</option>
                         </select> --}}
                         <td>{{ $operation->login_verified_at }}</td>
-                        <td>{{ $operation->logout_verified_at }}</td>
+                        {{-- <td>{{ $operation->logout_verified_at }}</td> --}}
 
                     </tr>
                     @endforeach
@@ -134,7 +135,7 @@
                         <td><p> </p></td>
                         <td><p> </p></td>
                         <td><p> </p></td>
-                        <td><p> </p></td>
+                        {{-- <td><p> </p></td> --}}
                     </tr>
                 @endif
 

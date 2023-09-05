@@ -6,7 +6,7 @@
 
     <style>
         body {
-            background-color:rgb(240, 250, 240);
+            background-color:rgb(239, 247, 208);
         }
     </style>
         <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
