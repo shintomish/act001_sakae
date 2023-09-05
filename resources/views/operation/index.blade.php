@@ -6,9 +6,46 @@
     <div class="text-right">
         {{-- <a class="btn btn-success btn-sm mr-auto" href="{{route('user.create')}}">新規登録</a> --}}
     </div>
+
+    <form  class="my-2 my-lg-0 ml-2" action="{{route('operationperiodsearch')}}" method="GET">
+        @csrf
+        @method('get')
+        <table>
+            <div style="display:inline-flex">
+                <div class="row">
+                    {{-- <div class="col-sm-2">
+                    </div> --}}
+                    <label for="notlogin">ログインしていない事業主</label>
+
+                    <div class="col-sm-4">
+                        <input type="date" class="form-control" id="frdate" name="frdate" value="{{$frdate}}">
+                    </div>
+
+                    <div class="col-sm-4">
+                        <input type="date" class="form-control" id="todate"  name="todate" value="{{$todate}}">
+                    </div>
+
+                    {{-- <div class="col-sm-2"> --}}
+                        {{-- <select  style="margin-right:5px;" class="custom-select" id="attach_doc_" name="attach_doc_">
+                            <option value="0" >-</option>
+                            <option value="1" >ログイン中</option>
+                            <option value="2" >ログアウト</option>
+                            <option value="3" >ログインなし</option>
+                        </select> --}}
+                    {{-- </div> --}}
+
+                    <div class="col-sm-2">
+                        <button type="submit" class="btn btn-sm mr-auto btn-secondary">検索</button>
+                    </div>
+
+                </div>
+            </div>
+            <tr>
+            </tr>
+        </table>
+    </form>
     {{-- Line --}}
     <hr class="mb-4">
-
     <style>
         /* スクロールバーの実装 */
         .table_sticky {

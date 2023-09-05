@@ -101,6 +101,7 @@ Route::resource('organization', 'App\Http\Controllers\OrganizationController');
 //-----------------------------------------------------------------------------------------------
 //- 事務所 Operation ログイン情報 00_ope 2023/09/04
 //-----------------------------------------------------------------------------------------------
+Route::get('operationperserch', 'App\Http\Controllers\OperationController@periodsearch')->name('operationperiodsearch');
 Route::get('operationserch', 'App\Http\Controllers\OperationController@serch')->name('operationserch');
 Route::get('operation/index', 'App\Http\Controllers\OperationController@index')->name('operationindex');
 Route::resource('operation',  'App\Http\Controllers\OperationController');

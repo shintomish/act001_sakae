@@ -412,10 +412,16 @@
                                         </div>
                                     <!-- 年なし 名前あり -->
                                     <!-- 利用者管理 00_1 -->    
-                                    @elseif($common_no == '00_1'||$common_no == '00_ope')
-<input style="margin-right:5px;" type="text" value="{{$keyword}}" name="keyword" class="form-control" placeholder="名前検索">
-<input style="margin-right:5px;" type="text" value="{{$keyword2}}" name="keyword2" class="form-control" placeholder="顧客名検索">
-                                    
+                                    @elseif($common_no == '00_ope')
+                                        <input style="margin-right:5px;" type="text" value="{{$keyword}}" name="keyword" class="form-control" placeholder="名前検索">
+                                        <input style="margin-right:5px;" type="text" value="{{$keyword2}}" name="keyword2" class="form-control" placeholder="顧客名検索">
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-secondary">検索</button>
+                                        </div>
+                                    <!-- 利用者管理 00_1 -->    
+                                    @elseif($common_no == '00_1')
+                                        <input style="margin-right:5px;" type="text" value="{{$keyword}}" name="keyword" class="form-control" placeholder="名前検索">
+                                        <input style="margin-right:5px;" type="text" value="{{$keyword2}}" name="keyword2" class="form-control" placeholder="顧客名検索">
                                         <div class="input-group-append">
                                             <button type="submit" class="btn btn-secondary">検索</button>
                                         </div>
