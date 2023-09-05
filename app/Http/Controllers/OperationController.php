@@ -258,6 +258,11 @@ class OperationController extends Controller
             }
         }
 
+// Log::debug('operation periodsearch $frdate = ' . print_r($frdate, true));
+// Log::debug('operation periodsearch $todate = ' . print_r($todate, true));
+// Log::debug('operation periodsearch $stadate = ' . print_r($stadate, true));
+// Log::debug('operation periodsearch $enddate = ' . print_r($enddate, true));
+
         $organization  = $this->auth_user_organization();
         $organization_id = $organization->id;
 
@@ -295,7 +300,7 @@ class OperationController extends Controller
             // 左側の年月日に左の②のように2023/08/01を入力または選択します。
             // 右側の年月日を空欄にします。
             // 2023/08/01　～　空欄　で検索します
-            ->WhereNull('login_verified_at')
+            ->orWhereNull('login_verified_at')
             ->orWhereBetween("login_verified_at", [$stadate, $enddate])
             // ->Where("login_verified_at", '<', $stadate)
             // ->Where("login_verified_at", '>', $enddate)
