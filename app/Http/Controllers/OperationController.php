@@ -249,12 +249,21 @@ class OperationController extends Controller
             $stadate    = Carbon::parse($frdate)->startOfDay();
             $enddate    = Carbon::parse($todate)->endOfDay();
         } else {
-            if(isset($frdate)) {
+            // 開始が入力 終了が未入力
+            if(isset($frdate) && is_null($todate)) {
+                // Log::info('operation periodsearch １');
                 $stadate   = Carbon::parse($frdate)->startOfDay();
                 $enddate   = Carbon::parse('2050-12-31')->endOfDay();
-            } else {
+            // 開始が未入力 終了が入力
+            } elseif(is_null($frdate) && isset($todate)) {
+                // Log::info('operation periodsearch ２');
                 $stadate   = Carbon::parse('2020-01-01')->startOfDay();
                 $enddate   = Carbon::parse($todate)->endOfDay();
+            // 開始/終了が未入力
+            } else {
+                // Log::info('operation periodsearch ３');
+                $stadate   = Carbon::parse('2050-12-31')->startOfDay();
+                $enddate   = Carbon::parse('2020-01-01')->endOfDay();
             }
         }
 
@@ -300,10 +309,11 @@ class OperationController extends Controller
             // 左側の年月日に左の②のように2023/08/01を入力または選択します。
             // 右側の年月日を空欄にします。
             // 2023/08/01　～　空欄　で検索します
-            ->orWhereNull('login_verified_at')
-            ->orWhereBetween("login_verified_at", [$stadate, $enddate])
-            // ->Where("login_verified_at", '<', $stadate)
-            // ->Where("login_verified_at", '>', $enddate)
+            ->whereNull('login_verified_at') // ログイン日時がNULLの行
+            // ->orWhere('login_verified_at', '<', '2023-08-01') // ログイン日時が2023年8月より前の行
+            ->orWhere('login_verified_at', '<', $stadate) // ログイン日時が2023年8月より前の行
+            ->orWhere('login_verified_at', '>', $enddate) // ログイン日時が2023年8月より後の行
+
             // sortable()を追加
             ->sortable('status_flg','login_verified_at','business_name')
             ->orderBy('operations.status_flg', 'asc')

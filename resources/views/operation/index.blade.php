@@ -15,7 +15,7 @@
                 <div class="row">
                     {{-- <div class="col-sm-2">
                     </div> --}}
-                    <label for="notlogin">ログインしていない事業主</label>
+                    <label for="notlogin">ログインしていない事業主　　　 以前　　以降</label>
 
                     <div class="col-sm-4">
                         <input type="date" class="form-control" id="frdate" name="frdate" value="{{$frdate}}">
@@ -24,15 +24,6 @@
                     <div class="col-sm-4">
                         <input type="date" class="form-control" id="todate"  name="todate" value="{{$todate}}">
                     </div>
-
-                    {{-- <div class="col-sm-2"> --}}
-                        {{-- <select  style="margin-right:5px;" class="custom-select" id="attach_doc_" name="attach_doc_">
-                            <option value="0" >-</option>
-                            <option value="1" >ログイン中</option>
-                            <option value="2" >ログアウト</option>
-                            <option value="3" >ログインなし</option>
-                        </select> --}}
-                    {{-- </div> --}}
 
                     <div class="col-sm-2">
                         <button type="submit" class="btn btn-sm mr-auto btn-secondary">検索</button>
