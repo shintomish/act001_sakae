@@ -309,10 +309,12 @@ class OperationController extends Controller
             // 左側の年月日に左の②のように2023/08/01を入力または選択します。
             // 右側の年月日を空欄にします。
             // 2023/08/01　～　空欄　で検索します
+            // ->orWhere('last_login_at', '<', '2023-08-01');  // ログイン日時が2023年8月1日より前の行
+            // ->orWhere('last_login_at', '>=', '2023-08-01'); // ログイン日時が2023年8月1日以降の行
+
             ->whereNull('login_verified_at') // ログイン日時がNULLの行
-            // ->orWhere('login_verified_at', '<', '2023-08-01') // ログイン日時が2023年8月より前の行
-            ->orWhere('login_verified_at', '<', $stadate) // ログイン日時が2023年8月より前の行
-            ->orWhere('login_verified_at', '>', $enddate) // ログイン日時が2023年8月より後の行
+            ->orWhere('login_verified_at', '<',  $stadate) // ログイン日時が2023年8月1日より前の行
+            ->orWhere('login_verified_at', '>=', $enddate) // ログイン日時が2023年8月1日以降の行
 
             // sortable()を追加
             ->sortable('status_flg','login_verified_at','business_name')
