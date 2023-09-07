@@ -56,7 +56,7 @@ class LoginController extends Controller
             return '/';
         }
 
-        // Operationを更新する
+        // Operationを更新する 2023/09/06
         $ret  = $this->update(1,$user->id);        
 
         // toastrというキーでメッセージを格納
@@ -88,7 +88,7 @@ class LoginController extends Controller
 
         Log::info('auth logout redirectTo user = ' . print_r(json_decode($user),true));
 
-        // Operationを更新する
+        // Operationを更新する 2023/09/06
         $ret  = $this->update(2,$user->id);        
 
         // return $this->originalLogout($request); // 元々のログアウト
@@ -107,7 +107,7 @@ class LoginController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
+     * 2023/09/06 Operationを更新する
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response

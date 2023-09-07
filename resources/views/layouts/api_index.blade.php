@@ -165,16 +165,7 @@
                                     年度更新
                                 </a>
                             </li>
-                            {{-- 2023/09/04 以下コメント--}}
-                            {{-- 2022/11/05 actlogindex --}}
-                            {{-- @if($userid == 1 || $userid == 9 )
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{route('actlogindex')}}">
-                                        <i class="fas fa-clipboard"></i>
-                                        操作履歴
-                                    </a>
-                                </li>
-                            @endif --}}
+
                             {{-- 2023/09/04 以下「顧客ログイン状態」追加--}}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{route('operationindex')}}">
@@ -182,6 +173,18 @@
                                     顧客ログイン状態
                                 </a>
                             </li>
+
+                            {{-- 2023/09/04 1=shintomi.sh@gmail.com 9=dummy09@gmail.com --}}
+                            {{-- 2022/11/05 actlogindex --}}
+                            @if($userid == 1 || $userid == 9 )
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{route('actlogindex')}}">
+                                        <i class="fas fa-clipboard"></i>
+                                        操作履歴
+                                    </a>
+                                </li>
+                            @endif
+
                         </ul>
 
                         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
