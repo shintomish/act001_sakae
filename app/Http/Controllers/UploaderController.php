@@ -366,7 +366,7 @@ class UploaderController extends Controller
             $json = file_get_contents($jsonUrl);
             $json = mb_convert_encoding($json, 'UTF8', 'ASCII,JIS,UTF-8,EUC-JP,SJIS-WIN');
             
-            // 2023/09/13
+            // 2023/09/12
             $obj = [];
 
             $obj = json_decode($json, true);
