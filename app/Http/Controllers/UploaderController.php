@@ -365,8 +365,21 @@ class UploaderController extends Controller
         if (file_exists($jsonUrl)) {
             $json = file_get_contents($jsonUrl);
             $json = mb_convert_encoding($json, 'UTF8', 'ASCII,JIS,UTF-8,EUC-JP,SJIS-WIN');
+            
+            // 2023/09/13
+            $obj = [];
+
             $obj = json_decode($json, true);
-            $obj = $obj["res"]["info"];
+
+            // 2023/09/13
+            if(empty($obj)){
+                $obj[0] = $this->postUpload_info($customer_id);
+                Log::info('client json_get_info empty');
+            } else {
+                $obj = $obj["res"]["info"];
+                Log::info('client json_get_info not empty');
+            }
+
             foreach($obj as $key => $val) {
                 $u_id          = $val["u_id"];
                 $o_id          = $val["o_id"];
