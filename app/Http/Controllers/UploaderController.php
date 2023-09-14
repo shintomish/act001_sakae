@@ -154,8 +154,6 @@ class UploaderController extends Controller
         }
 
         $uploadFile = $request->getFile();
-
-Log::debug('client postUpload  $uploadFile[tmp_name] = ' . print_r($uploadFile['tmp_name'] ,true));
      
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             if ($file->checkChunk()) {
@@ -199,14 +197,21 @@ Log::debug('client postUpload  $uploadFile[tmp_name] = ' . print_r($uploadFile['
                 // return redirect('topclient/index')->with('message', '送信処理出来ませんでした。');
             }
         }
-        $fileName = $request->file('uploaded_file');
-        // $fileName = $uploadFile['name'];         // FileName
+
+        $fileName = $uploadFile['name'];         // FileName
         $fileSize = $request->getTotalSize();    // FileSize
         $filedir = '/app/userdata/' . $compacts['foldername'] . '/';
 
         if(!file_exists( storage_path() . $filedir)){
             mkdir( storage_path() . $filedir, $mode = 0777, true);
         }
+
+        //2023/09/14
+        $tmp_name = $uploadFile['tmp_name'];     // tmp_name
+        if(!file_exists( $tmp_name)){
+            mkdir( $tmp_name, $mode = 0777, true);
+        }
+        Log::debug('client postUpload  $tmp_name = ' . print_r($tmp_name ,true));
 
         // 2023/02/13 ERROR: Undefined array key "extension"
         // $identifier = md5($uploadFile['name']).'-' . time() ;

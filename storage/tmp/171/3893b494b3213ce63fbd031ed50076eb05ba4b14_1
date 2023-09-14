@@ -1,0 +1,339 @@
+[2023-09-07 10:48:53] local.INFO: auth_user_info START  
+[2023-09-07 10:48:53] local.INFO: auth_user_info END  
+[2023-09-07 10:48:53] local.INFO: auth login redirectTo user = stdClass Object
+(
+    [id] => 1
+    [name] => YasuakiShintomi
+    [email] => shintomi.sh@gmail.com
+    [email_verified_at] => 
+    [organization_id] => 0
+    [user_id] => 1
+    [login_flg] => 2
+    [admin_flg] => 2
+    [created_at] => 2022-05-18T23:00:00.000000Z
+    [updated_at] => 2022-10-26T01:20:00.000000Z
+    [deleted_at] => 
+)
+  
+[2023-09-07 10:48:53] local.INFO: loginout operation update START  
+[2023-09-07 10:48:53] local.INFO: loginout operation update $id < 10 END  
+[2023-09-07 10:49:00] local.INFO: auth_user_info START  
+[2023-09-07 10:49:00] local.INFO: auth_user_info END  
+[2023-09-07 10:49:00] local.INFO: office top index START $user->name = YasuakiShintomi  
+[2023-09-07 10:49:00] local.INFO: auth_user_organization START  
+[2023-09-07 10:49:01] local.INFO: auth_user_organization END  
+[2023-09-07 10:49:01] local.INFO: office top index END $user->name = YasuakiShintomi  
+[2023-09-07 10:49:08] local.DEBUG: App\Http\Controllers\ActlogController:index  
+[2023-09-07 10:49:08] local.INFO: actlog index START  
+[2023-09-07 10:49:08] local.INFO: auth_user_organization START  
+[2023-09-07 10:49:09] local.INFO: auth_user_organization END  
+[2023-09-07 10:49:09] local.INFO: actlog index END  
+[2023-09-07 10:49:09] local.ERROR: The MAC is invalid. {"view":{"view":"/var/www/html/resources/views/actlog/index.blade.php","data":[]},"userId":1,"exception":"[object] (Spatie\\LaravelIgnition\\Exceptions\\ViewException(code: 0): The MAC is invalid. at /var/www/html/vendor/laravel/framework/src/Illuminate/Encryption/Encrypter.php:218)
+[stacktrace]
+#0 /var/www/html/vendor/laravel/framework/src/Illuminate/Encryption/Encrypter.php(151): Illuminate\\Encryption\\Encrypter->getJsonPayload()
+#1 /var/www/html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(338): Illuminate\\Encryption\\Encrypter->decrypt()
+#2 /var/www/html/app/Models/Actlog.php(39): Illuminate\\Support\\Facades\\Facade::__callStatic()
+#3 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasAttributes.php(623): App\\Models\\Actlog->getDataAttribute()
+#4 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasAttributes.php(1986): Illuminate\\Database\\Eloquent\\Model->mutateAttribute()
+#5 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasAttributes.php(454): Illuminate\\Database\\Eloquent\\Model->transformModelValue()
+#6 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasAttributes.php(433): Illuminate\\Database\\Eloquent\\Model->getAttributeValue()
+#7 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(2081): Illuminate\\Database\\Eloquent\\Model->getAttribute()
+#8 /var/www/html/resources/views/actlog/index.blade.php(128): Illuminate\\Database\\Eloquent\\Model->__get()
+#9 /var/www/html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(109): require('...')
+#10 /var/www/html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(110): Illuminate\\Filesystem\\Filesystem::Illuminate\\Filesystem\\{closure}()
+#11 /var/www/html/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\\Filesystem\\Filesystem->getRequire()
+#12 /var/www/html/vendor/laravel/framework/src/Illuminate/View/Engines/CompilerEngine.php(61): Illuminate\\View\\Engines\\PhpEngine->evaluatePath()
+#13 /var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php(139): Illuminate\\View\\Engines\\CompilerEngine->get()
+#14 /var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php(122): Illuminate\\View\\View->getContents()
+#15 /var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php(91): Illuminate\\View\\View->renderContents()
+#16 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Response.php(69): Illuminate\\View\\View->render()
+#17 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Response.php(35): Illuminate\\Http\\Response->setContent()
+#18 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(833): Illuminate\\Http\\Response->__construct()
+#19 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(802): Illuminate\\Routing\\Router::toResponse()
+#20 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(725): Illuminate\\Routing\\Router->prepareResponse()
+#21 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}()
+#22 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#23 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle()
+#24 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/VerifyCsrfToken.php(78): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#25 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken->handle()
+#26 /var/www/html/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#27 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle()
+#28 /var/www/html/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#29 /var/www/html/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest()
+#30 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Session\\Middleware\\StartSession->handle()
+#31 /var/www/html/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#32 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle()
+#33 /var/www/html/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(67): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#34 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle()
+#35 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#36 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(726): Illuminate\\Pipeline\\Pipeline->then()
+#37 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(703): Illuminate\\Routing\\Router->runRouteWithinStack()
+#38 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(667): Illuminate\\Routing\\Router->runRoute()
+#39 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(656): Illuminate\\Routing\\Router->dispatchToRoute()
+#40 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(167): Illuminate\\Routing\\Router->dispatch()
+#41 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}()
+#42 /var/www/html/vendor/barryvdh/laravel-debugbar/src/Middleware/InjectDebugbar.php(66): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#43 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Barryvdh\\Debugbar\\Middleware\\InjectDebugbar->handle()
+#44 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#45 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#46 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle()
+#47 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#48 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#49 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle()
+#50 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#51 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle()
+#52 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#53 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle()
+#54 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(62): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#55 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle()
+#56 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#57 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle()
+#58 /var/www/html/app/Http/Middleware/ThrowFileError.php(51): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#59 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\ThrowFileError->handle()
+#60 /var/www/html/vendor/fruitcake/laravel-cors/src/HandleCors.php(52): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#61 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Fruitcake\\Cors\\HandleCors->handle()
+#62 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#63 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(142): Illuminate\\Pipeline\\Pipeline->then()
+#64 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(111): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter()
+#65 /var/www/html/public/index.php(52): Illuminate\\Foundation\\Http\\Kernel->handle()
+#66 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(16): require_once('...')
+#67 {main}
+
+[previous exception] [object] (Illuminate\\Contracts\\Encryption\\DecryptException(code: 0): The MAC is invalid. at /var/www/html/vendor/laravel/framework/src/Illuminate/Encryption/Encrypter.php:218)
+[stacktrace]
+#0 /var/www/html/vendor/laravel/framework/src/Illuminate/Encryption/Encrypter.php(151): Illuminate\\Encryption\\Encrypter->getJsonPayload()
+#1 /var/www/html/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(338): Illuminate\\Encryption\\Encrypter->decrypt()
+#2 /var/www/html/app/Models/Actlog.php(39): Illuminate\\Support\\Facades\\Facade::__callStatic()
+#3 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasAttributes.php(623): App\\Models\\Actlog->getDataAttribute()
+#4 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasAttributes.php(1986): Illuminate\\Database\\Eloquent\\Model->mutateAttribute()
+#5 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasAttributes.php(454): Illuminate\\Database\\Eloquent\\Model->transformModelValue()
+#6 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/HasAttributes.php(433): Illuminate\\Database\\Eloquent\\Model->getAttributeValue()
+#7 /var/www/html/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(2081): Illuminate\\Database\\Eloquent\\Model->getAttribute()
+#8 /var/www/html/storage/framework/views/bc5456a1bfb294abc31609be0bf3caf642c0b78b.php(119): Illuminate\\Database\\Eloquent\\Model->__get()
+#9 /var/www/html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(109): require('...')
+#10 /var/www/html/vendor/laravel/framework/src/Illuminate/Filesystem/Filesystem.php(110): Illuminate\\Filesystem\\Filesystem::Illuminate\\Filesystem\\{closure}()
+#11 /var/www/html/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php(58): Illuminate\\Filesystem\\Filesystem->getRequire()
+#12 /var/www/html/vendor/laravel/framework/src/Illuminate/View/Engines/CompilerEngine.php(61): Illuminate\\View\\Engines\\PhpEngine->evaluatePath()
+#13 /var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php(139): Illuminate\\View\\Engines\\CompilerEngine->get()
+#14 /var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php(122): Illuminate\\View\\View->getContents()
+#15 /var/www/html/vendor/laravel/framework/src/Illuminate/View/View.php(91): Illuminate\\View\\View->renderContents()
+#16 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Response.php(69): Illuminate\\View\\View->render()
+#17 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Response.php(35): Illuminate\\Http\\Response->setContent()
+#18 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(833): Illuminate\\Http\\Response->__construct()
+#19 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(802): Illuminate\\Routing\\Router::toResponse()
+#20 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(725): Illuminate\\Routing\\Router->prepareResponse()
+#21 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}()
+#22 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#23 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle()
+#24 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/VerifyCsrfToken.php(78): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#25 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken->handle()
+#26 /var/www/html/vendor/laravel/framework/src/Illuminate/View/Middleware/ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#27 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle()
+#28 /var/www/html/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#29 /var/www/html/vendor/laravel/framework/src/Illuminate/Session/Middleware/StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest()
+#30 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Session\\Middleware\\StartSession->handle()
+#31 /var/www/html/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#32 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle()
+#33 /var/www/html/vendor/laravel/framework/src/Illuminate/Cookie/Middleware/EncryptCookies.php(67): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#34 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle()
+#35 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#36 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(726): Illuminate\\Pipeline\\Pipeline->then()
+#37 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(703): Illuminate\\Routing\\Router->runRouteWithinStack()
+#38 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(667): Illuminate\\Routing\\Router->runRoute()
+#39 /var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Router.php(656): Illuminate\\Routing\\Router->dispatchToRoute()
+#40 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(167): Illuminate\\Routing\\Router->dispatch()
+#41 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(141): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}()
+#42 /var/www/html/vendor/barryvdh/laravel-debugbar/src/Middleware/InjectDebugbar.php(66): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#43 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Barryvdh\\Debugbar\\Middleware\\InjectDebugbar->handle()
+#44 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#45 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#46 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle()
+#47 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#48 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#49 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle()
+#50 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#51 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle()
+#52 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#53 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle()
+#54 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(62): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#55 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle()
+#56 /var/www/html/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#57 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle()
+#58 /var/www/html/app/Http/Middleware/ThrowFileError.php(51): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#59 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\ThrowFileError->handle()
+#60 /var/www/html/vendor/fruitcake/laravel-cors/src/HandleCors.php(52): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#61 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Fruitcake\\Cors\\HandleCors->handle()
+#62 /var/www/html/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#63 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(142): Illuminate\\Pipeline\\Pipeline->then()
+#64 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(111): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter()
+#65 /var/www/html/public/index.php(52): Illuminate\\Foundation\\Http\\Kernel->handle()
+#66 /var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(16): require_once('...')
+#67 {main}
+"} 
+[2023-09-07 10:50:04] local.INFO: operation index START  
+[2023-09-07 10:50:05] local.INFO: auth_user_organization START  
+[2023-09-07 10:50:05] local.INFO: auth_user_organization END  
+[2023-09-07 10:50:05] local.INFO: operation index END  
+[2023-09-07 10:52:22] local.INFO: auth_user_info START  
+[2023-09-07 10:52:22] local.INFO: auth_user_info END  
+[2023-09-07 10:52:22] local.INFO: office top index START $user->name = YasuakiShintomi  
+[2023-09-07 10:52:22] local.INFO: auth_user_organization START  
+[2023-09-07 10:52:23] local.INFO: auth_user_organization END  
+[2023-09-07 10:52:23] local.INFO: office top index END $user->name = YasuakiShintomi  
+[2023-09-07 10:52:33] local.DEBUG: App\Http\Controllers\ActlogController:index  
+[2023-09-07 10:52:33] local.INFO: actlog index START  
+[2023-09-07 10:52:33] local.INFO: auth_user_organization START  
+[2023-09-07 10:52:33] local.INFO: auth_user_organization END  
+[2023-09-07 10:52:33] local.INFO: actlog index END  
+[2023-09-07 10:53:06] local.INFO: auth logout redirectTo user = stdClass Object
+(
+    [id] => 1
+    [name] => YasuakiShintomi
+    [email] => shintomi.sh@gmail.com
+    [email_verified_at] => 
+    [organization_id] => 0
+    [user_id] => 1
+    [login_flg] => 2
+    [admin_flg] => 2
+    [created_at] => 2022-05-18T23:00:00.000000Z
+    [updated_at] => 2022-10-26T01:20:00.000000Z
+    [deleted_at] => 
+)
+  
+[2023-09-07 10:53:06] local.INFO: loginout operation update START  
+[2023-09-07 10:53:06] local.INFO: loginout operation update $id < 10 END  
+[2023-09-07 10:53:31] local.INFO: auth_user_info START  
+[2023-09-07 10:53:31] local.INFO: auth_user_info END  
+[2023-09-07 10:53:31] local.INFO: auth login redirectTo user = stdClass Object
+(
+    [id] => 9
+    [name] => dumyuser09
+    [email] => dummy09@gmail.com
+    [email_verified_at] => 
+    [organization_id] => 1
+    [user_id] => 1
+    [login_flg] => 3
+    [admin_flg] => 1
+    [created_at] => 2022-05-18T23:00:00.000000Z
+    [updated_at] => 2022-05-18T23:00:00.000000Z
+    [deleted_at] => 
+)
+  
+[2023-09-07 10:53:31] local.INFO: loginout operation update START  
+[2023-09-07 10:53:31] local.INFO: loginout operation update $id < 10 END  
+[2023-09-07 10:53:37] local.INFO: auth_user_info START  
+[2023-09-07 10:53:37] local.INFO: auth_user_info END  
+[2023-09-07 10:53:37] local.INFO: office top index START $user->name = dumyuser09  
+[2023-09-07 10:53:37] local.INFO: auth_user_organization START  
+[2023-09-07 10:53:37] local.INFO: auth_user_organization END  
+[2023-09-07 10:53:38] local.INFO: office top index END $user->name = dumyuser09  
+[2023-09-07 10:53:50] local.DEBUG: App\Http\Controllers\ActlogController:index  
+[2023-09-07 10:53:50] local.INFO: actlog index START  
+[2023-09-07 10:53:50] local.INFO: auth_user_organization START  
+[2023-09-07 10:53:50] local.INFO: auth_user_organization END  
+[2023-09-07 10:53:51] local.INFO: actlog index END  
+[2023-09-07 10:54:27] local.INFO: operation index START  
+[2023-09-07 10:54:27] local.INFO: auth_user_organization START  
+[2023-09-07 10:54:28] local.INFO: auth_user_organization END  
+[2023-09-07 10:54:28] local.INFO: operation index END  
+[2023-09-07 10:54:39] local.INFO: auth_user_info START  
+[2023-09-07 10:54:39] local.INFO: auth_user_info END  
+[2023-09-07 10:54:39] local.INFO: office top index START $user->name = dumyuser09  
+[2023-09-07 10:54:39] local.INFO: auth_user_organization START  
+[2023-09-07 10:54:39] local.INFO: auth_user_organization END  
+[2023-09-07 10:54:40] local.INFO: office top index END $user->name = dumyuser09  
+[2023-09-07 13:01:33] local.INFO: auth_user_info START  
+[2023-09-07 13:01:34] local.INFO: auth_user_info END  
+[2023-09-07 13:01:34] local.INFO: office top index START $user->name = dumyuser09  
+[2023-09-07 13:01:34] local.INFO: auth_user_organization START  
+[2023-09-07 13:01:34] local.INFO: auth_user_organization END  
+[2023-09-07 13:01:34] local.INFO: office top index END $user->name = dumyuser09  
+[2023-09-07 13:01:43] local.DEBUG: App\Http\Controllers\ActlogController:index  
+[2023-09-07 13:01:43] local.INFO: actlog index START  
+[2023-09-07 13:01:43] local.INFO: auth_user_organization START  
+[2023-09-07 13:01:43] local.INFO: auth_user_organization END  
+[2023-09-07 13:01:44] local.INFO: actlog index END  
+[2023-09-07 13:11:55] local.DEBUG: App\Http\Controllers\ActlogController:index  
+[2023-09-07 13:11:55] local.INFO: actlog index START  
+[2023-09-07 13:11:55] local.INFO: auth_user_organization START  
+[2023-09-07 13:11:56] local.INFO: auth_user_organization END  
+[2023-09-07 13:11:57] local.INFO: actlog index END  
+[2023-09-07 13:12:10] local.INFO: user index START  
+[2023-09-07 13:12:10] local.INFO: auth_user_organization START  
+[2023-09-07 13:12:10] local.INFO: auth_user_organization END  
+[2023-09-07 13:12:11] local.INFO: user index END  
+[2023-09-07 13:12:21] local.INFO: auth_user_info START  
+[2023-09-07 13:12:21] local.INFO: auth_user_info END  
+[2023-09-07 13:12:21] local.INFO: office top index START $user->name = dumyuser09  
+[2023-09-07 13:12:21] local.INFO: auth_user_organization START  
+[2023-09-07 13:12:21] local.INFO: auth_user_organization END  
+[2023-09-07 13:12:22] local.INFO: office top index END $user->name = dumyuser09  
+[2023-09-07 13:12:28] local.DEBUG: App\Http\Controllers\ActlogController:index  
+[2023-09-07 13:12:28] local.INFO: actlog index START  
+[2023-09-07 13:12:28] local.INFO: auth_user_organization START  
+[2023-09-07 13:12:29] local.INFO: auth_user_organization END  
+[2023-09-07 13:12:29] local.INFO: actlog index END  
+[2023-09-07 13:12:59] local.INFO: auth logout redirectTo user = stdClass Object
+(
+    [id] => 9
+    [name] => dumyuser09
+    [email] => dummy09@gmail.com
+    [email_verified_at] => 
+    [organization_id] => 1
+    [user_id] => 1
+    [login_flg] => 3
+    [admin_flg] => 1
+    [created_at] => 2022-05-18T23:00:00.000000Z
+    [updated_at] => 2022-05-18T23:00:00.000000Z
+    [deleted_at] => 
+)
+  
+[2023-09-07 13:12:59] local.INFO: loginout operation update START  
+[2023-09-07 13:12:59] local.INFO: loginout operation update $id < 10 END  
+[2023-09-07 13:13:24] local.INFO: auth_user_info START  
+[2023-09-07 13:13:24] local.INFO: auth_user_info END  
+[2023-09-07 13:13:24] local.INFO: auth login redirectTo user = stdClass Object
+(
+    [id] => 9
+    [name] => dumyuser09
+    [email] => dummy09@gmail.com
+    [email_verified_at] => 
+    [organization_id] => 1
+    [user_id] => 1
+    [login_flg] => 3
+    [admin_flg] => 1
+    [created_at] => 2022-05-18T23:00:00.000000Z
+    [updated_at] => 2022-05-18T23:00:00.000000Z
+    [deleted_at] => 
+)
+  
+[2023-09-07 13:13:24] local.INFO: loginout operation update START  
+[2023-09-07 13:13:24] local.INFO: loginout operation update $id < 10 END  
+[2023-09-07 13:13:30] local.INFO: auth_user_info START  
+[2023-09-07 13:13:31] local.INFO: auth_user_info END  
+[2023-09-07 13:13:31] local.INFO: office top index START $user->name = dumyuser09  
+[2023-09-07 13:13:31] local.INFO: auth_user_organization START  
+[2023-09-07 13:13:31] local.INFO: auth_user_organization END  
+[2023-09-07 13:13:31] local.INFO: office top index END $user->name = dumyuser09  
+[2023-09-07 13:13:37] local.DEBUG: App\Http\Controllers\ActlogController:index  
+[2023-09-07 13:13:37] local.INFO: actlog index START  
+[2023-09-07 13:13:37] local.INFO: auth_user_organization START  
+[2023-09-07 13:13:37] local.INFO: auth_user_organization END  
+[2023-09-07 13:13:38] local.INFO: actlog index END  
+[2023-09-07 14:46:16] local.INFO: auth logout redirectTo user = stdClass Object
+(
+    [id] => 9
+    [name] => dumyuser09
+    [email] => dummy09@gmail.com
+    [email_verified_at] => 
+    [organization_id] => 1
+    [user_id] => 1
+    [login_flg] => 3
+    [admin_flg] => 1
+    [created_at] => 2022-05-18T23:00:00.000000Z
+    [updated_at] => 2022-05-18T23:00:00.000000Z
+    [deleted_at] => 
+)
+  
+[2023-09-07 14:46:16] local.INFO: loginout operation update START  
+[2023-09-07 14:46:16] local.INFO: loginout operation update $id < 10 END  
