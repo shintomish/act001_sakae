@@ -155,6 +155,8 @@ class UploaderController extends Controller
 
         $uploadFile = $request->getFile();
 
+Log::debug('client postUpload  $uploadFile[tmp_name] = ' . print_r($uploadFile['tmp_name'] ,true));
+     
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             if ($file->checkChunk()) {
                 header("HTTP/1.1 200 Ok");
@@ -197,8 +199,8 @@ class UploaderController extends Controller
                 // return redirect('topclient/index')->with('message', '送信処理出来ませんでした。');
             }
         }
-
-        $fileName = $uploadFile['name'];         // FileName
+        $fileName = $request->file('uploaded_file');
+        // $fileName = $uploadFile['name'];         // FileName
         $fileSize = $request->getTotalSize();    // FileSize
         $filedir = '/app/userdata/' . $compacts['foldername'] . '/';
 

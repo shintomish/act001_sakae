@@ -1,0 +1,1371 @@
+[2023-09-14 10:18:46] Actver:.INFO: transhistory index START  
+[2023-09-14 10:18:46] Actver:.INFO: auth_user_info START  
+[2023-09-14 10:18:46] Actver:.INFO: auth_user_info END  
+[2023-09-14 10:18:46] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 10:18:46] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 10:18:46] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 10:18:46] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 10:18:46] Actver:.INFO: transhistory index END  
+[2023-09-14 10:18:48] Actver:.INFO: auth_user_info START  
+[2023-09-14 10:18:48] Actver:.INFO: auth_user_info END  
+[2023-09-14 10:18:48] Actver:.INFO: topclient index START $user->name = ALLUSER  
+[2023-09-14 10:18:48] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 10:18:48] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 10:18:48] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 10:18:48] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 10:18:48] Actver:.INFO: get_three_month START  
+[2023-09-14 10:18:48] Actver:.INFO: get_three_month END  
+[2023-09-14 10:18:48] Actver:.INFO: topclient index END $user->name = ALLUSER  
+[2023-09-14 10:52:23] Actver:.INFO: client postUpload  START  
+[2023-09-14 10:52:23] Actver:.INFO: client postUpload_info  START  
+[2023-09-14 10:52:23] Actver:.INFO: auth_user_info START  
+[2023-09-14 10:52:23] Actver:.INFO: auth_user_info END  
+[2023-09-14 10:52:23] Actver:.INFO: auth_user_foldername START  
+[2023-09-14 10:52:23] Actver:.INFO: auth_user_foldername END  
+[2023-09-14 10:52:23] Actver:.INFO: client json_put_info_set  START  
+[2023-09-14 10:52:23] Actver:.INFO: client json_put_info_set  END  
+[2023-09-14 10:52:23] Actver:.INFO: client postUpload_info  END  
+[2023-09-14 10:52:23] Actver:.INFO: client json_put_status  START  
+[2023-09-14 10:52:23] Actver:.INFO: client json_put_status  END  
+[2023-09-14 10:52:23] Actver:.INFO: client json_get_info  START  
+[2023-09-14 10:52:23] Actver:.INFO: client json_get_info not empty  
+[2023-09-14 10:52:23] Actver:.INFO: client json_get_info  END  
+[2023-09-14 10:52:23] Actver:.INFO: client postUpload  $fileName = laravel_act-2023-09-14.log  
+[2023-09-14 10:52:23] Actver:.INFO: beginTransaction - client postUpload saveFile start  
+[2023-09-14 10:52:23] Actver:.INFO: beginTransaction - client postUpload saveFile end(commit)  
+[2023-09-14 10:52:23] Actver:.INFO: client json_put_status  START  
+[2023-09-14 10:52:23] Actver:.INFO: client json_put_status  END  
+[2023-09-14 10:52:23] Actver:.INFO: client postUpload  END  
+[2023-09-14 10:52:23] Actver:.ERROR: The file "/tmp/phpcLs1dK" does not exist {"userId":10,"exception":"[object] (Symfony\\Component\\HttpFoundation\\File\\Exception\\FileNotFoundException(code: 0): The file \"/tmp/phpcLs1dK\" does not exist at /var/www/html/actver/vendor/symfony/http-foundation/File/File.php:36)
+[stacktrace]
+#0 /var/www/html/actver/vendor/symfony/http-foundation/File/UploadedFile.php(70): Symfony\\Component\\HttpFoundation\\File\\File->__construct()
+#1 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/UploadedFile.php(126): Symfony\\Component\\HttpFoundation\\File\\UploadedFile->__construct()
+#2 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(541): Illuminate\\Http\\UploadedFile::createFromBase()
+#3 [internal function]: Illuminate\\Http\\Request->Illuminate\\Http\\Concerns\\{closure}()
+#4 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(534): array_map()
+#5 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(523): Illuminate\\Http\\Request->convertUploadedFiles()
+#6 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(279): Illuminate\\Http\\Request->allFiles()
+#7 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Request.php(716): Illuminate\\Http\\Request->all()
+#8 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(36): Illuminate\\Http\\Request->toArray()
+#9 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(23): App\\Http\\Middleware\\ActlogMiddleware->actlog()
+#10 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\ActlogMiddleware->handle()
+#11 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#12 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#13 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle()
+#14 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#15 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#16 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle()
+#17 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#18 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle()
+#19 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#20 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle()
+#21 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#22 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle()
+#23 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#24 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle()
+#25 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#26 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then()
+#27 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter()
+#28 /var/www/html/actver/public/index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle()
+#29 {main}
+"} 
+[2023-09-14 11:04:56] Actver:.INFO: auth logout redirectTo user = stdClass Object
+(
+    [id] => 10
+    [name] => ALLUSER
+    [email] => alluser@gmail.com
+    [email_verified_at] => 
+    [organization_id] => 1
+    [user_id] => 1
+    [login_flg] => 1
+    [admin_flg] => 1
+    [created_at] => 2022-05-19T08:00:00.000000Z
+    [updated_at] => 2022-10-26T10:22:00.000000Z
+    [deleted_at] => 
+)
+  
+[2023-09-14 11:04:56] Actver:.INFO: loginout operation update START  
+[2023-09-14 11:04:56] Actver:.INFO: beginTransaction - loginout operation update start  
+[2023-09-14 11:04:56] Actver:.INFO: beginTransaction - loginout operation update end(commit)  
+[2023-09-14 11:04:56] Actver:.INFO: loginout operation update END  
+[2023-09-14 11:05:05] Actver:.INFO: auth_user_info START  
+[2023-09-14 11:05:05] Actver:.INFO: auth_user_info END  
+[2023-09-14 11:05:05] Actver:.INFO: auth login redirectTo user = stdClass Object
+(
+    [id] => 10
+    [name] => ALLUSER
+    [email] => alluser@gmail.com
+    [email_verified_at] => 
+    [organization_id] => 1
+    [user_id] => 1
+    [login_flg] => 1
+    [admin_flg] => 1
+    [created_at] => 2022-05-19T08:00:00.000000Z
+    [updated_at] => 2022-10-26T10:22:00.000000Z
+    [deleted_at] => 
+)
+  
+[2023-09-14 11:05:05] Actver:.INFO: loginout operation update START  
+[2023-09-14 11:05:05] Actver:.INFO: beginTransaction - loginout operation update start  
+[2023-09-14 11:05:05] Actver:.INFO: beginTransaction - loginout operation update end(commit)  
+[2023-09-14 11:05:05] Actver:.INFO: loginout operation update END  
+[2023-09-14 11:05:06] Actver:.INFO: auth_user_info START  
+[2023-09-14 11:05:06] Actver:.INFO: auth_user_info END  
+[2023-09-14 11:05:06] Actver:.INFO: topclient index START $user->name = ALLUSER  
+[2023-09-14 11:05:06] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 11:05:06] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 11:05:06] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 11:05:06] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 11:05:06] Actver:.INFO: get_three_month START  
+[2023-09-14 11:05:06] Actver:.INFO: get_three_month END  
+[2023-09-14 11:05:06] Actver:.INFO: topclient index END $user->name = ALLUSER  
+[2023-09-14 11:05:35] Actver:.INFO: client postUpload  START  
+[2023-09-14 11:05:35] Actver:.INFO: client postUpload_info  START  
+[2023-09-14 11:05:35] Actver:.INFO: auth_user_info START  
+[2023-09-14 11:05:35] Actver:.INFO: auth_user_info END  
+[2023-09-14 11:05:35] Actver:.INFO: auth_user_foldername START  
+[2023-09-14 11:05:35] Actver:.INFO: auth_user_foldername END  
+[2023-09-14 11:05:35] Actver:.INFO: client json_put_info_set  START  
+[2023-09-14 11:05:35] Actver:.INFO: client json_put_info_set  END  
+[2023-09-14 11:05:35] Actver:.INFO: client postUpload_info  END  
+[2023-09-14 11:05:35] Actver:.INFO: client json_put_status  START  
+[2023-09-14 11:05:35] Actver:.INFO: client json_put_status  END  
+[2023-09-14 11:05:35] Actver:.INFO: client json_get_info  START  
+[2023-09-14 11:05:35] Actver:.INFO: client json_get_info not empty  
+[2023-09-14 11:05:35] Actver:.INFO: client json_get_info  END  
+[2023-09-14 11:05:35] Actver:.INFO: client postUpload  $fileName = laravel_act-2023-09-13.log  
+[2023-09-14 11:05:35] Actver:.INFO: beginTransaction - client postUpload saveFile start  
+[2023-09-14 11:05:35] Actver:.INFO: beginTransaction - client postUpload saveFile end(commit)  
+[2023-09-14 11:05:35] Actver:.INFO: client json_put_status  START  
+[2023-09-14 11:05:35] Actver:.INFO: client json_put_status  END  
+[2023-09-14 11:05:35] Actver:.INFO: client postUpload  END  
+[2023-09-14 11:05:35] Actver:.ERROR: The file "/tmp/phpEXkqUS" does not exist {"userId":10,"exception":"[object] (Symfony\\Component\\HttpFoundation\\File\\Exception\\FileNotFoundException(code: 0): The file \"/tmp/phpEXkqUS\" does not exist at /var/www/html/actver/vendor/symfony/http-foundation/File/File.php:36)
+[stacktrace]
+#0 /var/www/html/actver/vendor/symfony/http-foundation/File/UploadedFile.php(70): Symfony\\Component\\HttpFoundation\\File\\File->__construct()
+#1 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/UploadedFile.php(126): Symfony\\Component\\HttpFoundation\\File\\UploadedFile->__construct()
+#2 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(541): Illuminate\\Http\\UploadedFile::createFromBase()
+#3 [internal function]: Illuminate\\Http\\Request->Illuminate\\Http\\Concerns\\{closure}()
+#4 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(534): array_map()
+#5 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(523): Illuminate\\Http\\Request->convertUploadedFiles()
+#6 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(279): Illuminate\\Http\\Request->allFiles()
+#7 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Request.php(716): Illuminate\\Http\\Request->all()
+#8 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(36): Illuminate\\Http\\Request->toArray()
+#9 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(23): App\\Http\\Middleware\\ActlogMiddleware->actlog()
+#10 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\ActlogMiddleware->handle()
+#11 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#12 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#13 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle()
+#14 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#15 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#16 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle()
+#17 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#18 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle()
+#19 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#20 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle()
+#21 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#22 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle()
+#23 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#24 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle()
+#25 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#26 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then()
+#27 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter()
+#28 /var/www/html/actver/public/index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle()
+#29 {main}
+"} 
+[2023-09-14 11:07:29] Actver:.INFO: transhistory index START  
+[2023-09-14 11:07:29] Actver:.INFO: auth_user_info START  
+[2023-09-14 11:07:29] Actver:.INFO: auth_user_info END  
+[2023-09-14 11:07:29] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 11:07:29] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 11:07:29] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 11:07:29] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 11:07:29] Actver:.INFO: transhistory index END  
+[2023-09-14 11:07:47] Actver:.INFO: auth_user_info START  
+[2023-09-14 11:07:47] Actver:.INFO: auth_user_info END  
+[2023-09-14 11:07:47] Actver:.INFO: topclient index START $user->name = ALLUSER  
+[2023-09-14 11:07:47] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 11:07:47] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 11:07:47] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 11:07:47] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 11:07:47] Actver:.INFO: get_three_month START  
+[2023-09-14 11:07:47] Actver:.INFO: get_three_month END  
+[2023-09-14 11:07:47] Actver:.INFO: topclient index END $user->name = ALLUSER  
+[2023-09-14 11:10:56] Actver:.INFO: auth_user_info START  
+[2023-09-14 11:10:56] Actver:.INFO: auth_user_info END  
+[2023-09-14 11:10:56] Actver:.INFO: topclient index START $user->name = ALLUSER  
+[2023-09-14 11:10:56] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 11:10:56] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 11:10:56] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 11:10:56] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 11:10:56] Actver:.INFO: get_three_month START  
+[2023-09-14 11:10:56] Actver:.INFO: get_three_month END  
+[2023-09-14 11:10:56] Actver:.INFO: topclient index END $user->name = ALLUSER  
+[2023-09-14 11:11:03] Actver:.INFO: client postUpload  START  
+[2023-09-14 11:11:03] Actver:.INFO: client postUpload_info  START  
+[2023-09-14 11:11:03] Actver:.INFO: auth_user_info START  
+[2023-09-14 11:11:03] Actver:.INFO: auth_user_info END  
+[2023-09-14 11:11:03] Actver:.INFO: auth_user_foldername START  
+[2023-09-14 11:11:03] Actver:.INFO: auth_user_foldername END  
+[2023-09-14 11:11:03] Actver:.INFO: client json_put_info_set  START  
+[2023-09-14 11:11:03] Actver:.INFO: client json_put_info_set  END  
+[2023-09-14 11:11:03] Actver:.INFO: client postUpload_info  END  
+[2023-09-14 11:11:03] Actver:.INFO: client json_put_status  START  
+[2023-09-14 11:11:03] Actver:.INFO: client json_put_status  END  
+[2023-09-14 11:11:03] Actver:.INFO: client json_get_info  START  
+[2023-09-14 11:11:03] Actver:.INFO: client json_get_info not empty  
+[2023-09-14 11:11:03] Actver:.INFO: client json_get_info  END  
+[2023-09-14 11:11:03] Actver:.INFO: client postUpload  $fileName = laravel_act-2023-09-13.log  
+[2023-09-14 11:11:03] Actver:.INFO: beginTransaction - client postUpload saveFile start  
+[2023-09-14 11:11:03] Actver:.INFO: beginTransaction - client postUpload saveFile end(commit)  
+[2023-09-14 11:11:03] Actver:.INFO: client json_put_status  START  
+[2023-09-14 11:11:03] Actver:.INFO: client json_put_status  END  
+[2023-09-14 11:11:03] Actver:.INFO: client postUpload  END  
+[2023-09-14 11:11:03] Actver:.ERROR: The file "/tmp/php8wsenO" does not exist {"userId":10,"exception":"[object] (Symfony\\Component\\HttpFoundation\\File\\Exception\\FileNotFoundException(code: 0): The file \"/tmp/php8wsenO\" does not exist at /var/www/html/actver/vendor/symfony/http-foundation/File/File.php:36)
+[stacktrace]
+#0 /var/www/html/actver/vendor/symfony/http-foundation/File/UploadedFile.php(70): Symfony\\Component\\HttpFoundation\\File\\File->__construct()
+#1 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/UploadedFile.php(126): Symfony\\Component\\HttpFoundation\\File\\UploadedFile->__construct()
+#2 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(541): Illuminate\\Http\\UploadedFile::createFromBase()
+#3 [internal function]: Illuminate\\Http\\Request->Illuminate\\Http\\Concerns\\{closure}()
+#4 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(534): array_map()
+#5 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(523): Illuminate\\Http\\Request->convertUploadedFiles()
+#6 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(279): Illuminate\\Http\\Request->allFiles()
+#7 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Request.php(716): Illuminate\\Http\\Request->all()
+#8 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(36): Illuminate\\Http\\Request->toArray()
+#9 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(23): App\\Http\\Middleware\\ActlogMiddleware->actlog()
+#10 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\ActlogMiddleware->handle()
+#11 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#12 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#13 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle()
+#14 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#15 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#16 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle()
+#17 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#18 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle()
+#19 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#20 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle()
+#21 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#22 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle()
+#23 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#24 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle()
+#25 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#26 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then()
+#27 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter()
+#28 /var/www/html/actver/public/index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle()
+#29 {main}
+"} 
+[2023-09-14 11:19:01] Actver:.INFO: auth_user_info START  
+[2023-09-14 11:19:01] Actver:.INFO: auth_user_info END  
+[2023-09-14 11:19:01] Actver:.INFO: topclient index START $user->name = ALLUSER  
+[2023-09-14 11:19:01] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 11:19:01] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 11:19:01] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 11:19:01] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 11:19:01] Actver:.INFO: get_three_month START  
+[2023-09-14 11:19:01] Actver:.INFO: get_three_month END  
+[2023-09-14 11:19:01] Actver:.INFO: topclient index END $user->name = ALLUSER  
+[2023-09-14 11:19:07] Actver:.INFO: client postUpload  START  
+[2023-09-14 11:19:07] Actver:.INFO: client postUpload_info  START  
+[2023-09-14 11:19:07] Actver:.INFO: auth_user_info START  
+[2023-09-14 11:19:07] Actver:.INFO: auth_user_info END  
+[2023-09-14 11:19:07] Actver:.INFO: auth_user_foldername START  
+[2023-09-14 11:19:07] Actver:.INFO: auth_user_foldername END  
+[2023-09-14 11:19:07] Actver:.INFO: client json_put_info_set  START  
+[2023-09-14 11:19:07] Actver:.INFO: client json_put_info_set  END  
+[2023-09-14 11:19:07] Actver:.INFO: client postUpload_info  END  
+[2023-09-14 11:19:07] Actver:.INFO: client json_put_status  START  
+[2023-09-14 11:19:07] Actver:.INFO: client json_put_status  END  
+[2023-09-14 11:19:07] Actver:.INFO: client json_get_info  START  
+[2023-09-14 11:19:07] Actver:.INFO: client json_get_info  END  
+[2023-09-14 11:19:07] Actver:.INFO: client postUpload  $fileName = laravel_act-2023-09-13.log  
+[2023-09-14 11:19:07] Actver:.INFO: beginTransaction - client postUpload saveFile start  
+[2023-09-14 11:19:07] Actver:.INFO: beginTransaction - client postUpload saveFile end(commit)  
+[2023-09-14 11:19:07] Actver:.INFO: client json_put_status  START  
+[2023-09-14 11:19:07] Actver:.INFO: client json_put_status  END  
+[2023-09-14 11:19:07] Actver:.INFO: client postUpload  END  
+[2023-09-14 11:19:07] Actver:.ERROR: The file "/tmp/phpQXkUKQ" does not exist {"userId":10,"exception":"[object] (Symfony\\Component\\HttpFoundation\\File\\Exception\\FileNotFoundException(code: 0): The file \"/tmp/phpQXkUKQ\" does not exist at /var/www/html/actver/vendor/symfony/http-foundation/File/File.php:36)
+[stacktrace]
+#0 /var/www/html/actver/vendor/symfony/http-foundation/File/UploadedFile.php(70): Symfony\\Component\\HttpFoundation\\File\\File->__construct()
+#1 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/UploadedFile.php(126): Symfony\\Component\\HttpFoundation\\File\\UploadedFile->__construct()
+#2 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(541): Illuminate\\Http\\UploadedFile::createFromBase()
+#3 [internal function]: Illuminate\\Http\\Request->Illuminate\\Http\\Concerns\\{closure}()
+#4 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(534): array_map()
+#5 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(523): Illuminate\\Http\\Request->convertUploadedFiles()
+#6 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(279): Illuminate\\Http\\Request->allFiles()
+#7 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Request.php(716): Illuminate\\Http\\Request->all()
+#8 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(36): Illuminate\\Http\\Request->toArray()
+#9 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(23): App\\Http\\Middleware\\ActlogMiddleware->actlog()
+#10 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\ActlogMiddleware->handle()
+#11 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#12 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#13 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle()
+#14 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#15 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#16 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle()
+#17 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#18 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle()
+#19 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#20 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle()
+#21 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#22 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle()
+#23 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#24 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle()
+#25 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#26 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then()
+#27 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter()
+#28 /var/www/html/actver/public/index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle()
+#29 {main}
+"} 
+[2023-09-14 11:31:24] Actver:.INFO: auth_user_info START  
+[2023-09-14 11:31:24] Actver:.INFO: auth_user_info END  
+[2023-09-14 11:31:24] Actver:.INFO: topclient index START $user->name = ALLUSER  
+[2023-09-14 11:31:24] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 11:31:24] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 11:31:24] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 11:31:24] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 11:31:24] Actver:.INFO: get_three_month START  
+[2023-09-14 11:31:24] Actver:.INFO: get_three_month END  
+[2023-09-14 11:31:24] Actver:.INFO: topclient index END $user->name = ALLUSER  
+[2023-09-14 11:31:33] Actver:.INFO: client postUpload  START  
+[2023-09-14 11:31:34] Actver:.INFO: client postUpload_info  START  
+[2023-09-14 11:31:34] Actver:.INFO: auth_user_info START  
+[2023-09-14 11:31:34] Actver:.INFO: auth_user_info END  
+[2023-09-14 11:31:34] Actver:.INFO: auth_user_foldername START  
+[2023-09-14 11:31:34] Actver:.INFO: auth_user_foldername END  
+[2023-09-14 11:31:34] Actver:.INFO: client json_put_info_set  START  
+[2023-09-14 11:31:34] Actver:.INFO: client json_put_info_set  END  
+[2023-09-14 11:31:34] Actver:.INFO: client postUpload_info  END  
+[2023-09-14 11:31:34] Actver:.INFO: client json_put_status  START  
+[2023-09-14 11:31:34] Actver:.INFO: client json_put_status  END  
+[2023-09-14 11:31:34] Actver:.INFO: client json_get_info  START  
+[2023-09-14 11:31:34] Actver:.INFO: client json_get_info  END  
+[2023-09-14 11:31:34] Actver:.INFO: client postUpload  $fileName = laravel_act-2023-09-13.log  
+[2023-09-14 11:31:34] Actver:.INFO: beginTransaction - client postUpload saveFile start  
+[2023-09-14 11:31:34] Actver:.INFO: beginTransaction - client postUpload saveFile end(commit)  
+[2023-09-14 11:31:34] Actver:.INFO: client json_put_status  START  
+[2023-09-14 11:31:34] Actver:.INFO: client json_put_status  END  
+[2023-09-14 11:31:34] Actver:.INFO: client postUpload  END  
+[2023-09-14 11:31:34] Actver:.ERROR: The file "/tmp/phpmKUiyn" does not exist {"userId":10,"exception":"[object] (Symfony\\Component\\HttpFoundation\\File\\Exception\\FileNotFoundException(code: 0): The file \"/tmp/phpmKUiyn\" does not exist at /var/www/html/actver/vendor/symfony/http-foundation/File/File.php:36)
+[stacktrace]
+#0 /var/www/html/actver/vendor/symfony/http-foundation/File/UploadedFile.php(70): Symfony\\Component\\HttpFoundation\\File\\File->__construct()
+#1 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/UploadedFile.php(126): Symfony\\Component\\HttpFoundation\\File\\UploadedFile->__construct()
+#2 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(541): Illuminate\\Http\\UploadedFile::createFromBase()
+#3 [internal function]: Illuminate\\Http\\Request->Illuminate\\Http\\Concerns\\{closure}()
+#4 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(534): array_map()
+#5 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(523): Illuminate\\Http\\Request->convertUploadedFiles()
+#6 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(279): Illuminate\\Http\\Request->allFiles()
+#7 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Request.php(716): Illuminate\\Http\\Request->all()
+#8 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(36): Illuminate\\Http\\Request->toArray()
+#9 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(23): App\\Http\\Middleware\\ActlogMiddleware->actlog()
+#10 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\ActlogMiddleware->handle()
+#11 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#12 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#13 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle()
+#14 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#15 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#16 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle()
+#17 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#18 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle()
+#19 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#20 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle()
+#21 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#22 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle()
+#23 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#24 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle()
+#25 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#26 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then()
+#27 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter()
+#28 /var/www/html/actver/public/index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle()
+#29 {main}
+"} 
+[2023-09-14 11:46:43] Actver:.INFO: auth_user_info START  
+[2023-09-14 11:46:43] Actver:.INFO: auth_user_info END  
+[2023-09-14 11:46:43] Actver:.INFO: topclient index START $user->name = ALLUSER  
+[2023-09-14 11:46:43] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 11:46:43] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 11:46:43] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 11:46:43] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 11:46:43] Actver:.INFO: get_three_month START  
+[2023-09-14 11:46:43] Actver:.INFO: get_three_month END  
+[2023-09-14 11:46:43] Actver:.INFO: topclient index END $user->name = ALLUSER  
+[2023-09-14 11:47:06] Actver:.INFO: client postUpload  START  
+[2023-09-14 11:47:06] Actver:.INFO: client postUpload_info  START  
+[2023-09-14 11:47:06] Actver:.INFO: auth_user_info START  
+[2023-09-14 11:47:06] Actver:.INFO: auth_user_info END  
+[2023-09-14 11:47:06] Actver:.INFO: auth_user_foldername START  
+[2023-09-14 11:47:06] Actver:.INFO: auth_user_foldername END  
+[2023-09-14 11:47:06] Actver:.INFO: client json_put_info_set  START  
+[2023-09-14 11:47:06] Actver:.INFO: client json_put_info_set  END  
+[2023-09-14 11:47:06] Actver:.INFO: client postUpload_info  END  
+[2023-09-14 11:47:06] Actver:.INFO: client json_put_status  START  
+[2023-09-14 11:47:06] Actver:.INFO: client json_put_status  END  
+[2023-09-14 11:47:06] Actver:.INFO: client json_get_info  START  
+[2023-09-14 11:47:06] Actver:.INFO: client json_get_info not empty  
+[2023-09-14 11:47:06] Actver:.INFO: client json_get_info  END  
+[2023-09-14 11:47:06] Actver:.INFO: client postUpload  $fileName = laravel_act-2023-09-07.log  
+[2023-09-14 11:47:06] Actver:.INFO: beginTransaction - client postUpload saveFile start  
+[2023-09-14 11:47:06] Actver:.INFO: beginTransaction - client postUpload saveFile end(commit)  
+[2023-09-14 11:47:06] Actver:.INFO: client json_put_status  START  
+[2023-09-14 11:47:06] Actver:.INFO: client json_put_status  END  
+[2023-09-14 11:47:06] Actver:.INFO: client postUpload  END  
+[2023-09-14 11:47:06] Actver:.ERROR: The file "/tmp/phpF6YpBV" does not exist {"userId":10,"exception":"[object] (Symfony\\Component\\HttpFoundation\\File\\Exception\\FileNotFoundException(code: 0): The file \"/tmp/phpF6YpBV\" does not exist at /var/www/html/actver/vendor/symfony/http-foundation/File/File.php:36)
+[stacktrace]
+#0 /var/www/html/actver/vendor/symfony/http-foundation/File/UploadedFile.php(70): Symfony\\Component\\HttpFoundation\\File\\File->__construct()
+#1 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/UploadedFile.php(126): Symfony\\Component\\HttpFoundation\\File\\UploadedFile->__construct()
+#2 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(541): Illuminate\\Http\\UploadedFile::createFromBase()
+#3 [internal function]: Illuminate\\Http\\Request->Illuminate\\Http\\Concerns\\{closure}()
+#4 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(534): array_map()
+#5 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(523): Illuminate\\Http\\Request->convertUploadedFiles()
+#6 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(279): Illuminate\\Http\\Request->allFiles()
+#7 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Request.php(716): Illuminate\\Http\\Request->all()
+#8 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(36): Illuminate\\Http\\Request->toArray()
+#9 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(23): App\\Http\\Middleware\\ActlogMiddleware->actlog()
+#10 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\ActlogMiddleware->handle()
+#11 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#12 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#13 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle()
+#14 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#15 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#16 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle()
+#17 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#18 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle()
+#19 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#20 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle()
+#21 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#22 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle()
+#23 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#24 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle()
+#25 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#26 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then()
+#27 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter()
+#28 /var/www/html/actver/public/index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle()
+#29 {main}
+"} 
+[2023-09-14 11:47:37] Actver:.INFO: client postUpload  START  
+[2023-09-14 11:47:37] Actver:.INFO: client postUpload_info  START  
+[2023-09-14 11:47:37] Actver:.INFO: auth_user_info START  
+[2023-09-14 11:47:37] Actver:.INFO: auth_user_info END  
+[2023-09-14 11:47:37] Actver:.INFO: auth_user_foldername START  
+[2023-09-14 11:47:37] Actver:.INFO: auth_user_foldername END  
+[2023-09-14 11:47:37] Actver:.INFO: client json_put_info_set  START  
+[2023-09-14 11:47:37] Actver:.INFO: client json_put_info_set  END  
+[2023-09-14 11:47:37] Actver:.INFO: client postUpload_info  END  
+[2023-09-14 11:47:37] Actver:.INFO: client json_put_status  START  
+[2023-09-14 11:47:37] Actver:.INFO: client json_put_status  END  
+[2023-09-14 11:47:37] Actver:.INFO: client json_get_info  START  
+[2023-09-14 11:47:37] Actver:.INFO: client json_get_info not empty  
+[2023-09-14 11:47:37] Actver:.INFO: client json_get_info  END  
+[2023-09-14 11:47:37] Actver:.INFO: client postUpload  $fileName = laravel_act-2023-09-06.log  
+[2023-09-14 11:47:37] Actver:.INFO: beginTransaction - client postUpload saveFile start  
+[2023-09-14 11:47:37] Actver:.INFO: beginTransaction - client postUpload saveFile end(commit)  
+[2023-09-14 11:47:37] Actver:.INFO: client json_put_status  START  
+[2023-09-14 11:47:37] Actver:.INFO: client json_put_status  END  
+[2023-09-14 11:47:37] Actver:.INFO: client postUpload  END  
+[2023-09-14 11:47:37] Actver:.ERROR: The file "/tmp/php0VQL1m" does not exist {"userId":10,"exception":"[object] (Symfony\\Component\\HttpFoundation\\File\\Exception\\FileNotFoundException(code: 0): The file \"/tmp/php0VQL1m\" does not exist at /var/www/html/actver/vendor/symfony/http-foundation/File/File.php:36)
+[stacktrace]
+#0 /var/www/html/actver/vendor/symfony/http-foundation/File/UploadedFile.php(70): Symfony\\Component\\HttpFoundation\\File\\File->__construct()
+#1 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/UploadedFile.php(126): Symfony\\Component\\HttpFoundation\\File\\UploadedFile->__construct()
+#2 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(541): Illuminate\\Http\\UploadedFile::createFromBase()
+#3 [internal function]: Illuminate\\Http\\Request->Illuminate\\Http\\Concerns\\{closure}()
+#4 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(534): array_map()
+#5 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(523): Illuminate\\Http\\Request->convertUploadedFiles()
+#6 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(279): Illuminate\\Http\\Request->allFiles()
+#7 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Request.php(716): Illuminate\\Http\\Request->all()
+#8 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(36): Illuminate\\Http\\Request->toArray()
+#9 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(23): App\\Http\\Middleware\\ActlogMiddleware->actlog()
+#10 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\ActlogMiddleware->handle()
+#11 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#12 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#13 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle()
+#14 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#15 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#16 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle()
+#17 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#18 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle()
+#19 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#20 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle()
+#21 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#22 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle()
+#23 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#24 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle()
+#25 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#26 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then()
+#27 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter()
+#28 /var/www/html/actver/public/index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle()
+#29 {main}
+"} 
+[2023-09-14 11:47:43] Actver:.INFO: transhistory index START  
+[2023-09-14 11:47:43] Actver:.INFO: auth_user_info START  
+[2023-09-14 11:47:43] Actver:.INFO: auth_user_info END  
+[2023-09-14 11:47:43] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 11:47:43] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 11:47:43] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 11:47:43] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 11:47:43] Actver:.INFO: transhistory index END  
+[2023-09-14 11:48:02] Actver:.INFO: auth_user_info START  
+[2023-09-14 11:48:02] Actver:.INFO: auth_user_info END  
+[2023-09-14 11:48:02] Actver:.INFO: topclient index START $user->name = ALLUSER  
+[2023-09-14 11:48:02] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 11:48:02] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 11:48:02] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 11:48:02] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 11:48:02] Actver:.INFO: get_three_month START  
+[2023-09-14 11:48:02] Actver:.INFO: get_three_month END  
+[2023-09-14 11:48:02] Actver:.INFO: topclient index END $user->name = ALLUSER  
+[2023-09-14 12:04:38] Actver:.INFO: auth_user_info START  
+[2023-09-14 12:04:38] Actver:.INFO: auth_user_info END  
+[2023-09-14 12:04:38] Actver:.INFO: topclient index START $user->name = ALLUSER  
+[2023-09-14 12:04:38] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 12:04:38] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 12:04:38] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 12:04:38] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 12:04:38] Actver:.INFO: get_three_month START  
+[2023-09-14 12:04:38] Actver:.INFO: get_three_month END  
+[2023-09-14 12:04:38] Actver:.INFO: topclient index END $user->name = ALLUSER  
+[2023-09-14 12:04:49] Actver:.INFO: client postUpload  START  
+[2023-09-14 12:04:49] Actver:.INFO: client postUpload_info  START  
+[2023-09-14 12:04:49] Actver:.INFO: auth_user_info START  
+[2023-09-14 12:04:49] Actver:.INFO: auth_user_info END  
+[2023-09-14 12:04:49] Actver:.INFO: auth_user_foldername START  
+[2023-09-14 12:04:49] Actver:.INFO: auth_user_foldername END  
+[2023-09-14 12:04:49] Actver:.INFO: client json_put_info_set  START  
+[2023-09-14 12:04:49] Actver:.INFO: client json_put_info_set  END  
+[2023-09-14 12:04:49] Actver:.INFO: client postUpload_info  END  
+[2023-09-14 12:04:49] Actver:.INFO: client json_put_status  START  
+[2023-09-14 12:04:49] Actver:.INFO: client json_put_status  END  
+[2023-09-14 12:04:49] Actver:.INFO: client json_get_info  START  
+[2023-09-14 12:04:49] Actver:.INFO: client json_get_info not empty  
+[2023-09-14 12:04:49] Actver:.INFO: client json_get_info  END  
+[2023-09-14 12:04:49] Actver:.INFO: client postUpload  $fileName = laravel_act-2023-09-06.log  
+[2023-09-14 12:04:49] Actver:.INFO: beginTransaction - client postUpload saveFile start  
+[2023-09-14 12:04:49] Actver:.INFO: beginTransaction - client postUpload saveFile end(commit)  
+[2023-09-14 12:04:49] Actver:.INFO: client json_put_status  START  
+[2023-09-14 12:04:49] Actver:.INFO: client json_put_status  END  
+[2023-09-14 12:04:49] Actver:.INFO: client postUpload  END  
+[2023-09-14 12:04:49] Actver:.ERROR: The file "/tmp/php3Harpv" does not exist {"userId":10,"exception":"[object] (Symfony\\Component\\HttpFoundation\\File\\Exception\\FileNotFoundException(code: 0): The file \"/tmp/php3Harpv\" does not exist at /var/www/html/actver/vendor/symfony/http-foundation/File/File.php:36)
+[stacktrace]
+#0 /var/www/html/actver/vendor/symfony/http-foundation/File/UploadedFile.php(70): Symfony\\Component\\HttpFoundation\\File\\File->__construct()
+#1 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/UploadedFile.php(126): Symfony\\Component\\HttpFoundation\\File\\UploadedFile->__construct()
+#2 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(541): Illuminate\\Http\\UploadedFile::createFromBase()
+#3 [internal function]: Illuminate\\Http\\Request->Illuminate\\Http\\Concerns\\{closure}()
+#4 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(534): array_map()
+#5 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(523): Illuminate\\Http\\Request->convertUploadedFiles()
+#6 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(279): Illuminate\\Http\\Request->allFiles()
+#7 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Request.php(716): Illuminate\\Http\\Request->all()
+#8 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(36): Illuminate\\Http\\Request->toArray()
+#9 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(23): App\\Http\\Middleware\\ActlogMiddleware->actlog()
+#10 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\ActlogMiddleware->handle()
+#11 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#12 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#13 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle()
+#14 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#15 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#16 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle()
+#17 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#18 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle()
+#19 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#20 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle()
+#21 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#22 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle()
+#23 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#24 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle()
+#25 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#26 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then()
+#27 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter()
+#28 /var/www/html/actver/public/index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle()
+#29 {main}
+"} 
+[2023-09-14 12:05:41] Actver:.INFO: auth_user_info START  
+[2023-09-14 12:05:41] Actver:.INFO: auth_user_info END  
+[2023-09-14 12:05:41] Actver:.INFO: topclient index START $user->name = ALLUSER  
+[2023-09-14 12:05:41] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 12:05:41] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 12:05:42] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 12:05:42] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 12:05:42] Actver:.INFO: get_three_month START  
+[2023-09-14 12:05:42] Actver:.INFO: get_three_month END  
+[2023-09-14 12:05:42] Actver:.INFO: topclient index END $user->name = ALLUSER  
+[2023-09-14 12:05:51] Actver:.INFO: client postUpload  START  
+[2023-09-14 12:05:51] Actver:.INFO: client postUpload_info  START  
+[2023-09-14 12:05:51] Actver:.INFO: auth_user_info START  
+[2023-09-14 12:05:51] Actver:.INFO: auth_user_info END  
+[2023-09-14 12:05:51] Actver:.INFO: auth_user_foldername START  
+[2023-09-14 12:05:51] Actver:.INFO: auth_user_foldername END  
+[2023-09-14 12:05:51] Actver:.INFO: client json_put_info_set  START  
+[2023-09-14 12:05:51] Actver:.INFO: client json_put_info_set  END  
+[2023-09-14 12:05:51] Actver:.INFO: client postUpload_info  END  
+[2023-09-14 12:05:51] Actver:.INFO: client json_put_status  START  
+[2023-09-14 12:05:51] Actver:.INFO: client json_put_status  END  
+[2023-09-14 12:05:51] Actver:.INFO: client json_get_info  START  
+[2023-09-14 12:05:51] Actver:.INFO: client json_get_info not empty  
+[2023-09-14 12:05:51] Actver:.INFO: client json_get_info  END  
+[2023-09-14 12:05:51] Actver:.INFO: client postUpload  $fileName = laravel_act-2023-09-05.log  
+[2023-09-14 12:05:51] Actver:.INFO: beginTransaction - client postUpload saveFile start  
+[2023-09-14 12:05:51] Actver:.INFO: beginTransaction - client postUpload saveFile end(commit)  
+[2023-09-14 12:05:51] Actver:.INFO: client json_put_status  START  
+[2023-09-14 12:05:51] Actver:.INFO: client json_put_status  END  
+[2023-09-14 12:05:51] Actver:.INFO: client postUpload  END  
+[2023-09-14 12:05:51] Actver:.ERROR: The file "/tmp/phpW9rtxe" does not exist {"userId":10,"exception":"[object] (Symfony\\Component\\HttpFoundation\\File\\Exception\\FileNotFoundException(code: 0): The file \"/tmp/phpW9rtxe\" does not exist at /var/www/html/actver/vendor/symfony/http-foundation/File/File.php:36)
+[stacktrace]
+#0 /var/www/html/actver/vendor/symfony/http-foundation/File/UploadedFile.php(70): Symfony\\Component\\HttpFoundation\\File\\File->__construct()
+#1 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/UploadedFile.php(126): Symfony\\Component\\HttpFoundation\\File\\UploadedFile->__construct()
+#2 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(541): Illuminate\\Http\\UploadedFile::createFromBase()
+#3 [internal function]: Illuminate\\Http\\Request->Illuminate\\Http\\Concerns\\{closure}()
+#4 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(534): array_map()
+#5 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(523): Illuminate\\Http\\Request->convertUploadedFiles()
+#6 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(279): Illuminate\\Http\\Request->allFiles()
+#7 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Request.php(716): Illuminate\\Http\\Request->all()
+#8 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(36): Illuminate\\Http\\Request->toArray()
+#9 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(23): App\\Http\\Middleware\\ActlogMiddleware->actlog()
+#10 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\ActlogMiddleware->handle()
+#11 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#12 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#13 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle()
+#14 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#15 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#16 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle()
+#17 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#18 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle()
+#19 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#20 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle()
+#21 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#22 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle()
+#23 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#24 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle()
+#25 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#26 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then()
+#27 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter()
+#28 /var/www/html/actver/public/index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle()
+#29 {main}
+"} 
+[2023-09-14 13:02:59] Actver:.INFO: client postUpload  START  
+[2023-09-14 13:02:59] Actver:.INFO: client postUpload_info  START  
+[2023-09-14 13:02:59] Actver:.INFO: auth_user_info START  
+[2023-09-14 13:02:59] Actver:.INFO: auth_user_info END  
+[2023-09-14 13:02:59] Actver:.INFO: auth_user_foldername START  
+[2023-09-14 13:02:59] Actver:.INFO: auth_user_foldername END  
+[2023-09-14 13:02:59] Actver:.INFO: client json_put_info_set  START  
+[2023-09-14 13:02:59] Actver:.INFO: client json_put_info_set  END  
+[2023-09-14 13:02:59] Actver:.INFO: client postUpload_info  END  
+[2023-09-14 13:02:59] Actver:.INFO: client json_put_status  START  
+[2023-09-14 13:02:59] Actver:.INFO: client json_put_status  END  
+[2023-09-14 13:02:59] Actver:.INFO: client json_get_info  START  
+[2023-09-14 13:02:59] Actver:.INFO: client json_get_info not empty  
+[2023-09-14 13:02:59] Actver:.INFO: client json_get_info  END  
+[2023-09-14 13:02:59] Actver:.INFO: client postUpload  $fileName = laravel_act-2023-09-06.log  
+[2023-09-14 13:02:59] Actver:.INFO: beginTransaction - client postUpload saveFile start  
+[2023-09-14 13:02:59] Actver:.INFO: beginTransaction - client postUpload saveFile end(commit)  
+[2023-09-14 13:02:59] Actver:.INFO: client json_put_status  START  
+[2023-09-14 13:02:59] Actver:.INFO: client json_put_status  END  
+[2023-09-14 13:02:59] Actver:.INFO: client postUpload  END  
+[2023-09-14 13:02:59] Actver:.ERROR: The file "/tmp/phpqAgfly" does not exist {"userId":10,"exception":"[object] (Symfony\\Component\\HttpFoundation\\File\\Exception\\FileNotFoundException(code: 0): The file \"/tmp/phpqAgfly\" does not exist at /var/www/html/actver/vendor/symfony/http-foundation/File/File.php:36)
+[stacktrace]
+#0 /var/www/html/actver/vendor/symfony/http-foundation/File/UploadedFile.php(70): Symfony\\Component\\HttpFoundation\\File\\File->__construct()
+#1 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/UploadedFile.php(126): Symfony\\Component\\HttpFoundation\\File\\UploadedFile->__construct()
+#2 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(541): Illuminate\\Http\\UploadedFile::createFromBase()
+#3 [internal function]: Illuminate\\Http\\Request->Illuminate\\Http\\Concerns\\{closure}()
+#4 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(534): array_map()
+#5 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(523): Illuminate\\Http\\Request->convertUploadedFiles()
+#6 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(279): Illuminate\\Http\\Request->allFiles()
+#7 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Request.php(716): Illuminate\\Http\\Request->all()
+#8 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(36): Illuminate\\Http\\Request->toArray()
+#9 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(23): App\\Http\\Middleware\\ActlogMiddleware->actlog()
+#10 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\ActlogMiddleware->handle()
+#11 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#12 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#13 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle()
+#14 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#15 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#16 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle()
+#17 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#18 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle()
+#19 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#20 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle()
+#21 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#22 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle()
+#23 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#24 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle()
+#25 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#26 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then()
+#27 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter()
+#28 /var/www/html/actver/public/index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle()
+#29 {main}
+"} 
+[2023-09-14 13:03:14] Actver:.INFO: auth_user_info START  
+[2023-09-14 13:03:14] Actver:.INFO: auth_user_info END  
+[2023-09-14 13:03:14] Actver:.INFO: topclient index START $user->name = ALLUSER  
+[2023-09-14 13:03:14] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 13:03:14] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 13:03:14] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 13:03:14] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 13:03:14] Actver:.INFO: get_three_month START  
+[2023-09-14 13:03:14] Actver:.INFO: get_three_month END  
+[2023-09-14 13:03:14] Actver:.INFO: topclient index END $user->name = ALLUSER  
+[2023-09-14 13:20:47] Actver:.INFO: auth_user_info START  
+[2023-09-14 13:20:47] Actver:.INFO: auth_user_info END  
+[2023-09-14 13:20:47] Actver:.INFO: topclient index START $user->name = ALLUSER  
+[2023-09-14 13:20:47] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 13:20:47] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 13:20:47] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 13:20:47] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 13:20:47] Actver:.INFO: get_three_month START  
+[2023-09-14 13:20:47] Actver:.INFO: get_three_month END  
+[2023-09-14 13:20:47] Actver:.INFO: topclient index END $user->name = ALLUSER  
+[2023-09-14 13:20:56] Actver:.INFO: client postUpload  START  
+[2023-09-14 13:20:56] Actver:.INFO: client postUpload_info  START  
+[2023-09-14 13:20:56] Actver:.INFO: auth_user_info START  
+[2023-09-14 13:20:56] Actver:.INFO: auth_user_info END  
+[2023-09-14 13:20:56] Actver:.INFO: auth_user_foldername START  
+[2023-09-14 13:20:56] Actver:.INFO: auth_user_foldername END  
+[2023-09-14 13:20:56] Actver:.INFO: client json_put_info_set  START  
+[2023-09-14 13:20:56] Actver:.INFO: client json_put_info_set  END  
+[2023-09-14 13:20:56] Actver:.INFO: client postUpload_info  END  
+[2023-09-14 13:20:56] Actver:.INFO: client json_put_status  START  
+[2023-09-14 13:20:56] Actver:.INFO: client json_put_status  END  
+[2023-09-14 13:20:56] Actver:.INFO: client json_get_info  START  
+[2023-09-14 13:20:56] Actver:.INFO: client json_get_info not empty  
+[2023-09-14 13:20:56] Actver:.INFO: client json_get_info  END  
+[2023-09-14 13:20:56] Actver:.DEBUG: client postUpload  request = Flow\Request Object
+(
+    [params:protected] => Array
+        (
+            [flowChunkNumber] => 1
+            [flowChunkSize] => 1048576
+            [flowCurrentChunkSize] => 20683
+            [flowTotalSize] => 20683
+            [flowIdentifier] => 20683-laravel_act-2023-09-05log
+            [flowFilename] => laravel_act-2023-09-05.log
+            [flowRelativePath] => laravel_act-2023-09-05.log
+            [flowTotalChunks] => 1
+        )
+
+    [file:protected] => Array
+        (
+            [name] => laravel_act-2023-09-05.log
+            [full_path] => laravel_act-2023-09-05.log
+            [type] => application/octet-stream
+            [tmp_name] => /tmp/php3RzcHX
+            [error] => 0
+            [size] => 20683
+        )
+
+)
+  
+[2023-09-14 13:20:56] Actver:.INFO: client postUpload  $fileName = laravel_act-2023-09-05.log  
+[2023-09-14 13:20:56] Actver:.INFO: beginTransaction - client postUpload saveFile start  
+[2023-09-14 13:20:56] Actver:.INFO: beginTransaction - client postUpload saveFile end(commit)  
+[2023-09-14 13:20:56] Actver:.INFO: client json_put_status  START  
+[2023-09-14 13:20:56] Actver:.INFO: client json_put_status  END  
+[2023-09-14 13:20:56] Actver:.INFO: client postUpload  END  
+[2023-09-14 13:20:56] Actver:.ERROR: The file "/tmp/php3RzcHX" does not exist {"userId":10,"exception":"[object] (Symfony\\Component\\HttpFoundation\\File\\Exception\\FileNotFoundException(code: 0): The file \"/tmp/php3RzcHX\" does not exist at /var/www/html/actver/vendor/symfony/http-foundation/File/File.php:36)
+[stacktrace]
+#0 /var/www/html/actver/vendor/symfony/http-foundation/File/UploadedFile.php(70): Symfony\\Component\\HttpFoundation\\File\\File->__construct()
+#1 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/UploadedFile.php(126): Symfony\\Component\\HttpFoundation\\File\\UploadedFile->__construct()
+#2 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(541): Illuminate\\Http\\UploadedFile::createFromBase()
+#3 [internal function]: Illuminate\\Http\\Request->Illuminate\\Http\\Concerns\\{closure}()
+#4 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(534): array_map()
+#5 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(523): Illuminate\\Http\\Request->convertUploadedFiles()
+#6 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(279): Illuminate\\Http\\Request->allFiles()
+#7 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Request.php(716): Illuminate\\Http\\Request->all()
+#8 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(36): Illuminate\\Http\\Request->toArray()
+#9 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(23): App\\Http\\Middleware\\ActlogMiddleware->actlog()
+#10 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\ActlogMiddleware->handle()
+#11 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#12 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#13 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle()
+#14 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#15 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#16 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle()
+#17 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#18 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle()
+#19 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#20 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle()
+#21 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#22 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle()
+#23 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#24 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle()
+#25 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#26 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then()
+#27 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter()
+#28 /var/www/html/actver/public/index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle()
+#29 {main}
+"} 
+[2023-09-14 14:00:49] Actver:.INFO: auth_user_info START  
+[2023-09-14 14:00:49] Actver:.INFO: auth_user_info END  
+[2023-09-14 14:00:49] Actver:.INFO: topclient index START $user->name = ALLUSER  
+[2023-09-14 14:00:49] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 14:00:49] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 14:00:49] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 14:00:49] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 14:00:49] Actver:.INFO: get_three_month START  
+[2023-09-14 14:00:49] Actver:.INFO: get_three_month END  
+[2023-09-14 14:00:49] Actver:.INFO: topclient index END $user->name = ALLUSER  
+[2023-09-14 14:01:05] Actver:.INFO: client postUpload  START  
+[2023-09-14 14:01:05] Actver:.INFO: client postUpload_info  START  
+[2023-09-14 14:01:05] Actver:.INFO: auth_user_info START  
+[2023-09-14 14:01:05] Actver:.INFO: auth_user_info END  
+[2023-09-14 14:01:05] Actver:.INFO: auth_user_foldername START  
+[2023-09-14 14:01:05] Actver:.INFO: auth_user_foldername END  
+[2023-09-14 14:01:05] Actver:.INFO: client json_put_info_set  START  
+[2023-09-14 14:01:05] Actver:.INFO: client json_put_info_set  END  
+[2023-09-14 14:01:05] Actver:.INFO: client postUpload_info  END  
+[2023-09-14 14:01:05] Actver:.INFO: client json_put_status  START  
+[2023-09-14 14:01:05] Actver:.INFO: client json_put_status  END  
+[2023-09-14 14:01:05] Actver:.INFO: client json_get_info  START  
+[2023-09-14 14:01:05] Actver:.INFO: client json_get_info not empty  
+[2023-09-14 14:01:05] Actver:.INFO: client json_get_info  END  
+[2023-09-14 14:01:05] Actver:.DEBUG: client postUpload  $uploadFile[tmp_name] = /tmp/php9ElomJ  
+[2023-09-14 14:01:05] Actver:.INFO: client postUpload  $fileName = laravel_act-2023-09-11.log  
+[2023-09-14 14:01:05] Actver:.INFO: beginTransaction - client postUpload saveFile start  
+[2023-09-14 14:01:05] Actver:.INFO: beginTransaction - client postUpload saveFile end(commit)  
+[2023-09-14 14:01:05] Actver:.INFO: client json_put_status  START  
+[2023-09-14 14:01:05] Actver:.INFO: client json_put_status  END  
+[2023-09-14 14:01:05] Actver:.INFO: client postUpload  END  
+[2023-09-14 14:01:05] Actver:.ERROR: The file "/tmp/php9ElomJ" does not exist {"userId":10,"exception":"[object] (Symfony\\Component\\HttpFoundation\\File\\Exception\\FileNotFoundException(code: 0): The file \"/tmp/php9ElomJ\" does not exist at /var/www/html/actver/vendor/symfony/http-foundation/File/File.php:36)
+[stacktrace]
+#0 /var/www/html/actver/vendor/symfony/http-foundation/File/UploadedFile.php(70): Symfony\\Component\\HttpFoundation\\File\\File->__construct()
+#1 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/UploadedFile.php(126): Symfony\\Component\\HttpFoundation\\File\\UploadedFile->__construct()
+#2 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(541): Illuminate\\Http\\UploadedFile::createFromBase()
+#3 [internal function]: Illuminate\\Http\\Request->Illuminate\\Http\\Concerns\\{closure}()
+#4 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(534): array_map()
+#5 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(523): Illuminate\\Http\\Request->convertUploadedFiles()
+#6 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(279): Illuminate\\Http\\Request->allFiles()
+#7 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Request.php(716): Illuminate\\Http\\Request->all()
+#8 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(36): Illuminate\\Http\\Request->toArray()
+#9 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(23): App\\Http\\Middleware\\ActlogMiddleware->actlog()
+#10 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\ActlogMiddleware->handle()
+#11 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#12 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#13 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle()
+#14 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#15 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#16 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle()
+#17 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#18 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle()
+#19 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#20 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle()
+#21 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#22 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle()
+#23 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#24 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle()
+#25 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#26 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then()
+#27 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter()
+#28 /var/www/html/actver/public/index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle()
+#29 {main}
+"} 
+[2023-09-14 14:01:12] Actver:.INFO: transhistory index START  
+[2023-09-14 14:01:12] Actver:.INFO: auth_user_info START  
+[2023-09-14 14:01:12] Actver:.INFO: auth_user_info END  
+[2023-09-14 14:01:12] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 14:01:12] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 14:01:12] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 14:01:12] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 14:01:12] Actver:.INFO: transhistory index END  
+[2023-09-14 14:01:19] Actver:.INFO: auth_user_info START  
+[2023-09-14 14:01:19] Actver:.INFO: auth_user_info END  
+[2023-09-14 14:01:19] Actver:.INFO: topclient index START $user->name = ALLUSER  
+[2023-09-14 14:01:19] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 14:01:19] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 14:01:19] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 14:01:19] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 14:01:19] Actver:.INFO: get_three_month START  
+[2023-09-14 14:01:19] Actver:.INFO: get_three_month END  
+[2023-09-14 14:01:19] Actver:.INFO: topclient index END $user->name = ALLUSER  
+[2023-09-14 14:29:09] Actver:.INFO: auth logout redirectTo user = stdClass Object
+(
+    [id] => 10
+    [name] => ALLUSER
+    [email] => alluser@gmail.com
+    [email_verified_at] => 
+    [organization_id] => 1
+    [user_id] => 1
+    [login_flg] => 1
+    [admin_flg] => 1
+    [created_at] => 2022-05-19T08:00:00.000000Z
+    [updated_at] => 2022-10-26T10:22:00.000000Z
+    [deleted_at] => 
+)
+  
+[2023-09-14 14:29:09] Actver:.INFO: loginout operation update START  
+[2023-09-14 14:29:09] Actver:.INFO: beginTransaction - loginout operation update start  
+[2023-09-14 14:29:09] Actver:.INFO: beginTransaction - loginout operation update end(commit)  
+[2023-09-14 14:29:09] Actver:.INFO: loginout operation update END  
+[2023-09-14 15:16:13] Actver:.INFO: auth_user_info START  
+[2023-09-14 15:16:13] Actver:.INFO: auth_user_info END  
+[2023-09-14 15:16:13] Actver:.INFO: auth login redirectTo user = stdClass Object
+(
+    [id] => 10
+    [name] => ALLUSER
+    [email] => alluser@gmail.com
+    [email_verified_at] => 
+    [organization_id] => 1
+    [user_id] => 1
+    [login_flg] => 1
+    [admin_flg] => 1
+    [created_at] => 2022-05-19T08:00:00.000000Z
+    [updated_at] => 2022-10-26T10:22:00.000000Z
+    [deleted_at] => 
+)
+  
+[2023-09-14 15:16:13] Actver:.INFO: loginout operation update START  
+[2023-09-14 15:16:13] Actver:.INFO: beginTransaction - loginout operation update start  
+[2023-09-14 15:16:13] Actver:.INFO: beginTransaction - loginout operation update end(commit)  
+[2023-09-14 15:16:13] Actver:.INFO: loginout operation update END  
+[2023-09-14 15:16:13] Actver:.INFO: auth_user_info START  
+[2023-09-14 15:16:13] Actver:.INFO: auth_user_info END  
+[2023-09-14 15:16:13] Actver:.INFO: topclient index START $user->name = ALLUSER  
+[2023-09-14 15:16:13] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 15:16:13] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 15:16:13] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 15:16:13] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 15:16:13] Actver:.INFO: get_three_month START  
+[2023-09-14 15:16:13] Actver:.INFO: get_three_month END  
+[2023-09-14 15:16:13] Actver:.INFO: topclient index END $user->name = ALLUSER  
+[2023-09-14 15:16:21] Actver:.INFO: client postUpload  START  
+[2023-09-14 15:16:21] Actver:.INFO: client postUpload_info  START  
+[2023-09-14 15:16:21] Actver:.INFO: auth_user_info START  
+[2023-09-14 15:16:21] Actver:.INFO: auth_user_info END  
+[2023-09-14 15:16:21] Actver:.INFO: auth_user_foldername START  
+[2023-09-14 15:16:21] Actver:.INFO: auth_user_foldername END  
+[2023-09-14 15:16:21] Actver:.INFO: client json_put_info_set  START  
+[2023-09-14 15:16:21] Actver:.INFO: client json_put_info_set  END  
+[2023-09-14 15:16:21] Actver:.INFO: client postUpload_info  END  
+[2023-09-14 15:16:21] Actver:.INFO: client json_put_status  START  
+[2023-09-14 15:16:21] Actver:.INFO: client json_put_status  END  
+[2023-09-14 15:16:21] Actver:.INFO: client json_get_info  START  
+[2023-09-14 15:16:21] Actver:.INFO: client json_get_info not empty  
+[2023-09-14 15:16:21] Actver:.INFO: client json_get_info  END  
+[2023-09-14 15:16:21] Actver:.DEBUG: client postUpload  $uploadFile[tmp_name] = /tmp/phpbGEfEG  
+[2023-09-14 15:16:21] Actver:.INFO: client postUpload  $fileName = laravel_act-2023-09-14.log  
+[2023-09-14 15:16:21] Actver:.INFO: beginTransaction - client postUpload saveFile start  
+[2023-09-14 15:16:21] Actver:.INFO: beginTransaction - client postUpload saveFile end(commit)  
+[2023-09-14 15:16:21] Actver:.INFO: client json_put_status  START  
+[2023-09-14 15:16:21] Actver:.INFO: client json_put_status  END  
+[2023-09-14 15:16:21] Actver:.INFO: client postUpload  END  
+[2023-09-14 15:16:21] Actver:.ERROR: The file "/tmp/phpbGEfEG" does not exist {"userId":10,"exception":"[object] (Symfony\\Component\\HttpFoundation\\File\\Exception\\FileNotFoundException(code: 0): The file \"/tmp/phpbGEfEG\" does not exist at /var/www/html/actver/vendor/symfony/http-foundation/File/File.php:36)
+[stacktrace]
+#0 /var/www/html/actver/vendor/symfony/http-foundation/File/UploadedFile.php(70): Symfony\\Component\\HttpFoundation\\File\\File->__construct()
+#1 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/UploadedFile.php(126): Symfony\\Component\\HttpFoundation\\File\\UploadedFile->__construct()
+#2 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(541): Illuminate\\Http\\UploadedFile::createFromBase()
+#3 [internal function]: Illuminate\\Http\\Request->Illuminate\\Http\\Concerns\\{closure}()
+#4 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(534): array_map()
+#5 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(523): Illuminate\\Http\\Request->convertUploadedFiles()
+#6 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(279): Illuminate\\Http\\Request->allFiles()
+#7 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Request.php(716): Illuminate\\Http\\Request->all()
+#8 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(36): Illuminate\\Http\\Request->toArray()
+#9 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(23): App\\Http\\Middleware\\ActlogMiddleware->actlog()
+#10 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\ActlogMiddleware->handle()
+#11 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#12 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#13 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle()
+#14 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#15 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#16 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle()
+#17 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#18 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle()
+#19 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#20 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle()
+#21 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#22 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle()
+#23 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#24 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle()
+#25 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#26 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then()
+#27 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter()
+#28 /var/www/html/actver/public/index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle()
+#29 {main}
+"} 
+[2023-09-14 15:19:02] Actver:.INFO: auth logout redirectTo user = stdClass Object
+(
+    [id] => 10
+    [name] => ALLUSER
+    [email] => alluser@gmail.com
+    [email_verified_at] => 
+    [organization_id] => 1
+    [user_id] => 1
+    [login_flg] => 1
+    [admin_flg] => 1
+    [created_at] => 2022-05-19T08:00:00.000000Z
+    [updated_at] => 2022-10-26T10:22:00.000000Z
+    [deleted_at] => 
+)
+  
+[2023-09-14 15:19:02] Actver:.INFO: loginout operation update START  
+[2023-09-14 15:19:02] Actver:.INFO: beginTransaction - loginout operation update start  
+[2023-09-14 15:19:02] Actver:.INFO: beginTransaction - loginout operation update end(commit)  
+[2023-09-14 15:19:02] Actver:.INFO: loginout operation update END  
+[2023-09-14 15:19:11] Actver:.INFO: auth_user_info START  
+[2023-09-14 15:19:11] Actver:.INFO: auth_user_info END  
+[2023-09-14 15:19:11] Actver:.INFO: auth login redirectTo user = stdClass Object
+(
+    [id] => 10
+    [name] => ALLUSER
+    [email] => alluser@gmail.com
+    [email_verified_at] => 
+    [organization_id] => 1
+    [user_id] => 1
+    [login_flg] => 1
+    [admin_flg] => 1
+    [created_at] => 2022-05-19T08:00:00.000000Z
+    [updated_at] => 2022-10-26T10:22:00.000000Z
+    [deleted_at] => 
+)
+  
+[2023-09-14 15:19:11] Actver:.INFO: loginout operation update START  
+[2023-09-14 15:19:11] Actver:.INFO: beginTransaction - loginout operation update start  
+[2023-09-14 15:19:11] Actver:.INFO: beginTransaction - loginout operation update end(commit)  
+[2023-09-14 15:19:11] Actver:.INFO: loginout operation update END  
+[2023-09-14 15:19:11] Actver:.INFO: auth_user_info START  
+[2023-09-14 15:19:11] Actver:.INFO: auth_user_info END  
+[2023-09-14 15:19:11] Actver:.INFO: topclient index START $user->name = ALLUSER  
+[2023-09-14 15:19:11] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 15:19:11] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 15:19:11] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 15:19:11] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 15:19:11] Actver:.INFO: get_three_month START  
+[2023-09-14 15:19:11] Actver:.INFO: get_three_month END  
+[2023-09-14 15:19:11] Actver:.INFO: topclient index END $user->name = ALLUSER  
+[2023-09-14 15:19:27] Actver:.INFO: client postUpload  START  
+[2023-09-14 15:19:27] Actver:.INFO: client postUpload_info  START  
+[2023-09-14 15:19:27] Actver:.INFO: auth_user_info START  
+[2023-09-14 15:19:27] Actver:.INFO: auth_user_info END  
+[2023-09-14 15:19:27] Actver:.INFO: auth_user_foldername START  
+[2023-09-14 15:19:27] Actver:.INFO: auth_user_foldername END  
+[2023-09-14 15:19:27] Actver:.INFO: client json_put_info_set  START  
+[2023-09-14 15:19:27] Actver:.INFO: client json_put_info_set  END  
+[2023-09-14 15:19:27] Actver:.INFO: client postUpload_info  END  
+[2023-09-14 15:19:27] Actver:.INFO: client json_put_status  START  
+[2023-09-14 15:19:27] Actver:.INFO: client json_put_status  END  
+[2023-09-14 15:19:27] Actver:.INFO: client json_get_info  START  
+[2023-09-14 15:19:27] Actver:.INFO: client json_get_info not empty  
+[2023-09-14 15:19:27] Actver:.INFO: client json_get_info  END  
+[2023-09-14 15:19:27] Actver:.DEBUG: client postUpload  $uploadFile[tmp_name] = /tmp/phpion7Xd  
+[2023-09-14 15:19:27] Actver:.INFO: client postUpload  $fileName = file1_upload.js  
+[2023-09-14 15:19:27] Actver:.INFO: beginTransaction - client postUpload saveFile start  
+[2023-09-14 15:19:27] Actver:.INFO: beginTransaction - client postUpload saveFile end(commit)  
+[2023-09-14 15:19:27] Actver:.INFO: client json_put_status  START  
+[2023-09-14 15:19:27] Actver:.INFO: client json_put_status  END  
+[2023-09-14 15:19:27] Actver:.INFO: client postUpload  END  
+[2023-09-14 15:19:27] Actver:.ERROR: The file "/tmp/phpion7Xd" does not exist {"userId":10,"exception":"[object] (Symfony\\Component\\HttpFoundation\\File\\Exception\\FileNotFoundException(code: 0): The file \"/tmp/phpion7Xd\" does not exist at /var/www/html/actver/vendor/symfony/http-foundation/File/File.php:36)
+[stacktrace]
+#0 /var/www/html/actver/vendor/symfony/http-foundation/File/UploadedFile.php(70): Symfony\\Component\\HttpFoundation\\File\\File->__construct()
+#1 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/UploadedFile.php(126): Symfony\\Component\\HttpFoundation\\File\\UploadedFile->__construct()
+#2 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(541): Illuminate\\Http\\UploadedFile::createFromBase()
+#3 [internal function]: Illuminate\\Http\\Request->Illuminate\\Http\\Concerns\\{closure}()
+#4 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(534): array_map()
+#5 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(523): Illuminate\\Http\\Request->convertUploadedFiles()
+#6 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(279): Illuminate\\Http\\Request->allFiles()
+#7 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Request.php(716): Illuminate\\Http\\Request->all()
+#8 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(36): Illuminate\\Http\\Request->toArray()
+#9 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(23): App\\Http\\Middleware\\ActlogMiddleware->actlog()
+#10 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\ActlogMiddleware->handle()
+#11 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#12 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#13 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle()
+#14 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#15 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#16 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle()
+#17 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#18 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle()
+#19 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#20 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle()
+#21 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#22 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle()
+#23 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#24 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle()
+#25 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#26 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then()
+#27 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter()
+#28 /var/www/html/actver/public/index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle()
+#29 {main}
+"} 
+[2023-09-14 15:19:31] Actver:.INFO: transhistory index START  
+[2023-09-14 15:19:31] Actver:.INFO: auth_user_info START  
+[2023-09-14 15:19:31] Actver:.INFO: auth_user_info END  
+[2023-09-14 15:19:31] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 15:19:31] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 15:19:31] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 15:19:31] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 15:19:31] Actver:.INFO: transhistory index END  
+[2023-09-14 15:19:40] Actver:.INFO: auth_user_info START  
+[2023-09-14 15:19:40] Actver:.INFO: auth_user_info END  
+[2023-09-14 15:19:40] Actver:.INFO: topclient index START $user->name = ALLUSER  
+[2023-09-14 15:19:40] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 15:19:40] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 15:19:40] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 15:19:40] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 15:19:40] Actver:.INFO: get_three_month START  
+[2023-09-14 15:19:40] Actver:.INFO: get_three_month END  
+[2023-09-14 15:19:40] Actver:.INFO: topclient index END $user->name = ALLUSER  
+[2023-09-14 15:19:45] Actver:.INFO: topclient serch START  
+[2023-09-14 15:19:45] Actver:.INFO: auth_user_info START  
+[2023-09-14 15:19:45] Actver:.INFO: auth_user_info END  
+[2023-09-14 15:19:45] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 15:19:45] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 15:19:45] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 15:19:45] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 15:19:45] Actver:.INFO: get_three_month START  
+[2023-09-14 15:19:45] Actver:.INFO: get_three_month END  
+[2023-09-14 15:19:45] Actver:.INFO: topclient serch END  
+[2023-09-14 15:19:52] Actver:.INFO: client postUpload  START  
+[2023-09-14 15:19:52] Actver:.INFO: client postUpload_info  START  
+[2023-09-14 15:19:52] Actver:.INFO: auth_user_info START  
+[2023-09-14 15:19:52] Actver:.INFO: auth_user_info END  
+[2023-09-14 15:19:52] Actver:.INFO: auth_user_foldername START  
+[2023-09-14 15:19:52] Actver:.INFO: auth_user_foldername END  
+[2023-09-14 15:19:52] Actver:.INFO: client json_put_info_set  START  
+[2023-09-14 15:19:52] Actver:.INFO: client json_put_info_set  END  
+[2023-09-14 15:19:52] Actver:.INFO: client postUpload_info  END  
+[2023-09-14 15:19:52] Actver:.INFO: client json_put_status  START  
+[2023-09-14 15:19:52] Actver:.INFO: client json_put_status  END  
+[2023-09-14 15:19:52] Actver:.INFO: client json_get_info  START  
+[2023-09-14 15:19:52] Actver:.INFO: client json_get_info not empty  
+[2023-09-14 15:19:52] Actver:.INFO: client json_get_info  END  
+[2023-09-14 15:19:52] Actver:.DEBUG: client postUpload  $uploadFile[tmp_name] = /tmp/phpyil2Sa  
+[2023-09-14 15:19:52] Actver:.INFO: client postUpload  $fileName = file1_upload.js  
+[2023-09-14 15:19:52] Actver:.INFO: beginTransaction - client postUpload saveFile start  
+[2023-09-14 15:19:52] Actver:.INFO: beginTransaction - client postUpload saveFile end(commit)  
+[2023-09-14 15:19:52] Actver:.INFO: client json_put_status  START  
+[2023-09-14 15:19:52] Actver:.INFO: client json_put_status  END  
+[2023-09-14 15:19:52] Actver:.INFO: client postUpload  END  
+[2023-09-14 15:19:52] Actver:.ERROR: The file "/tmp/phpyil2Sa" does not exist {"userId":10,"exception":"[object] (Symfony\\Component\\HttpFoundation\\File\\Exception\\FileNotFoundException(code: 0): The file \"/tmp/phpyil2Sa\" does not exist at /var/www/html/actver/vendor/symfony/http-foundation/File/File.php:36)
+[stacktrace]
+#0 /var/www/html/actver/vendor/symfony/http-foundation/File/UploadedFile.php(70): Symfony\\Component\\HttpFoundation\\File\\File->__construct()
+#1 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/UploadedFile.php(126): Symfony\\Component\\HttpFoundation\\File\\UploadedFile->__construct()
+#2 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(541): Illuminate\\Http\\UploadedFile::createFromBase()
+#3 [internal function]: Illuminate\\Http\\Request->Illuminate\\Http\\Concerns\\{closure}()
+#4 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(534): array_map()
+#5 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(523): Illuminate\\Http\\Request->convertUploadedFiles()
+#6 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(279): Illuminate\\Http\\Request->allFiles()
+#7 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Request.php(716): Illuminate\\Http\\Request->all()
+#8 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(36): Illuminate\\Http\\Request->toArray()
+#9 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(23): App\\Http\\Middleware\\ActlogMiddleware->actlog()
+#10 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\ActlogMiddleware->handle()
+#11 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#12 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#13 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle()
+#14 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#15 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#16 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle()
+#17 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#18 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle()
+#19 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#20 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle()
+#21 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#22 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle()
+#23 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#24 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle()
+#25 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#26 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then()
+#27 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter()
+#28 /var/www/html/actver/public/index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle()
+#29 {main}
+"} 
+[2023-09-14 15:19:56] Actver:.INFO: topclient serch START  
+[2023-09-14 15:19:56] Actver:.INFO: auth_user_info START  
+[2023-09-14 15:19:56] Actver:.INFO: auth_user_info END  
+[2023-09-14 15:19:56] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 15:19:56] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 15:19:56] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 15:19:56] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 15:19:56] Actver:.INFO: get_three_month START  
+[2023-09-14 15:19:56] Actver:.INFO: get_three_month END  
+[2023-09-14 15:19:56] Actver:.INFO: topclient serch END  
+[2023-09-14 15:26:27] Actver:.INFO: topclient serch START  
+[2023-09-14 15:26:27] Actver:.INFO: auth_user_info START  
+[2023-09-14 15:26:27] Actver:.INFO: auth_user_info END  
+[2023-09-14 15:26:27] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 15:26:27] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 15:26:27] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 15:26:27] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 15:26:27] Actver:.INFO: get_three_month START  
+[2023-09-14 15:26:27] Actver:.INFO: get_three_month END  
+[2023-09-14 15:26:27] Actver:.INFO: topclient serch END  
+[2023-09-14 15:26:29] Actver:.INFO: auth_user_info START  
+[2023-09-14 15:26:29] Actver:.INFO: auth_user_info END  
+[2023-09-14 15:26:29] Actver:.INFO: topclient index START $user->name = ALLUSER  
+[2023-09-14 15:26:29] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 15:26:29] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 15:26:29] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 15:26:29] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 15:26:29] Actver:.INFO: get_three_month START  
+[2023-09-14 15:26:29] Actver:.INFO: get_three_month END  
+[2023-09-14 15:26:29] Actver:.INFO: topclient index END $user->name = ALLUSER  
+[2023-09-14 15:26:57] Actver:.INFO: auth_user_info START  
+[2023-09-14 15:26:57] Actver:.INFO: auth_user_info END  
+[2023-09-14 15:26:57] Actver:.INFO: topclient index START $user->name = ALLUSER  
+[2023-09-14 15:26:57] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 15:26:57] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 15:26:57] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 15:26:57] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 15:26:57] Actver:.INFO: get_three_month START  
+[2023-09-14 15:26:57] Actver:.INFO: get_three_month END  
+[2023-09-14 15:26:57] Actver:.INFO: topclient index END $user->name = ALLUSER  
+[2023-09-14 15:27:18] Actver:.INFO: client postUpload  START  
+[2023-09-14 15:27:18] Actver:.INFO: client postUpload_info  START  
+[2023-09-14 15:27:18] Actver:.INFO: auth_user_info START  
+[2023-09-14 15:27:18] Actver:.INFO: auth_user_info END  
+[2023-09-14 15:27:18] Actver:.INFO: auth_user_foldername START  
+[2023-09-14 15:27:18] Actver:.INFO: auth_user_foldername END  
+[2023-09-14 15:27:18] Actver:.INFO: client json_put_info_set  START  
+[2023-09-14 15:27:18] Actver:.INFO: client json_put_info_set  END  
+[2023-09-14 15:27:18] Actver:.INFO: client postUpload_info  END  
+[2023-09-14 15:27:18] Actver:.INFO: client json_put_status  START  
+[2023-09-14 15:27:18] Actver:.INFO: client json_put_status  END  
+[2023-09-14 15:27:18] Actver:.INFO: client json_get_info  START  
+[2023-09-14 15:27:18] Actver:.INFO: client json_get_info not empty  
+[2023-09-14 15:27:18] Actver:.INFO: client json_get_info  END  
+[2023-09-14 15:27:18] Actver:.DEBUG: client postUpload  $uploadFile[tmp_name] = /tmp/phpMRaVYL  
+[2023-09-14 15:27:18] Actver:.INFO: client postUpload  $fileName = laravel_act-2023-09-14.log  
+[2023-09-14 15:27:18] Actver:.INFO: beginTransaction - client postUpload saveFile start  
+[2023-09-14 15:27:18] Actver:.INFO: beginTransaction - client postUpload saveFile end(commit)  
+[2023-09-14 15:27:18] Actver:.INFO: client json_put_status  START  
+[2023-09-14 15:27:18] Actver:.INFO: client json_put_status  END  
+[2023-09-14 15:27:18] Actver:.INFO: client postUpload  END  
+[2023-09-14 15:27:18] Actver:.ERROR: The file "/tmp/phpMRaVYL" does not exist {"userId":10,"exception":"[object] (Symfony\\Component\\HttpFoundation\\File\\Exception\\FileNotFoundException(code: 0): The file \"/tmp/phpMRaVYL\" does not exist at /var/www/html/actver/vendor/symfony/http-foundation/File/File.php:36)
+[stacktrace]
+#0 /var/www/html/actver/vendor/symfony/http-foundation/File/UploadedFile.php(70): Symfony\\Component\\HttpFoundation\\File\\File->__construct()
+#1 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/UploadedFile.php(126): Symfony\\Component\\HttpFoundation\\File\\UploadedFile->__construct()
+#2 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(541): Illuminate\\Http\\UploadedFile::createFromBase()
+#3 [internal function]: Illuminate\\Http\\Request->Illuminate\\Http\\Concerns\\{closure}()
+#4 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(534): array_map()
+#5 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(523): Illuminate\\Http\\Request->convertUploadedFiles()
+#6 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(279): Illuminate\\Http\\Request->allFiles()
+#7 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Request.php(716): Illuminate\\Http\\Request->all()
+#8 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(36): Illuminate\\Http\\Request->toArray()
+#9 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(23): App\\Http\\Middleware\\ActlogMiddleware->actlog()
+#10 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\ActlogMiddleware->handle()
+#11 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#12 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#13 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle()
+#14 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#15 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#16 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle()
+#17 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#18 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle()
+#19 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#20 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle()
+#21 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#22 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle()
+#23 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#24 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle()
+#25 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#26 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then()
+#27 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter()
+#28 /var/www/html/actver/public/index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle()
+#29 {main}
+"} 
+[2023-09-14 15:42:17] Actver:.INFO: auth logout redirectTo user = stdClass Object
+(
+    [id] => 10
+    [name] => ALLUSER
+    [email] => alluser@gmail.com
+    [email_verified_at] => 
+    [organization_id] => 1
+    [user_id] => 1
+    [login_flg] => 1
+    [admin_flg] => 1
+    [created_at] => 2022-05-19T08:00:00.000000Z
+    [updated_at] => 2022-10-26T10:22:00.000000Z
+    [deleted_at] => 
+)
+  
+[2023-09-14 15:42:17] Actver:.INFO: loginout operation update START  
+[2023-09-14 15:42:17] Actver:.INFO: beginTransaction - loginout operation update start  
+[2023-09-14 15:42:17] Actver:.INFO: beginTransaction - loginout operation update end(commit)  
+[2023-09-14 15:42:17] Actver:.INFO: loginout operation update END  
+[2023-09-14 15:50:38] Actver:.INFO: auth_user_info START  
+[2023-09-14 15:50:38] Actver:.INFO: auth_user_info END  
+[2023-09-14 15:50:38] Actver:.INFO: auth login redirectTo user = stdClass Object
+(
+    [id] => 10
+    [name] => ALLUSER
+    [email] => alluser@gmail.com
+    [email_verified_at] => 
+    [organization_id] => 1
+    [user_id] => 1
+    [login_flg] => 1
+    [admin_flg] => 1
+    [created_at] => 2022-05-19T08:00:00.000000Z
+    [updated_at] => 2022-10-26T10:22:00.000000Z
+    [deleted_at] => 
+)
+  
+[2023-09-14 15:50:38] Actver:.INFO: loginout operation update START  
+[2023-09-14 15:50:38] Actver:.INFO: beginTransaction - loginout operation update start  
+[2023-09-14 15:50:38] Actver:.INFO: beginTransaction - loginout operation update end(commit)  
+[2023-09-14 15:50:38] Actver:.INFO: loginout operation update END  
+[2023-09-14 15:50:38] Actver:.INFO: auth_user_info START  
+[2023-09-14 15:50:38] Actver:.INFO: auth_user_info END  
+[2023-09-14 15:50:38] Actver:.INFO: topclient index START $user->name = ALLUSER  
+[2023-09-14 15:50:38] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 15:50:38] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 15:50:38] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 15:50:38] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 15:50:38] Actver:.INFO: get_three_month START  
+[2023-09-14 15:50:38] Actver:.INFO: get_three_month END  
+[2023-09-14 15:50:38] Actver:.INFO: topclient index END $user->name = ALLUSER  
+[2023-09-14 15:50:58] Actver:.INFO: client postUpload  START  
+[2023-09-14 15:50:58] Actver:.INFO: client postUpload_info  START  
+[2023-09-14 15:50:58] Actver:.INFO: auth_user_info START  
+[2023-09-14 15:50:58] Actver:.INFO: auth_user_info END  
+[2023-09-14 15:50:58] Actver:.INFO: auth_user_foldername START  
+[2023-09-14 15:50:58] Actver:.INFO: auth_user_foldername END  
+[2023-09-14 15:50:58] Actver:.INFO: client json_put_info_set  START  
+[2023-09-14 15:50:58] Actver:.INFO: client json_put_info_set  END  
+[2023-09-14 15:50:58] Actver:.INFO: client postUpload_info  END  
+[2023-09-14 15:50:58] Actver:.INFO: client json_put_status  START  
+[2023-09-14 15:50:58] Actver:.INFO: client json_put_status  END  
+[2023-09-14 15:50:58] Actver:.INFO: client json_get_info  START  
+[2023-09-14 15:50:58] Actver:.INFO: client json_get_info not empty  
+[2023-09-14 15:50:58] Actver:.INFO: client json_get_info  END  
+[2023-09-14 15:50:58] Actver:.DEBUG: client postUpload  $uploadFile[tmp_name] = /tmp/phpzE29qr  
+[2023-09-14 15:50:58] Actver:.INFO: client postUpload  $fileName = laravel_act-2023-09-14.log  
+[2023-09-14 15:50:58] Actver:.INFO: beginTransaction - client postUpload saveFile start  
+[2023-09-14 15:50:58] Actver:.INFO: beginTransaction - client postUpload saveFile end(commit)  
+[2023-09-14 15:50:58] Actver:.INFO: client json_put_status  START  
+[2023-09-14 15:50:58] Actver:.INFO: client json_put_status  END  
+[2023-09-14 15:50:58] Actver:.INFO: client postUpload  END  
+[2023-09-14 15:50:58] Actver:.ERROR: The file "/tmp/phpzE29qr" does not exist {"userId":10,"exception":"[object] (Symfony\\Component\\HttpFoundation\\File\\Exception\\FileNotFoundException(code: 0): The file \"/tmp/phpzE29qr\" does not exist at /var/www/html/actver/vendor/symfony/http-foundation/File/File.php:36)
+[stacktrace]
+#0 /var/www/html/actver/vendor/symfony/http-foundation/File/UploadedFile.php(70): Symfony\\Component\\HttpFoundation\\File\\File->__construct()
+#1 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/UploadedFile.php(126): Symfony\\Component\\HttpFoundation\\File\\UploadedFile->__construct()
+#2 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(541): Illuminate\\Http\\UploadedFile::createFromBase()
+#3 [internal function]: Illuminate\\Http\\Request->Illuminate\\Http\\Concerns\\{closure}()
+#4 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(534): array_map()
+#5 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(523): Illuminate\\Http\\Request->convertUploadedFiles()
+#6 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Concerns/InteractsWithInput.php(279): Illuminate\\Http\\Request->allFiles()
+#7 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Request.php(716): Illuminate\\Http\\Request->all()
+#8 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(36): Illuminate\\Http\\Request->toArray()
+#9 /var/www/html/actver/app/Http/Middleware/ActlogMiddleware.php(23): App\\Http\\Middleware\\ActlogMiddleware->actlog()
+#10 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): App\\Http\\Middleware\\ActlogMiddleware->handle()
+#11 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#12 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#13 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle()
+#14 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#15 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle()
+#16 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle()
+#17 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#18 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle()
+#19 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(86): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#20 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle()
+#21 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#22 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\HandleCors->handle()
+#23 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#24 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\\Http\\Middleware\\TrustProxies->handle()
+#25 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(116): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}()
+#26 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(165): Illuminate\\Pipeline\\Pipeline->then()
+#27 /var/www/html/actver/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(134): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter()
+#28 /var/www/html/actver/public/index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle()
+#29 {main}
+"} 
+[2023-09-14 16:27:09] Actver:.INFO: auth_user_info START  
+[2023-09-14 16:27:09] Actver:.INFO: auth_user_info END  
+[2023-09-14 16:27:09] Actver:.INFO: topclient index START $user->name = ALLUSER  
+[2023-09-14 16:27:09] Actver:.INFO: auth_customer_findrec START  
+[2023-09-14 16:27:09] Actver:.INFO: auth_customer_findrec START $u_id = 10  
+[2023-09-14 16:27:09] Actver:.INFO: auth_customer_findrec END $u_id = 10  
+[2023-09-14 16:27:09] Actver:.INFO: auth_customer_findrec END  
+[2023-09-14 16:27:09] Actver:.INFO: get_three_month START  
+[2023-09-14 16:27:09] Actver:.INFO: get_three_month END  
+[2023-09-14 16:27:09] Actver:.INFO: topclient index END $user->name = ALLUSER  
