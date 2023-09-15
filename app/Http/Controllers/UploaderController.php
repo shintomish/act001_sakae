@@ -206,12 +206,12 @@ class UploaderController extends Controller
             mkdir( storage_path() . $filedir, $mode = 0777, true);
         }
 
-        //2023/09/14
-        $tmp_name = $uploadFile['tmp_name'];     // tmp_name
-        if(!file_exists( $tmp_name)){
-            mkdir( $tmp_name, $mode = 0777, true);
-        }
-        Log::debug('client postUpload  $tmp_name = ' . print_r($tmp_name ,true));
+        //2023/09/14 Middleware\ActlogMiddleware::classをコメント
+        // $tmp_name = $uploadFile['tmp_name'];     // tmp_name
+        // if(!file_exists( $tmp_name)){
+        //     mkdir( $tmp_name, $mode = 0777, true);
+        // }
+        // Log::debug('client postUpload  $tmp_name = ' . print_r($tmp_name ,true));
 
         // 2023/02/13 ERROR: Undefined array key "extension"
         // $identifier = md5($uploadFile['name']).'-' . time() ;
