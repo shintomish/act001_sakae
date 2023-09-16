@@ -382,7 +382,9 @@ class AnnualupdateController extends Controller
                     $new_data->year             = $next_year;
                     $str                        = $nowyear . sprintf("%06d", $wokprocbook2->custm_id);
                     $new_data->refnumber        = $str;
-                    $new_data->staff_no         = 7;
+                    // 2023/09/16 見直し
+                    // $new_data->staff_no         = 7;
+                    $new_data->staff_no         = $wokprocbook2->staff_no;
                     $new_data->save();           //  Inserts
                 }
             }
