@@ -125,6 +125,8 @@ class AnnualupdateController extends Controller
             // customersを取得
             $customers = Customer::where('organization_id','>=',$organization_id)
                             ->whereNull('deleted_at')
+                            // 2023/09/16 active_cancel 3=解約
+                            ->where('active_cancel', '<>', 3)
                             ->get();
 
             // 納期特例
@@ -172,6 +174,8 @@ class AnnualupdateController extends Controller
             // customersを取得
             $customers = Customer::where('organization_id','=',$organization_id)
                             ->whereNull('deleted_at')
+                            // 2023/09/16 active_cancel 3=解約
+                            ->where('active_cancel', '<>', 3)
                             ->get();
             // 納期特例
             $spedelidates = Spedelidate::where('organization_id','=',$organization_id)
@@ -389,35 +393,36 @@ class AnnualupdateController extends Controller
                 }
             }
 
+            // 2023/09/16 customers更新をコメント
             // customersチェック 2022/05/22
             // $next_year = 2022;
-            if($customers->count()) {
-                foreach($customers as $customers2) {
-                    $customers2->year                  = $next_year;
-                    $customers2->prev_sales            = 0;		//前期売上
-                    $customers2->prev_profit           = 0;		//前期利益
-                    $customers2->start_notification    = 1;		//開始届 1:未提出 2:提出済み
-                    $customers2->transfer_notification = 1;		//異動届 1:必要なし 2:提出済み (未使用)
-                    $customers2->special_delivery_date = 1;		//納期の特例 1:未提出 2:提出済み
-                    $customers2->bill_flg              = 1;		//会計フラグ 1:× 2:○
-                    $customers2->adept_flg             = 1;		//達人フラグ 1:× 2:○
-                    $customers2->confirmation_flg      = 1;		//税理士確認フラグ 1:× 2:○
-                    $customers2->report_flg            = 1;		//申告フラグ 1:× 2:○
-                    $customers2->progress_report1      = Null;	//進捗報告1
-                    $customers2->progress_report2      = Null;	//進捗報告2
-                    $customers2->progress_report3      = Null;	//進捗報告3
-                    $customers2->progress_report4      = Null;	//進捗報告4
-                    $customers2->progress_report5      = Null;	//進捗報告5
-                    $customers2->memo_1                = Null;	//memo_1
-                    $customers2->memo_2                = Null;	//memo_2
-                    $customers2->memo_3                = Null;	//memo_3
-                    $customers2->memo_4                = Null;	//memo_4
-                    $customers2->memo_5                = Null;	//memo_5
-                    $customers2->final_accounting_at   = Null;	//会計処理日
-                    $customers2->updated_at            = now();
-                    $customers2->save();           				//  Inserts
-                }
-            }
+            // if($customers->count()) {
+            //     foreach($customers as $customers2) {
+            //         $customers2->year                  = $next_year;
+            //         $customers2->prev_sales            = 0;		//前期売上
+            //         $customers2->prev_profit           = 0;		//前期利益
+            //         $customers2->start_notification    = 1;		//開始届 1:未提出 2:提出済み
+            //         $customers2->transfer_notification = 1;		//異動届 1:必要なし 2:提出済み (未使用)
+            //         $customers2->special_delivery_date = 1;		//納期の特例 1:未提出 2:提出済み
+            //         $customers2->bill_flg              = 1;		//会計フラグ 1:× 2:○
+            //         $customers2->adept_flg             = 1;		//達人フラグ 1:× 2:○
+            //         $customers2->confirmation_flg      = 1;		//税理士確認フラグ 1:× 2:○
+            //         $customers2->report_flg            = 1;		//申告フラグ 1:× 2:○
+            //         $customers2->progress_report1      = Null;	//進捗報告1
+            //         $customers2->progress_report2      = Null;	//進捗報告2
+            //         $customers2->progress_report3      = Null;	//進捗報告3
+            //         $customers2->progress_report4      = Null;	//進捗報告4
+            //         $customers2->progress_report5      = Null;	//進捗報告5
+            //         $customers2->memo_1                = Null;	//memo_1
+            //         $customers2->memo_2                = Null;	//memo_2
+            //         $customers2->memo_3                = Null;	//memo_3
+            //         $customers2->memo_4                = Null;	//memo_4
+            //         $customers2->memo_5                = Null;	//memo_5
+            //         $customers2->final_accounting_at   = Null;	//会計処理日
+            //         $customers2->updated_at            = now();
+            //         $customers2->save();           				//  Inserts
+            //     }
+            // }
 
             DB::commit();
 
