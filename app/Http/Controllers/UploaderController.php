@@ -69,7 +69,7 @@ class UploaderController extends Controller
 
         $compacts = compact( 'u_id','o_id', 'customer_id', 'foldername','business_name','folderpath','check_flg','dateNew' );
 
-        // Log::debug('client postUpload_info $compacts[customer_id]  = ' . print_r($compacts['customer_id'] ,true));
+        Log::info('client postUpload_info $compacts[customer_id]  = ' . print_r($compacts['customer_id'] ,true));
 
         // * ログインユーザーのCustomerオブジェクトをjsonにSetする
         $this->json_put_info_set($u_id, $o_id,$customer_id, $foldername, $business_name,$folderpath,$check_flg,$dateNew);
@@ -106,7 +106,8 @@ class UploaderController extends Controller
                 $obj[0] = $this->postUpload_info($customer_id);
                 Log::info('client postUpload empty');
             } else {
-                $obj = $obj["res"]["info"];
+                // $obj = $obj["res"]["info"];
+                $obj[0] = $this->postUpload_info($customer_id);
                 Log::info('client postUpload not empty');
             }
 
