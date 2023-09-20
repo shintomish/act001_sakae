@@ -95,12 +95,27 @@ class UploaderController extends Controller
         if (file_exists($jsonUrl)) {
             $json = file_get_contents($jsonUrl);
             $json = mb_convert_encoding($json, 'UTF8', 'ASCII,JIS,UTF-8,EUC-JP,SJIS-WIN');
+            
+            // 2023/09/20
+            $obj = [];
+
             $obj = json_decode($json, true);
-            $obj = $obj["res"]["info"];
-            foreach($obj as $key => $val) {
-                $status = false;
-                $status = $val["status"];
+
+            // 2023/09/20
+            if(empty($obj)){
+                $obj[0] = $this->postUpload_info($customer_id);
+                Log::info('client postUpload empty');
+            } else {
+                $obj = $obj["res"]["info"];
+                Log::info('client postUpload not empty');
             }
+
+            // $obj = json_decode($json, true);
+            // $obj = $obj["res"]["info"];
+            // foreach($obj as $key => $val) {
+            //     $status = false;
+            //     $status = $val["status"];
+            // }
             // Log::info('client postUpload  jsonUrl OK');
         } else {
             // echo "データがありません";
@@ -373,12 +388,12 @@ class UploaderController extends Controller
             $json = file_get_contents($jsonUrl);
             $json = mb_convert_encoding($json, 'UTF8', 'ASCII,JIS,UTF-8,EUC-JP,SJIS-WIN');
             
-            // 2023/09/13
+            // 2023/09/20
             $obj = [];
 
             $obj = json_decode($json, true);
 
-            // 2023/09/13
+            // 2023/09/20
             if(empty($obj)){
                 $obj[0] = $this->postUpload_info($customer_id);
                 Log::info('client json_get_info empty');
