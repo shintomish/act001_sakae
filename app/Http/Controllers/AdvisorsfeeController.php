@@ -43,6 +43,11 @@ class AdvisorsfeeController extends Controller
     {
         Log::info('advisorsfee index START');
 
+        // 2023/09/22
+        // ログインユーザーのユーザー情報を取得する
+        $user    = $this->auth_user_info();
+        $user_id = $user->id;
+        
         $organization  = $this->auth_user_organization();
         $organization_id = $organization->id;
 
@@ -86,7 +91,7 @@ class AdvisorsfeeController extends Controller
                             ->where('advisorsfees.year','=',$nowyear)
                             ->sortable()
                             // ->orderBy('advisorsfees.id', 'desc')
-                            ->paginate(10);
+                            ->paginate(500);
         } else {
             $customers = Customer::where('organization_id','=',$organization_id)
                             // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
@@ -127,13 +132,16 @@ class AdvisorsfeeController extends Controller
                             ->where('advisorsfees.year','=',$nowyear)
                             ->sortable()
                             // ->orderBy('advisorsfees.id', 'desc')
-                            ->paginate(10);
+                            ->paginate(500);
         }
         $common_no = '06';
 
         $keyword2  = null;
 
-        $compacts = compact( 'common_no','advisorsfees', 'customers','nowyear','keyword2' );
+        // 2023/09/22
+        $userid  = $user_id;
+
+        $compacts = compact( 'userid','common_no','advisorsfees', 'customers','nowyear','keyword2' );
         Log::info('advisorsfee index END');
         return view( 'advisorsfee.index', $compacts );
     }
@@ -147,6 +155,11 @@ class AdvisorsfeeController extends Controller
     {
         Log::info('advisorsfee input START');
 
+        // 2023/09/22
+        // ログインユーザーのユーザー情報を取得する
+        $user    = $this->auth_user_info();
+        $user_id = $user->id;
+        
         $organization  = $this->auth_user_organization();
         $organization_id = $organization->id;
 
@@ -191,7 +204,7 @@ class AdvisorsfeeController extends Controller
                             ->where('advisorsfees.year','=',$nowyear)
                             ->sortable()
                             // ->orderBy('advisorsfees.id', 'desc')
-                            ->paginate(10);
+                            ->paginate(500);
         } else {
             $customers = Customer::where('organization_id','=',$organization_id)
                             // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
@@ -232,16 +245,21 @@ class AdvisorsfeeController extends Controller
                             ->where('advisorsfees.year','=',$nowyear)
                             ->sortable()
                             // ->orderBy('advisorsfees.id', 'desc')
-                            ->paginate(10);
+                            ->paginate(500);
         }
         $common_no = '06';
 
         $keyword2  = null;
 
+        // 2023/09/22
+        $userid  = $user_id;
+
         //今月の月を取得
         $nowmonth = intval($this->get_now_month());
 
-        $compacts = compact( 'common_no','advisorsfees', 'customers','nowyear','keyword2','nowmonth' );
+        Log::debug('advisorsfee input nowyear = ' .print_r($nowyear,true));
+
+        $compacts = compact( 'userid','common_no','advisorsfees', 'customers','nowyear','keyword2','nowmonth' );
         Log::info('advisorsfee input END');
         return view( 'advisorsfee.input', $compacts );
     }
@@ -593,6 +611,11 @@ class AdvisorsfeeController extends Controller
         $keyword = $request->Input('keyword');
         $keyyear = $request->Input('year');
 
+        // 2023/09/22
+        // ログインユーザーのユーザー情報を取得する
+        $user    = $this->auth_user_info();
+        $user_id = $user->id;
+
         $organization  = $this->auth_user_organization();
         $organization_id = $organization->id;
 
@@ -641,9 +664,9 @@ class AdvisorsfeeController extends Controller
                                     ->whereNull('advisorsfees.deleted_at')
                                     // ($keyword)の絞り込み
                                     ->where('customers.business_name', 'like', "%$keyword%")
-                                    ->where('year', '=', $keyyear)
+                                    ->where('advisorsfees.year', '=', $keyyear)
                                     ->sortable()
-                                    ->paginate(10);
+                                    ->paginate(500);
             } else {
                 // customersを取得
                 $customers = Customer::where('organization_id','=',$organization_id)
@@ -684,9 +707,9 @@ class AdvisorsfeeController extends Controller
                                     ->whereNull('advisorsfees.deleted_at')
                                     // ($keyword)の絞り込み
                                     ->where('customers.business_name', 'like', "%$keyword%")
-                                    ->where('year', '=', $keyyear)
+                                    ->where('advisorsfees.year', '=', $keyyear)
                                     ->sortable()
-                                    ->paginate(10);
+                                    ->paginate(500);
             }
         } else {
             if($organization_id == 0) {
@@ -731,8 +754,15 @@ class AdvisorsfeeController extends Controller
         $nowyear   = $keyyear;
         $keyword2  = $keyword;
 
+        // 2023/09/22
+        $userid = $user_id;
+
+        // 2023/09/22
+        //今月の月を取得
+        $nowmonth = intval($this->get_now_month());
+
         // Log::debug('advisorsfeers store $advisorsfeers = ' . print_r($advisorsfeers, true));
-        $compacts = compact( 'common_no','customers','advisorsfees','nowyear','keyword2' );
+        $compacts = compact( 'userid','common_no','customers','advisorsfees','nowyear','keyword2','nowmonth' );
         Log::info('advisorsfeer serch_custom END');
 
         // return view('advisorsfee.input', ['advisorsfees' => $advisorsfees]);

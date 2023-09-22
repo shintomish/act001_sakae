@@ -4,7 +4,7 @@
 @section('content')
     {{-- <h2>顧問料一覧</h2> --}}
     <div class="text-right">
-        <a class="btn btn-success btn-sm mr-auto" href="{{route('advisorsfee.create')}}">新規登録</a>
+        {{-- <a class="btn btn-success btn-sm mr-auto" href="{{route('advisorsfee.create')}}">新規登録</a> --}}
     </div>
 
     <div class="row">
@@ -17,7 +17,8 @@
 
     <div class="table-responsive">
 
-        <table class="table table-striped table-borderd table-scroll">
+        {{-- <table class="table table-striped table-borderd table-scroll"> --}}
+        <table class="table table-responsive text-nowrap table-striped table-borderd table_sticky">
             <thead>
                 <tr>
                     <th scope="col" class ="col-xs-3 col-md-1 text-end bg-secondary text-left">ID</th>
@@ -346,14 +347,14 @@
                                 <div class="btn-group me-2 mb-0">
                                 <a class="btn btn-primary btn-sm" href="{{ route('advisorsfee.edit',$advisorsfee->id)}}">編集</a>
                                 </div>
-                                <div class="btn-group me-2 mb-0">
+                                {{-- <div class="btn-group me-2 mb-0">
                                     <form action="{{ route('advisorsfee.destroy', $advisorsfee->id)}}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <input class="btn btn-danger btn-sm" type="submit" value="削除" id="btn_del"
                                             onclick='return confirm("削除しますか？");'>
                                     </form>
-                                </div>
+                                </div> --}}
                             </div>
                         </td>
                     </tr>

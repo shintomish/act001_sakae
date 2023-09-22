@@ -228,12 +228,12 @@
                             </li>
                             {{-- 2022/05/20 --}}
                             {{-- 顧問料金 不要 --}}
-                            {{-- <li class="nav-item">
+                            <li class="nav-item">
                                 <a class="nav-link" href="{{route('advisorsfee.input')}}">
                                     <i class="fas fa-wallet"></i>
                                     顧問料金
                                 </a>
-                            </li> --}}
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{route('wokprocbook.input')}}">
                                     <i class="fas fa-address-book"></i>
