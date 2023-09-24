@@ -181,6 +181,24 @@
                         </ul> --}}
                         {{-- 2023/08/17 上コメント --}}
 
+                        {{-- 2023/09/24 以下追加 --}}
+                        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                            <span>請求書データ</span>
+                            <a class="link-secondary" href="#" aria-label="Add a new report">
+                                <span data-feather="plus-circle"></span>
+                            </a>
+                        </h6>
+                        <ul class="nav flex-column mb-2">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{route('invoicehistory')}}">
+                                {{-- <a class="nav-link" href=""> --}}
+                                    <i class="fas fa-download"></i>
+                                    請求書データダウンロードページ
+                                </a>
+                            </li>
+                        </ul>
+                        {{-- 2023/09/24 上追加 --}}
+
                         {{-- 2023/08/17 以下追加 --}}
                         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                             <span>アップロード資料</span>
@@ -248,7 +266,16 @@
                         <h1 class="h2">
                         </h1>
                         <!-- 検索エリア -->
+                        @switch ($common_no)
+                        @case ('trans')
                         <form  class="form-inline my-2 my-lg-0 ml-2" action="{{route('transserch')}}" method="GET">
+                            @break;
+                        @case ('invoice')
+                        <form  class="form-inline my-2 my-lg-0 ml-2" action="{{route('invoicehistoryserch')}}" method="GET">
+                            @break;
+                        @default:
+                            @break;
+                        @endswitch
                             @csrf
                             @method('get')
                             <div class='btn-toolbar' role="toolbar">

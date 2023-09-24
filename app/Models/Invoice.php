@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\Invoice as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Kyslik\ColumnSortable\Sortable;         //追記 並び替えをcolumn-sortable使って
 
-class Advisorsfee extends Model
+class Invoice extends Model
 {
     use HasFactory, Notifiable;
     use Sortable;                   //追記
@@ -21,36 +22,24 @@ class Advisorsfee extends Model
     // }
 
     // 参照させたいSQLのテーブル名を指定
-    protected $table = 'advisorsfees';
+    protected $table = 'invoices';
 
-    // 追記(ソートに使うカラムを指定
-    public $sortable = [
-        'id',
-
-    ];
-     public $sortableAs = ['business_name','business_code','individual_class'];
+    public $sortable = ['id','filepath','filename','filesize','created_at'];//追記(ソートに使うカラムを指定
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
+        'filepath',
+        'filename',
+        'filesize',
         'organization_id',
-        'custm_id',
-        'year',
-        'advisor_fee',
-        'fee_01',
-        'fee_02',
-        'fee_03',
-        'fee_04',
-        'fee_05',
-        'fee_06',
-        'fee_07',
-        'fee_08',
-        'fee_09',
-        'fee_10',
-        'fee_11',
-        'fee_12',
-
+        'user_id',
+        'customer_id',
+        'created_at',
+    ];
+    protected $dates = [
+        'created_at',
     ];
 }

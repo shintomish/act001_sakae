@@ -191,7 +191,7 @@
                                 var url      = "/topclient/alert/" + wok_id;
                                 $('#temp_form').method = 'POST';
                                 $('#temp_form').submit();
-    var popup = window.open(url,"preview","width=800, height=500, top=100, left=300 scrollbars=yes");
+    var popup = window.open(url,"preview","width=800, height=600, top=200, left=500 scrollbars=yes");
 
                             });
 

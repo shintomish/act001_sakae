@@ -1,6 +1,13 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
+        <script>
+            history.pushState(null, null, location.href);
+            window.addEventListener('popstate', (e) => {
+                history.go(1);
+            });
+        </script>
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
@@ -16,42 +23,40 @@
         <!-- Tytle -->
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Bootstrap core CSS -->
-        {{-- <link href="{{ asset('css/back/bootstrap.min.css') }}" rel="stylesheet"> --}}
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-
         <!-- Scripts -->
-        {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
-        {{-- <script src="{{ asset('js/jquery-3.6.0.min.js') }}" defer></script> --}}
+        <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
+
+        <!-- Flow Scripts -->
+        <script src="{{ asset('js/flow.js') }}" type="text/javascript"></script>
+
+        <!-- upload Scripts -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/resumable.js/1.1.0/resumable.min.js"></script>
 
         <!-- Fonts -->
-        {{-- <link rel="dns-prefetch" href="//fonts.gstatic.com"> --}}
         <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+
+        {{-- @yield('styles') --}}
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" ></script>
 
         <!-- Custom styles for this template -->
         <link href="{{ asset('css/back/dashboard.css') }}" rel="stylesheet">
 
-        <!-- jQuery -->
-        <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-        <script src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-
-        <!-- My js -->
-        <script src="{{asset('js/back/common.js')}}"></script>
-
-        {{-- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css"> --}}
-
         <!-- flash_message -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
-        <script src = "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
-        {{-- プラグイン(pace.min.js center-atom.css) loading-bar.css center-circle.css--}}
-        <script type="text/javascript" src="{{ asset('js/back/pace.min.js') }}"></script>
-        <link href="{{ asset('css/back/center-circle_d.css') }}" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
         <!-- Place your kit's code here -->
-        {{-- <script src="https://kit.fontawesome.com/376cff10ff.js" crossorigin="anonymous"></script> --}}
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+
+        {{-- 2021/11/21  --}}
+        <script type="text/javascript" src="{{ asset('js/back/pace.min.js') }}"></script>
+        <link href="{{ asset('css/back/center-circle_d.css') }}" rel="stylesheet">
+        {{-- 2021/11/21  --}}
+        {{-- <link href="{{ asset('css/back/loading-circle.css') }}" rel="stylesheet"> --}}
 
         <style>
             .bd-placeholder-img {
@@ -72,22 +77,12 @@
 
     <body>
         <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-            <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="{{ route('top') }}">{{ config('app.name', 'Laravel') }}</a>
+            <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="{{ route('topclient') }}">{{ config('app.name', 'Laravel') }}</a>
             <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="form-control bg-dark w-100" type="text" placeholder="" aria-label="Search"></div>
             <ul class="navbar-nav px-3">
-                {{-- 2021/11/19 変更 --}}
-                {{-- <li class="nav-item text-nowrap">
-                    <a class="nav-link" href="{{ route('logout') }}"
-                        onclick="event.preventDefault();
-                        document.getElementById('logout-form').submit();">{{ __('Logout') }}
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
-                </li> --}}
                 <li class="nav-item text-nowrap">
                     <a class="nav-link" href="{{ route('logout') }}" onclick="return logout(event);">
                         {{-- <span class="text-danger"> --}}
@@ -103,6 +98,7 @@
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf
                     </form>
+
                     <script type="text/javascript">
                         function logout(event){
                                 event.preventDefault();
@@ -154,7 +150,6 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{route('ctluserindex')}}">
-                                    {{-- <span data-feather="users"></span> --}}
                                     <i class="fas fa-users"></i>
                                     複数法人
                                 </a>
@@ -166,7 +161,6 @@
                                 </a>
                             </li>
 
-                            {{-- 2023/09/04 以下「顧客ログイン状態」追加--}}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{route('operationindex')}}">
                                     <i class="fas fa-clipboard"></i>
@@ -226,15 +220,12 @@
                                     会計未処理事業者
                                 </a>
                             </li>
-                            {{-- 2023/09/22 --}}
-                            {{-- 顧問料金 2022/05/20不要 --}}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{route('advisorsfee.input')}}">
                                     <i class="fas fa-wallet"></i>
                                     顧問料金編集
                                 </a>
                             </li>
-                            {{-- 2023/09/22 --}}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{route('invoice.index')}}">
                                     <i class="fas fa-file-upload"></i>
@@ -262,18 +253,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{route('schedule.index')}}">
                                     <i class="fas fa-calendar-check"></i>
-                                    {{-- <i class="fas fa-tasks"></i> --}}
                                     スケジュール
                                 </a>
                             </li>
-                            {{-- 2022/05/20 --}}
-                            {{-- 今月の申請・設立 不要 --}}
-                            {{-- <li class="nav-item">
-                                <a class="nav-link" href="{{route('applestabl.index')}}">
-                                    <i class="fas fa-edit"></i>
-                                    会社申請・設立
-                                </a>
-                            </li> --}}
                         </ul>
                     </div>
                 </nav>
@@ -283,7 +265,6 @@
 
                         <!-- 検索エリア -->
                         @switch ($common_no)
-                            {{-- 2023/09/04 以下「顧客ログイン状態」追加--}}
                             @case ('00_ope')
                                 <!-- タイトル -->
                                 <h3>顧客ログイン状態</h3>
@@ -333,10 +314,14 @@
                                 <form  class="form-inline my-2 my-lg-0 ml-2" action="{{route('notaccounth_custom')}}" method="GET">
                                 @break;
                             @case ('06')
-                                {{-- 2023/09/22 --}}
                                 <!-- タイトル -->
                                 <h3>顧問料金編集</h3>
                                 <form  class="form-inline my-2 my-lg-0 ml-2" action="{{route('advisorsfee_custom')}}" method="GET">
+                                @break;
+                            @case ('06_2')
+                                <!-- タイトル -->
+                                <h3>請求書データ送信・確認</h3>
+                                <form  class="form-inline my-2 my-lg-0 ml-2" action="{{route('invoice_custom')}}" method="GET">
                                 @break;
                             @case ('07')
                                 <!-- タイトル -->
@@ -396,7 +381,12 @@
                                     <!-- 業務名管理 08 -->
                                     <!-- 進捗チェック 09 -->
                                     <!-- スケジュール 10 -->
-                                    @if( $common_no == '07' || $common_no == '07_2' || $common_no == '03' || $common_no == '04'  || $common_no == '06')
+                                    @if( $common_no == '07'   || 
+                                         $common_no == '07_2' || 
+                                         $common_no == '03'   || 
+                                         $common_no == '04'   || 
+                                         $common_no == '06'
+                                        )
 
                                     <select style="margin-right:5px;" class="custom-select" id="year" name="year">
                                         @foreach ($loop_year_flg as $loop_year_flg2)
@@ -454,22 +444,22 @@
                         <!-- 検索エリア -->
                     </div>
 
+                    <div id="page">
+                        <div id="contents">
+                            @yield('content')
+                        </div><!-- / #contents -->
+                    </div><!-- #page -->
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" ></script>
+                    @yield('scripts')
+
                     <!-- フラッシュメッセージ -->
                     @include('components.toastr')
-
-                    <div class="container">
-                        @yield('content')
-                    </div>
-
 
                 </main>
             </div>
         </div>
 
-        <script src="{{ asset('js/back/bootstrap.bundle.min.js') }}" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
-        <script src="{{ asset('js/back/dashboard.js') }}"></script>
 
     </body>
 

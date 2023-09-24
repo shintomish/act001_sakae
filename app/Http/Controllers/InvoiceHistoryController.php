@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use DateTime;
-use App\Models\ImageUpload;
+use App\Models\Invoice;
 use App\Models\Customer;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
-class TransHistoryController extends Controller
+class invoicehistoryController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -29,7 +30,7 @@ class TransHistoryController extends Controller
      */
     public function index()
     {
-        Log::info('transhistory index START');
+        Log::info('invoicehistory index START');
 
         //FileNameは「latestinformation.pdf」固定 2022/09/24
         $books = DB::table('books')->first();
@@ -48,7 +49,7 @@ class TransHistoryController extends Controller
         // 2022/11/10
         $indiv_class = $customer_findrec[0]['individual_class'];
 
-        // Log::debug('transhistory index  customer_findrec = ' . print_r($customer_findrec,true));
+        // Log::debug('invoicehistory index  customer_findrec = ' . print_r($customer_findrec,true));
 
         // Customer(all)情報を取得する
         if($organization_id == 0) {
@@ -67,23 +68,19 @@ class TransHistoryController extends Controller
                         ->get();
         }
 
-        $imageuploads = Imageupload::where('user_id',$u_id)
-            // 削除されていない
-            ->whereNull('deleted_at')
-            // 顧客の絞り込み
-            ->where('customer_id',$customer_id)
-            // sortable()を追加
-            ->sortable()
-            ->orderByRaw('created_at DESC')
-            ->paginate(10);
+        $invoices = invoice::where('customer_id',$customer_id)
+                    ->whereNull('deleted_at')
+                    ->orderByRaw('created_at DESC')
+                    ->sortable()
+                    ->paginate(10);
 
         $keyword = null;
-        $common_no = 'trans';
-        Log::info('transhistory index END');
+        $common_no = 'invoice';
+        Log::info('invoicehistory index END');
 
-        $compacts = compact( 'common_no','indiv_class','imageuploads','customers','customer_findrec','customer_id','latestinfodate','keyword' );
+        $compacts = compact( 'common_no','indiv_class','invoices','customers','customer_findrec','customer_id','latestinfodate','keyword' );
 
-        return view( 'transhistory.index', $compacts );
+        return view( 'invoicehistory.index', $compacts );
     }
 
     /**
@@ -91,9 +88,9 @@ class TransHistoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function serch(ImageUpload $imageupload, Request $request)
+    public function serch(Request $request)
     {
-        Log::info('transhistory serch START');
+        Log::info('invoicehistory serch START');
 
         //FileNameは「latestinformation.pdf」固定 2022/09/24
         $books = DB::table('books')->first();
@@ -120,40 +117,31 @@ class TransHistoryController extends Controller
         // $indiv_class = $customer_findrec[0]['individual_class'];
         $indiv_class = $customers->individual_class;
 
-// Log::debug('transhistory serch  keyword     = ' . print_r($keyword,true));
-// Log::debug('transhistory serch  customer_id = ' . print_r($customer_id,true));
+// Log::debug('invoicehistory serch  keyword     = ' . print_r($keyword,true));
+// Log::debug('invoicehistory serch  customer_id = ' . print_r($customer_id,true));
         // ログインユーザーのユーザー情報を取得する
         $user  = $this->auth_user_info();
         $u_id = $user->id;
         $organization_id =  $user->organization_id;
         // 日付が入力された
         if($keyword) {
-            $imageuploads = Imageupload::where('user_id',$u_id)
-            // 削除されていない
-            ->whereNull('deleted_at')
-            // ($keyword)日付の絞り込み
-            ->whereDate('created_at',$keyword)
-            // ($keyword)顧客の絞り込み
-            ->where('customer_id',$customer_id)
-            // sortable()を追加
-            ->sortable()
-            ->orderByRaw('created_at DESC')
-            ->paginate(10);
+            $invoices = invoice::where('customer_id',$customer_id)
+                ->whereNull('deleted_at')
+                // ($keyword)日付の絞り込み
+                ->whereDate('created_at',$keyword)
+                ->orderByRaw('created_at DESC')
+                ->sortable()
+                ->paginate(10);
         } else {
-            $imageuploads = Imageupload::where('user_id',$u_id)
-            // 削除されていない
-            ->whereNull('deleted_at')
-            // ($keyword)顧客の絞り込み
-            ->where('customer_id',$customer_id)
-            // sortable()を追加
-            ->sortable()
-            ->orderByRaw('created_at DESC')
-            ->paginate(10);
+            $invoices = invoice::where('customer_id',$customer_id)
+                ->whereNull('deleted_at')
+                ->orderByRaw('created_at DESC')
+                ->sortable()
+                ->paginate(10);
         };
 
         // Customer(複数レコード)情報を取得する
         $customer_findrec = $this->auth_customer_findrec();
-
 
         // Customer(all)情報を取得する
         if($organization_id == 0) {
@@ -171,15 +159,15 @@ class TransHistoryController extends Controller
                         ->orderBy('business_name', 'asc')
                         ->get();
         }
-    
+
         // toastrというキーでメッセージを格納
         // session()->flash('toastr', config('toastr.serch'));
-        $common_no = 'trans';
+        $common_no = 'invoice';
 
-        $compacts = compact( 'common_no','indiv_class','imageuploads','customers','customer_findrec','customer_id','latestinfodate','keyword' );
+        $compacts = compact( 'common_no','indiv_class','invoices','customers','customer_findrec','customer_id','latestinfodate','keyword' );
 
-        Log::info('transhistory serch END');
-        return view( 'transhistory.index', $compacts );
+        Log::info('invoicehistory serch END');
+        return view( 'invoicehistory.index', $compacts );
     }
 
     /**
@@ -187,9 +175,9 @@ class TransHistoryController extends Controller
      * 未使用
      * @return \Illuminate\Http\Response
      */
-    public function serch_custom(ImageUpload $imageupload, Request $request)
+    public function serch_custom(invoice $invoice, Request $request)
     {
-        Log::info('transhistory serch_custom START');
+        Log::info('invoicehistory serch_custom START');
 
         //FileNameは「latestinformation.pdf」固定 2022/09/24
         $books = DB::table('books')->first();
@@ -200,7 +188,7 @@ class TransHistoryController extends Controller
         //- Request パラメータ
         //-------------------------------------------------------------
         $customer_id = $request->Input('customer_id');
-        // Log::debug('transhistory serch_custom  customer_id = ' . print_r($customer_id,true));
+        // Log::debug('invoicehistory serch_custom  customer_id = ' . print_r($customer_id,true));
 
         // ログインユーザーのユーザー情報を取得する
         $user  = $this->auth_user_info();
@@ -208,22 +196,20 @@ class TransHistoryController extends Controller
         $organization_id =  $user->organization_id;
         // 顧客が選択された
         if($customer_id) {
-            $imageuploads = Imageupload::where('user_id',$u_id)
+            $invoices = invoice::where('user_id',$u_id)
                 // 削除されていない
                 ->whereNull('deleted_at')
                 // ($keyword)顧客の絞り込み
                 ->where('customer_id',$customer_id)
-                // sortable()を追加
-                ->sortable()
                 ->orderByRaw('created_at DESC')
+                ->sortable()
                 ->paginate(10);
         } else {
-            $imageuploads = Imageupload::where('user_id',$u_id)
+            $invoices = invoice::where('user_id',$u_id)
                 // 削除されていない
                 ->whereNull('deleted_at')
-                // sortable()を追加
-                ->sortable()
                 ->orderByRaw('created_at DESC')
+                ->sortable()
                 ->paginate(10);
         };
 
@@ -245,10 +231,51 @@ class TransHistoryController extends Controller
         // toastrというキーでメッセージを格納
         // session()->flash('toastr', config('toastr.serch'));
 
-        $compacts = compact( 'imageuploads','customers','customer_findrec','customer_id','latestinfodate' );
+        $compacts = compact( 'invoices','customers','customer_findrec','customer_id','latestinfodate' );
 
-        Log::info('transhistory serch_custom END');
-        return view( 'transhistory.index', $compacts );
+        Log::info('invoicehistory serch_custom END');
+        return view( 'invoicehistory.index', $compacts );
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show_up01($id)
+    {
+        Log::info('invoicehistory show_up01 START');
+
+        $invoices = Invoice::where('id',$id)
+                    ->first();
+
+        // php artisan storage:link
+        // INFO  The [public/storage] link has been connected to [storage/app/public].
+
+        // Log::debug('invoicehistory show_up01  invoices = ' . print_r($invoices,true));
+
+        $disk = 'local';  // or 's3'
+        $storage = Storage::disk($disk);
+        $filepath = $invoices->filepath;   // public/invoice/user0171/2023年7月末-20230821T050250Z-001.pdf
+        $filename = $invoices->filename;   // 2023年7月末-20230821T050250Z-001.pdf
+        $pdf_path = $filepath;
+
+        // Log::debug('invoicehistory show_up01  filename = ' . print_r($filename,true));
+        // Log::debug('invoicehistory show_up01  pdf_path = ' . print_r($pdf_path,true));
+
+        $file = $storage->get($pdf_path);
+
+        // $file = 'storage' . $filepath;
+
+        // Log::debug('invoicehistory show_up01  file = ' . print_r($file,true));
+
+        Log::info('invoicehistory show_up01 END');
+
+        return response($file, 200)
+            ->header('Content-Type', 'application/pdf')
+            // ->header('Content-Type', 'application/zip')
+            ->header('Content-Disposition', 'inline; filename="' . $filename . '"');
     }
 
 }

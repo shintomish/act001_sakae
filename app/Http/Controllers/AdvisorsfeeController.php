@@ -81,6 +81,7 @@ class AdvisorsfeeController extends Controller
 
                             ,'customers.id                  as customers_id'
                             ,'customers.business_name       as business_name'
+                            ,'customers.individual_class    as individual_class'
 
                             )
                             ->leftJoin('customers', function ($join) {
@@ -88,9 +89,10 @@ class AdvisorsfeeController extends Controller
                             })
                             ->whereNull('customers.deleted_at')
                             ->whereNull('advisorsfees.deleted_at')
-                            ->where('advisorsfees.year','=',$nowyear)
-                            ->sortable()
-                            // ->orderBy('advisorsfees.id', 'desc')
+                            ->where('customers.year','=',$nowyear)
+                            ->orderBy('customers.business_name', 'asc')
+                            ->orderBy('customers.individual_class', 'asc')
+                    ->sortable()
                             ->paginate(500);
         } else {
             $customers = Customer::where('organization_id','=',$organization_id)
@@ -121,6 +123,7 @@ class AdvisorsfeeController extends Controller
 
                             ,'customers.id                  as customers_id'
                             ,'customers.business_name       as business_name'
+                            ,'customers.individual_class    as individual_class'
 
                             )
                             ->leftJoin('customers', function ($join) {
@@ -130,8 +133,9 @@ class AdvisorsfeeController extends Controller
                             ->whereNull('customers.deleted_at')
                             ->whereNull('advisorsfees.deleted_at')
                             ->where('advisorsfees.year','=',$nowyear)
-                            ->sortable()
-                            // ->orderBy('advisorsfees.id', 'desc')
+                            ->orderBy('customers.business_name', 'asc')
+                            ->orderBy('customers.individual_class', 'asc')
+                    ->sortable()
                             ->paginate(500);
         }
         $common_no = '06';
@@ -194,6 +198,7 @@ class AdvisorsfeeController extends Controller
 
                             ,'customers.id                  as customers_id'
                             ,'customers.business_name       as business_name'
+                            ,'customers.individual_class    as individual_class'
 
                             )
                             ->leftJoin('customers', function ($join) {
@@ -202,8 +207,9 @@ class AdvisorsfeeController extends Controller
                             ->whereNull('customers.deleted_at')
                             ->whereNull('advisorsfees.deleted_at')
                             ->where('advisorsfees.year','=',$nowyear)
+                            ->orderBy('customers.individual_class', 'asc')
+                            ->orderBy('customers.business_name', 'asc')
                             ->sortable()
-                            // ->orderBy('advisorsfees.id', 'desc')
                             ->paginate(500);
         } else {
             $customers = Customer::where('organization_id','=',$organization_id)
@@ -234,6 +240,7 @@ class AdvisorsfeeController extends Controller
 
                             ,'customers.id                  as customers_id'
                             ,'customers.business_name       as business_name'
+                            ,'customers.individual_class    as individual_class'
 
                             )
                             ->leftJoin('customers', function ($join) {
@@ -243,8 +250,9 @@ class AdvisorsfeeController extends Controller
                             ->whereNull('customers.deleted_at')
                             ->whereNull('advisorsfees.deleted_at')
                             ->where('advisorsfees.year','=',$nowyear)
+                            ->orderBy('customers.individual_class', 'asc')
+                            ->orderBy('customers.business_name', 'asc')
                             ->sortable()
-                            // ->orderBy('advisorsfees.id', 'desc')
                             ->paginate(500);
         }
         $common_no = '06';
@@ -477,14 +485,22 @@ class AdvisorsfeeController extends Controller
             // customersを取得
             $customers = Customer::where('organization_id','>=',$organization_id)
                                 // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
-                                ->where('active_cancel','!=', 3)                            // 削除されていない
+                                ->where('active_cancel','!=', 3)
+                                // 2023/09/23
+                                ->orderBy('individual_class', 'asc')
+                                ->orderBy('business_name', 'asc')
+                                // 削除されていない
                                 ->whereNull('deleted_at')
                                 ->get();
         } else {
             // customersを取得
             $customers = Customer::where('organization_id','=',$organization_id)
                                 // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
-                                ->where('active_cancel','!=', 3)                            // 削除されていない
+                                ->where('active_cancel','!=', 3)
+                                // 2023/09/23
+                                ->orderBy('individual_class', 'asc')
+                                ->orderBy('business_name', 'asc')
+                                // 削除されていない
                                 ->whereNull('deleted_at')
                                 ->get();
         }
@@ -653,6 +669,7 @@ class AdvisorsfeeController extends Controller
 
                                     ,'customers.id as customers_id'
                                     ,'customers.business_name as business_name'
+                                    ,'customers.individual_class    as individual_class'
 
                                     )
                                     ->leftJoin('customers', function ($join) {
@@ -665,6 +682,8 @@ class AdvisorsfeeController extends Controller
                                     // ($keyword)の絞り込み
                                     ->where('customers.business_name', 'like', "%$keyword%")
                                     ->where('advisorsfees.year', '=', $keyyear)
+                                    ->orderBy('customers.individual_class', 'asc')
+                                    ->orderBy('customers.business_name', 'asc')
                                     ->sortable()
                                     ->paginate(500);
             } else {
@@ -697,6 +716,7 @@ class AdvisorsfeeController extends Controller
 
                                     ,'customers.id                  as customers_id'
                                     ,'customers.business_name       as business_name'
+                                    ,'customers.individual_class    as individual_class'
 
                                     )
                                     ->leftJoin('customers', function ($join) {
@@ -708,6 +728,8 @@ class AdvisorsfeeController extends Controller
                                     // ($keyword)の絞り込み
                                     ->where('customers.business_name', 'like', "%$keyword%")
                                     ->where('advisorsfees.year', '=', $keyyear)
+                                    ->orderBy('customers.individual_class', 'asc')
+                                    ->orderBy('customers.business_name', 'asc')
                                     ->sortable()
                                     ->paginate(500);
             }
