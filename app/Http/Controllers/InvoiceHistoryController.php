@@ -250,7 +250,7 @@ class invoicehistoryController extends Controller
         $invoices = Invoice::where('id',$id)
                     ->first();
 
-        // php artisan storage:link
+                    // php artisan storage:link
         // INFO  The [public/storage] link has been connected to [storage/app/public].
 
         // Log::debug('invoicehistory show_up01  invoices = ' . print_r($invoices,true));
@@ -266,9 +266,26 @@ class invoicehistoryController extends Controller
 
         $file = $storage->get($pdf_path);
 
-        // $file = 'storage' . $filepath;
+        try {
+            DB::beginTransaction();
+            Log::info('beginTransaction - invoicehistory show_up01 saveFile start');
+            $invoices = Invoice::where('id',$id)->first();
+            $invoices->urgent_flg      = 1;  // 1:既読 2:未読
+            $invoices->save();               //  Inserts
 
-        // Log::debug('invoicehistory show_up01  file = ' . print_r($file,true));
+            DB::commit();
+            Log::info('beginTransaction - invoicehistory show_up01 saveFile end(commit)');
+        }
+        catch(\QueryException $e) {
+            Log::error('exception : ' . $e->getMessage());
+            DB::rollback();
+            Log::info('beginTransaction - invoicehistory show_up01  saveFile end(rollback)');
+            // Statusを変える
+            $status = false;
+            $this->json_put_status($status,$invoices->customer_id);
+            $errormsg = 'invoices更新出来ませんでした。';
+            return \Response::json(['error'=>$errormsg,'status'=>'NG'], 400);
+        }
 
         Log::info('invoicehistory show_up01 END');
 
