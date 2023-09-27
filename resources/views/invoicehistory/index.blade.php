@@ -6,29 +6,7 @@
     <div class="row">
 
         <!-- 検索エリア -->
-        {{-- <form  class="my-2 my-lg-0 ml-2" action="{{route('transserch_custom')}}" method="GET"> --}}
-            {{-- @csrf
-            @method('get')
-            <style>
-                .exright{
-                    text-align: right;
-                }
-            </style> --}}
-            {{-- <div class="exright">
-                <select style="margin-right:5px;" class="custom-select" id="customer_id" name="customer_id">
-                    @foreach ($customer_findrec as $customer_findrec2)
-                        @if ($customer_findrec2['id']==$customer_id)
-                    <option selected="selected" value="{{ $customer_findrec2['id'] }}">{{ $customer_findrec2['business_name'] }}</option>
-                        @else
-                            <option value="{{ $customer_findrec2['id'] }}">{{ $customer_findrec2['business_name'] }}</option>
-                        @endif
 
-                    @endforeach
-                </select>
-                <button type="submit" class="btn btn-secondary btn_sm">検索</button>
-            </div> --}}
-
-        {{-- </form --> --}}
         <!-- 検索エリア -->
     </div>
 
@@ -48,7 +26,7 @@
                 </tr>
             </thead>
 
-            <tbody>
+            <tbody id="table" >
                 @if($invoices->count())
                     @foreach($invoices as $invoice)
                     <tr>
@@ -72,22 +50,23 @@
                                     $fileSize = $insize . ' bytes';
                                 }
                                 $temp = $fileSize;
-                                    // 至急フラグ(1):通常 (2):至急
-                                    if($invoice->urgent_flg == 2) {
-                                            $strvalue = "ダウンロード";
-                                            $clsvalue = "btn btn-danger btn-lg";
-                                            $strstyle = "color:red";
-                                            $strnews  = "NEW";
-                                            $clslight = "light_box";    //点滅
-                                        } else {
-                                            $strvalue = "ダウンロード";
-                                            $clsvalue = "btn btn-secondary btn-lg";
-                                            $strstyle = "";
-                                            $strnews  = "";
-                                            $clslight = "";
-                                    }
-                            @endphp
-                        <td>{{ $str }}</td>
+
+                                // 至急フラグ(1):通常 (2):至急
+                                if($invoice->urgent_flg == 2) {
+                                    $strvalue = "ダウンロード";
+                                    $clsvalue = "btn btn-danger btn-lg";
+                                    $strstyle = "color:red";
+                                    $strnews  = "NEW";
+                                    $clslight = "light_box";    //点滅
+                                } else {
+                                    $strvalue = "ダウンロード";
+                                    $clsvalue = "btn btn-secondary btn-lg";
+                                    $strstyle = "";
+                                    $strnews  = "";
+                                    $clslight = "";
+                                }
+                        @endphp
+                        <td >{{ $str }}</td>
                         <td class="text-left">{{ $temp }}</td>
 
                         <td>
@@ -99,7 +78,7 @@
                         </td>
                         <td>
                             <h6 >
-                                <div name="shine" class="{{$clslight}}" ><label style="margin-top:10px;">{{$strnews}}</label>
+                                <div name="shine_{{$invoice->id}}" class="{{$clslight}}" ><label name="label_{{$invoice->id}}" style="margin-top:10px;" >{{$strnews}}</label>
                                 </div>
                             </h6>
                         </td>
@@ -110,7 +89,7 @@
                                 {{--OK <a class="{{$clsvalue}}" href="{{ route('invoice_pdf01',$invoice->id)}}">{{$strvalue}}</a> --}}
                                 </div>
                             </div>
-                    <input class="{{$clsvalue}}" type="submit" id="btn_del_{{$invoice->id}}" name="btn_del_{{$invoice->id}}" value="{{$strvalue}}" >
+                    <input class="{{$clsvalue}}" type="submit" id="btn_del_{{$invoice->id}}" name="btn_del_{{$invoice->id}}" id2="btn_del_{{$invoice->urgent_flg}}" value="{{$strvalue}}" >
                         </td>
                     </tr>
                     @endforeach
@@ -146,20 +125,98 @@
                 }
             </style>
             <script type="text/javascript">
-                $(function() {
-                    $('input[name^="btn_del_"]').click( function(e){
-                        // alert('詳細Click');
-                        var wok_id   = $(this).attr("name").replace('btn_del_', '');
-                        var this_id  = $(this).attr("id");
-                        var url      = "invoice/pdf/" + wok_id;
-                        $('#temp_form').method = 'POST';
-                        $('#temp_form').submit();
-var popup = window.open(url,"preview","width=800, height=600, top=200, left=500 scrollbars=yes");
+                $('input[name^="btn_del_"]').click( function(e){
+                    // alert('詳細Click');
+                    var wok_id       = $(this).attr("name").replace('btn_del_', '');
+                    var this_id      = $(this).attr("id");
+                    var urgent_flg   = $(this).attr("id2").replace('btn_del_', '');
+                    var url      = "invoicehistory/pdf/" + wok_id;
+                    $('#temp_form').method = 'POST';
+                    $('#temp_form').submit();
+                    var popup = window.open(url,"preview","width=800, height=600, top=200, left=500 scrollbars=yes");
+                    change_invoice_info( this_id        // 対象コントロール
+                                        , wok_id        // invoiceテーブルのID
+                                        , urgent_flg    // invoiceテーブルのurgent_flgの値
+                                        );
+                });
+                /**
+                * this_id         : 対象コントロール
+                * wok_id          : invoiceテーブルのID
+                *
+                */
+                function change_invoice_info( this_id
+                                            , wok_id        // invoiceテーブルのID
+                                            , urgent_flg    // invoiceテーブルのurgent_flgの値
+                                            ) {
 
+                    // console.log('urgent_flg');
+                    // console.log(urgent_flg);
+                    
+                    // Ajax通信呼出(データファイルのアップロード)
+                    $.ajax({
+                    // AjaxAPI.callAjax(
+                        url:'{{ route('invoicehistory.update_api') }}',
+                        type:'POST',
+                        dataType:'json',
+                        data : { id:wok_id },
+                        context: document.body,
+                        headers: {'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')},
+                    }).done(function(json) {
+                        // console.log(json);
+                        $(this).addClass("done");
+                        // 1秒ごとに更新
+                        // setTimeout("change_invoice_info()", 1000);
+                    }).fail(function() {
+                        // alert('エラーが起きました');
+                        console.log('ajax error');
                     });
 
-                });
-                // $(".shine").text("NEW");
+                    // 至急フラグ(1):通常 (2):至急
+                    if(urgent_flg == 1) {
+                        console.log('no repaint');
+                        return;
+                    } else {
+                        // // 2秒ごとに更新
+                        // setTimeout("change_invoice_info()", 2000);
+                        // function (res) {
+                        //     $('#'+this_id).effect("pulsate", { times:2 }, 500);
+                        // }
+                    }
+
+ 
+                    // 再表示
+                    // $.ajax({
+                    //     url: '{{ route('invoicehistory.more') }}',
+                    //     type: 'get',
+                    //     dataType: 'JSON',
+                    //     data : { id:wok_id,flg:urgent_flg},
+                    //     // data : null,
+                    // })
+                    // .done(function(data){
+
+                    //     // Ajaxで取得した要素を追加する場所を指定
+                    //     // $('#table').append(data['view']);
+                    //     // 取得成功
+                    //     //取得jsonデータ
+                    //     var data_stringify = JSON.stringify(data);
+                    //     var data_json = JSON.parse(data_stringify);
+                    //     console.log(data_json);                    
+                    //     //jsonデータから各データを取得
+                    //     // var id = "";
+                    //     // var user_name = "";
+                    
+                    //     // if (data_json[0] != null){
+                    //     //     id = data_json[0]["id"];
+                    //     //     user_name = data_json[0]["user_name"];
+                    //     // }
+                    
+                    //     // $(userid).next('input').val(user_name);
+
+                    // })
+                    // .fail(function(){
+                    //     alert('repaint error');
+                    // });
+                };
             </script>
 
         </table>

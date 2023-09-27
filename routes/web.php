@@ -88,9 +88,11 @@ Route::get('transserch',          'App\Http\Controllers\TransHistoryController@s
 //-----------------------------------------------------------------------------------------------
 //- InvoiceHistory 請求書 送信履歴
 //-----------------------------------------------------------------------------------------------
-Route::get('invoicehistory',         'App\Http\Controllers\InvoiceHistoryController@index')->name('invoicehistory');
-Route::get('invoicehistoryserch',    'App\Http\Controllers\InvoiceHistoryController@serch')->name('invoicehistoryserch');
-Route::get('invoice/pdf/{id}',       'App\Http\Controllers\InvoiceHistoryController@show_up01')->name('invoice_pdf01');
+Route::get('invoicehistory',             'App\Http\Controllers\InvoiceHistoryController@index')->name('invoicehistory');
+Route::get('invoicehistoryserch',        'App\Http\Controllers\InvoiceHistoryController@serch')->name('invoicehistoryserch');
+Route::get('invoicehistory/pdf/{id}',    'App\Http\Controllers\InvoiceHistoryController@show_up01')->name('invoice_pdf01');
+Route::get('invoicehistorymore',         'App\Http\Controllers\InvoiceHistoryController@more')->name('invoicehistory.more');
+Route::post('invoicehistory/update_api', 'App\Http\Controllers\InvoiceHistoryController@update_api')->name('invoicehistory.update_api');
 
 //-----------------------------------------------------------------------------------------------
 //- top 事務所 00_3
@@ -201,13 +203,22 @@ Route::post('advisorsfee/update_api',  'App\Http\Controllers\AdvisorsfeeControll
 Route::resource('advisorsfee',         'App\Http\Controllers\AdvisorsfeeController');
 
 //-----------------------------------------------------------------------------------------------
-//- 事務所 invoice 請求書 送信・確認
+//- 事務所 invoice 請求書 送信
 //-----------------------------------------------------------------------------------------------
 Route::get('invoice/index',        'App\Http\Controllers\InvoiceController@index')->name('invoicein');
 Route::get('invoice/custom',       'App\Http\Controllers\InvoiceController@serch_custom')->name('invoice_custom');
 Route::get('invoice/serch',        'App\Http\Controllers\InvoiceController@serch')->name('invoiceserch');
 Route::post('invoice/upload/{id}', 'App\Http\Controllers\InvoiceController@postUpload')->name('invoicepostUpload');
 Route::resource('invoice',         'App\Http\Controllers\InvoiceController');
+
+//-----------------------------------------------------------------------------------------------
+//- 事務所 invoiceconfirm 請求書 確認
+//-----------------------------------------------------------------------------------------------
+Route::get('invoiceconfirm/index',        'App\Http\Controllers\InvoiceconfirmController@index')->name('invoiceconfirmin');
+Route::get('invoiceconfirm/custom',       'App\Http\Controllers\InvoiceconfirmController@serch_custom')->name('invoiceconfirm_custom');
+Route::get('invoiceconfirm/serch',        'App\Http\Controllers\InvoiceconfirmController@serch')->name('invoiceconfirmserch');
+Route::post('invoiceconfirm/upload/{id}', 'App\Http\Controllers\InvoiceconfirmController@postUpload')->name('invoiceconfirmpostUpload');
+Route::resource('invoiceconfirm',         'App\Http\Controllers\InvoiceconfirmController');
 
 //-----------------------------------------------------------------------------------------------
 //- 事務所 wokprocbook 税理士業務処理簿 07

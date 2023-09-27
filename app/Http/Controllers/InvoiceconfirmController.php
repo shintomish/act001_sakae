@@ -17,7 +17,7 @@ $request = Request::createFromGlobals();
 use Flow\Config as FlowConfig;
 use Flow\Request as FlowRequest;
 
-class InvoiceController extends Controller
+class InvoiceconfirmController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -42,7 +42,7 @@ class InvoiceController extends Controller
         $userid = $user->id;
         $organization_id =  $user->organization_id;
 
-        Log::info('invoice index START $user->name = ' . print_r($user->name ,true));
+        Log::info('invoiceconfirmindex START $user->name = ' . print_r($user->name ,true));
 
         // customersを取得
         if($organization_id == 0) {
@@ -64,7 +64,7 @@ class InvoiceController extends Controller
         }
         $customer_id = $customer_findrec[0]['id'];
 
-        Log::debug('invoice index customer_id  = ' . print_r($customer_id ,true));
+        Log::debug('invoiceconfirmindex customer_id  = ' . print_r($customer_id ,true));
 
         // 法人/個人
         $indiv_class = $customer_findrec[0]['individual_class'];
@@ -82,26 +82,27 @@ class InvoiceController extends Controller
                         ->whereNull('deleted_at')
                         ->orderBy('created_at', 'desc')
                         ->sortable()
-                        ->paginate(5);
+                        ->paginate(50);
         } else {
             $invoices = Invoice::where('organization_id','=',$organization_id)
                         ->where('customer_id','=',$customer_id)
                         ->whereNull('deleted_at')
                         ->orderBy('created_at', 'desc')
                         ->sortable()
-                        ->paginate(5);
+                        ->paginate(50);
         }
 
         $jsonfile = storage_path() . "/tmp/invoice_info_status_". $customer_id. ".json";
-            // Log::debug('invoice index $jsonfile  = ' . print_r($jsonfile ,true));
+            // Log::debug('invoiceconfirmindex $jsonfile  = ' . print_r($jsonfile ,true));
 
         $keyword2  = null;
-        $common_no = '06_2';
+        $common_no = '06_1';
         $compacts = compact('keyword2','nowyear','common_no','userid','invoices', 'customer_findrec','customer_id','jsonfile' );
 
-        Log::info('invoice index END');
+        Log::info('invoiceconfirmindex END');
 
-        return view( 'invoice.index', $compacts );
+        return view( 'invoiceconfirm.index', $compacts );
+
     }
 
     /**
@@ -111,7 +112,7 @@ class InvoiceController extends Controller
      */
     public function serch(Request $request)
     {
-        Log::info('invoice serch START');
+        Log::info('invoiceconfirmserch START');
 
         //-------------------------------------------------------------
         //- Request パラメータ
@@ -160,26 +161,26 @@ class InvoiceController extends Controller
                         ->whereNull('deleted_at')
                         ->orderBy('created_at', 'desc')
                         ->sortable()
-                        ->paginate(5);
+                        ->paginate(50);
         } else {
             $invoices = Invoice::where('organization_id','=',$organization_id)
                         ->where('customer_id','=',$customer_id)
                         ->whereNull('deleted_at')
                         ->orderBy('created_at', 'desc')
                         ->sortable()
-                        ->paginate(5);
+                        ->paginate(50);
         }
 
 
         $jsonfile = storage_path() . "/tmp/invoice_info_status_". $customer_id. ".json";
-        // Log::debug('invoice index $jsonfile  = ' . print_r($jsonfile ,true));
+        // Log::debug('invoiceconfirmindex $jsonfile  = ' . print_r($jsonfile ,true));
 
         $keyword2  = null;
-        $common_no = '06_2';
+        $common_no = '06_1';
         $compacts = compact('keyword2','nowyear','common_no','userid','invoices', 'customer_findrec','customer_id','jsonfile' );
     
-        Log::info('invoice serch END');
-        return view( 'invoice.index', $compacts );
+        Log::info('invoiceconfirmserch END');
+        return view( 'invoiceconfirm.index', $compacts );
 
     }
 
@@ -190,7 +191,7 @@ class InvoiceController extends Controller
      */
     public function serch_custom(Request $request)
     {
-        Log::info('invoice serch_custom START');
+        Log::info('invoiceconfirmserch_custom START');
 
         //-------------------------------------------------------------
         //- Request パラメータ
@@ -267,17 +268,17 @@ class InvoiceController extends Controller
                         ->whereNull('deleted_at')
                         ->orderBy('created_at', 'desc')
                         ->sortable()
-                        ->paginate(5);
+                        ->paginate(50);
         } else {
             $invoices = Invoice::where('organization_id','=',$organization_id)
                         ->where('customer_id','=',$customer_id)
                         ->whereNull('deleted_at')
                         ->orderBy('created_at', 'desc')
                         ->sortable()
-                        ->paginate(5);
+                        ->paginate(50);
         }
 
-        $common_no = '06_2';
+        $common_no = '06_1';
 
         // * 選択された年を取得
         $nowyear   = $keyyear;
@@ -291,7 +292,7 @@ class InvoiceController extends Controller
         Log::info('invoicer serch_custom END');
 
         // return view('invoice.input', ['invoices' => $invoices]);
-        return view('invoice.index', $compacts);
+        return view('invoiceconfirm.index', $compacts);
     }
 
     public function post(Request $data)
@@ -309,7 +310,7 @@ class InvoiceController extends Controller
      */
     public function show_up01()
     {
-        Log::info('Invoice show_up01 インボイス START');
+        Log::info('invoiceconfirmshow_up01 インボイス START');
 
         // $disk = 'local';  // or 's3'
         // $storage = Storage::disk($disk);
@@ -317,7 +318,7 @@ class InvoiceController extends Controller
         // $pdf_path = 'public/pdf/' . $file_name;
         // $file = $storage->get($pdf_path);
 
-        Log::info('Invoice show_up01 インボイス END');
+        Log::info('invoiceconfirmshow_up01 インボイス END');
 
         // return response($file, 200)
         //     ->header('Content-Type', 'application/pdf')
@@ -333,7 +334,7 @@ class InvoiceController extends Controller
      */
     public function postUpload_info($customer_id)
     {
-        Log::info('invoice postUpload_info  START');
+        Log::info('invoiceconfirmpostUpload_info  START');
 
         // ログインユーザーのユーザー情報を取得する
         $user = $this->auth_user_info();
@@ -352,12 +353,12 @@ class InvoiceController extends Controller
 
         $compacts = compact( 'u_id','o_id', 'customer_id', 'foldername','business_name','folderpath','dateNew' );
 
-        Log::info('invoice postUpload_info $compacts[customer_id]  = ' . print_r($compacts['customer_id'] ,true));
+        Log::info('invoiceconfirmpostUpload_info $compacts[customer_id]  = ' . print_r($compacts['customer_id'] ,true));
 
         // * ログインユーザーのCustomerオブジェクトをjsonにSetする
         $this->json_put_info_set($u_id, $o_id,$customer_id, $foldername, $business_name,$folderpath,$dateNew);
 
-        Log::info('invoice postUpload_info  END');
+        Log::info('invoiceconfirmpostUpload_info  END');
 
         return  $compacts;
 
@@ -370,7 +371,7 @@ class InvoiceController extends Controller
      */
     public function postUpload($customer_id, Request $request)
     {
-        Log::info('invoice postUpload  START');
+        Log::info('invoiceconfirmpostUpload  START');
 
         $jsonfile = storage_path() . "/tmp/invoice_info_status_". $customer_id. ".json";
         $jsonUrl = $jsonfile; //JSONファイルの場所とファイル名を記述
@@ -387,11 +388,11 @@ class InvoiceController extends Controller
             // 2023/09/20
             if(empty($obj)){
                 $obj[0] = $this->postUpload_info($customer_id);
-                Log::info('invoice postUpload empty');
+                Log::info('invoiceconfirmpostUpload empty');
             } else {
                 // $obj = $obj["res"]["info"];
                 $obj[0] = $this->postUpload_info($customer_id);
-                Log::info('invoice postUpload not empty');
+                Log::info('invoiceconfirmpostUpload not empty');
             }
 
             // $obj = json_decode($json, true);
@@ -400,10 +401,10 @@ class InvoiceController extends Controller
             //     $status = false;
             //     $status = $val["status"];
             // }
-            // Log::info('invoice postUpload  jsonUrl OK');
+            // Log::info('invoiceconfirmpostUpload  jsonUrl OK');
         } else {
             // echo "データがありません";
-            // Log::info('invoice postUpload  jsonUrl NG');
+            // Log::info('invoiceconfirmpostUpload  jsonUrl NG');
 
         }
 
@@ -443,7 +444,7 @@ class InvoiceController extends Controller
         if ($totalSize && $totalSize > $maxtatalsize)
         {
             $errormsg = 'ファイルサイズが大きすぎます。アップロード可能なサイズは '. $maxtataldisp. ' MBまでです。';
-            Log::info('invoice postUpload  failesize to big ');
+            Log::info('invoiceconfirmpostUpload  failesize to big ');
             // Statusを変える
             $status = false;
             $this->json_put_status($status,$customer_id);
@@ -457,19 +458,19 @@ class InvoiceController extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             if ($file->checkChunk()) {
                 header("HTTP/1.1 200 Ok");
-                Log::info('invoice postUpload HTTP/1.1 200 Ok ');
+                Log::info('invoiceconfirmpostUpload HTTP/1.1 200 Ok ');
             } else {
                 //HTTP のレスポンスコード 204 No Content は、リクエストが成功した事を示しますが、
                 //クライアントは現在のページから遷移する必要はありません。
                 //レスポンスコード 204 が返された場合は、デフォルトでキャッシュ可能になっています。
                 //そのようなレスポンスには、 ETag ヘッダーが含まれています。
                 header("HTTP/1.1 204 No Content");
-                Log::info('invoice postUpload HTTP/1.1 204 No Content ');
+                Log::info('invoiceconfirmpostUpload HTTP/1.1 204 No Content ');
                 return ;
             }
         } else {
             if ($file->validateChunk()) {
-                // Log::info('invoice postUpload validateChunk ok ');
+                // Log::info('invoiceconfirmpostUpload validateChunk ok ');
                 $file->saveChunk();
             } else {
 
@@ -478,13 +479,13 @@ class InvoiceController extends Controller
                 //送信されたリクエストを処理できなかったことを示すHTTPステータスコードです。
                 // error, invalid chunk upload request, retry
                 header("HTTP/1.1 400 Bad Request");
-                Log::debug('invoice postUpload HTTP/1.1 400 Bad Request ');
+                Log::debug('invoiceconfirmpostUpload HTTP/1.1 400 Bad Request ');
                 return ;
 
                 // // strage/tmp
                 // $file->deleteChunks();
-                // Log::debug('invoice postUpload HTTP/1.1 400 Bad Request ');
-                // Log::debug('invoice postUpload_info  validateChunk not   $uploadFile[name]  = ' . print_r($uploadFile['name'] ,true));
+                // Log::debug('invoiceconfirmpostUpload HTTP/1.1 400 Bad Request ');
+                // Log::debug('invoiceconfirmpostUpload_info  validateChunk not   $uploadFile[name]  = ' . print_r($uploadFile['name'] ,true));
 
                 $errormsg = 'アップロード出来ませんでした。';
                 // Indicate that we are not done with all the chunks.
@@ -510,7 +511,7 @@ class InvoiceController extends Controller
         $path =  $filedir . $fileName;
         $storage_path = storage_path() . $path;
 
-        Log::info('invoice postUpload  $fileName = ' . print_r($fileName,true));
+        Log::info('invoiceconfirmpostUpload  $fileName = ' . print_r($fileName,true));
         if ($file->validateFile() && $file->save($storage_path))
         {
             // strage/tmp
@@ -548,14 +549,14 @@ class InvoiceController extends Controller
             $status = false;
             $this->json_put_status($status,$customer_id);
 
-            Log::info('invoice postUpload  END');
+            Log::info('invoiceconfirmpostUpload  END');
 
             // $data = 'ok';
             // return \Response::json($data, 200);
             return \Response::json(['error'=>'アップロードが正常に終了しました。','status'=>'OK'], 200);
         } else {
             // This is not a final chunk, continue to upload
-            Log::info('invoice postUpload  This is not a final chunk, continue to upload ');
+            Log::info('invoiceconfirmpostUpload  This is not a final chunk, continue to upload ');
         }
 
     }
@@ -564,7 +565,7 @@ class InvoiceController extends Controller
      */
     public function json_put_status($status,$customer_id)
     {
-        Log::info('invoice json_put_status  START');
+        Log::info('invoiceconfirmjson_put_status  START');
 
         $jsonfile = "";
         $arr = array(
@@ -581,7 +582,7 @@ class InvoiceController extends Controller
         $jsonfile = storage_path() . "/tmp/invoice_info_status_". $customer_id. ".json";
 
         file_put_contents($jsonfile , $arr_status);
-        Log::info('invoice json_put_status  END');
+        Log::info('invoiceconfirmjson_put_status  END');
     }
 
     /**
@@ -589,7 +590,7 @@ class InvoiceController extends Controller
      */
     public function json_put_info_set($u_id, $o_id, $customer_id, $foldername, $business_name, $folderpath, $dateNew)
     {
-        Log::info('invoice json_put_info_set  START');
+        Log::info('invoiceconfirmjson_put_info_set  START');
 
         $arr = array(
             "res" => array(
@@ -611,7 +612,7 @@ class InvoiceController extends Controller
         $jsonfile = storage_path() . "/tmp/invoice_info_". $customer_id. ".json";
 
         file_put_contents($jsonfile , $arr);
-        Log::info('invoice json_put_info_set  END');
+        Log::info('invoiceconfirmjson_put_info_set  END');
     }
 
     /**
@@ -619,11 +620,11 @@ class InvoiceController extends Controller
      */
     public function json_get_info($customer_id)
     {
-        Log::info('invoice json_get_info  START');
+        Log::info('invoiceconfirmjson_get_info  START');
 
         $jsonfile = storage_path() . "/tmp/invoice_info_". $customer_id. ".json";
 
-        // Log::debug('invoice json_get_info  jsonfile = ' . print_r($jsonfile,true));
+        // Log::debug('invoiceconfirmjson_get_info  jsonfile = ' . print_r($jsonfile,true));
 
         // $jsonUrl = "invoice_info.json"; //JSONファイルの場所とファイル名を記述
         $jsonUrl = $jsonfile; //JSONファイルの場所とファイル名を記述
@@ -639,10 +640,10 @@ class InvoiceController extends Controller
             // 2023/09/20
             if(empty($obj)){
                 $obj[0] = $this->postUpload_info($customer_id);
-                Log::info('invoice json_get_info empty');
+                Log::info('invoiceconfirmjson_get_info empty');
             } else {
                 $obj = $obj["res"]["info"];
-                Log::info('invoice json_get_info not empty');
+                Log::info('invoiceconfirmjson_get_info not empty');
             }
 
             foreach($obj as $key => $val) {
@@ -655,14 +656,14 @@ class InvoiceController extends Controller
                 $dateNew       = $val["dateNew"];
             }
             $check_flg = 1;
-            // Log::info('invoice json_get_info  OK');
+            // Log::info('invoiceconfirmjson_get_info  OK');
         } else {
             echo "データがありません";
-            Log::info('invoice json_get_info  NG');
+            Log::info('invoiceconfirmjson_get_info  NG');
         }
         $compacts = compact( 'u_id','o_id', 'customer_id', 'foldername','business_name','folderpath','dateNew' );
 
-        Log::info('invoice json_get_info  END');
+        Log::info('invoiceconfirmjson_get_info  END');
         return  $compacts;
     }
 

@@ -39,7 +39,7 @@ class invoicehistoryController extends Controller
 
         // ログインユーザーのユーザー情報を取得する
         $user  = $this->auth_user_info();
-        $u_id = $user->id;
+        $u_id  = $user->id;
         $organization_id =  $user->organization_id;
 
         // Customer(複数レコード)情報を取得する
@@ -68,7 +68,7 @@ class invoicehistoryController extends Controller
                         ->get();
         }
 
-        $invoices = invoice::where('customer_id',$customer_id)
+        $invoices = Invoice::where('customer_id',$customer_id)
                     ->whereNull('deleted_at')
                     ->orderByRaw('created_at DESC')
                     ->sortable()
@@ -125,7 +125,7 @@ class invoicehistoryController extends Controller
         $organization_id =  $user->organization_id;
         // 日付が入力された
         if($keyword) {
-            $invoices = invoice::where('customer_id',$customer_id)
+            $invoices = Invoice::where('customer_id',$customer_id)
                 ->whereNull('deleted_at')
                 // ($keyword)日付の絞り込み
                 ->whereDate('created_at',$keyword)
@@ -133,7 +133,7 @@ class invoicehistoryController extends Controller
                 ->sortable()
                 ->paginate(10);
         } else {
-            $invoices = invoice::where('customer_id',$customer_id)
+            $invoices = Invoice::where('customer_id',$customer_id)
                 ->whereNull('deleted_at')
                 ->orderByRaw('created_at DESC')
                 ->sortable()
@@ -196,7 +196,7 @@ class invoicehistoryController extends Controller
         $organization_id =  $user->organization_id;
         // 顧客が選択された
         if($customer_id) {
-            $invoices = invoice::where('user_id',$u_id)
+            $invoices = Invoice::where('user_id',$u_id)
                 // 削除されていない
                 ->whereNull('deleted_at')
                 // ($keyword)顧客の絞り込み
@@ -205,7 +205,7 @@ class invoicehistoryController extends Controller
                 ->sortable()
                 ->paginate(10);
         } else {
-            $invoices = invoice::where('user_id',$u_id)
+            $invoices = Invoice::where('user_id',$u_id)
                 // 削除されていない
                 ->whereNull('deleted_at')
                 ->orderByRaw('created_at DESC')
@@ -230,8 +230,9 @@ class invoicehistoryController extends Controller
 
         // toastrというキーでメッセージを格納
         // session()->flash('toastr', config('toastr.serch'));
-
-        $compacts = compact( 'invoices','customers','customer_findrec','customer_id','latestinfodate' );
+        $common_no = 'invoice';
+        $keyword = null;
+        $compacts = compact( 'common_no','invoices','customers','customer_findrec','customer_id','latestinfodate','keyword' );
 
         Log::info('invoicehistory serch_custom END');
         return view( 'invoicehistory.index', $compacts );
@@ -266,26 +267,26 @@ class invoicehistoryController extends Controller
 
         $file = $storage->get($pdf_path);
 
-        try {
-            DB::beginTransaction();
-            Log::info('beginTransaction - invoicehistory show_up01 saveFile start');
-            $invoices = Invoice::where('id',$id)->first();
-            $invoices->urgent_flg      = 1;  // 1:既読 2:未読
-            $invoices->save();               //  Inserts
+        // try {
+        //     DB::beginTransaction();
+        //     Log::info('beginTransaction - invoicehistory show_up01 saveFile start');
+        //     $invoices = Invoice::where('id',$id)->first();
+        //     $invoices->urgent_flg      = 1;  // 1:既読 2:未読
+        //     $invoices->save();               //  Inserts
 
-            DB::commit();
-            Log::info('beginTransaction - invoicehistory show_up01 saveFile end(commit)');
-        }
-        catch(\QueryException $e) {
-            Log::error('exception : ' . $e->getMessage());
-            DB::rollback();
-            Log::info('beginTransaction - invoicehistory show_up01  saveFile end(rollback)');
-            // Statusを変える
-            $status = false;
-            $this->json_put_status($status,$invoices->customer_id);
-            $errormsg = 'invoices更新出来ませんでした。';
-            return \Response::json(['error'=>$errormsg,'status'=>'NG'], 400);
-        }
+        //     DB::commit();
+        //     Log::info('beginTransaction - invoicehistory show_up01 saveFile end(commit)');
+        // }
+        // catch(\QueryException $e) {
+        //     Log::error('exception : ' . $e->getMessage());
+        //     DB::rollback();
+        //     Log::info('beginTransaction - invoicehistory show_up01  saveFile end(rollback)');
+        //     // Statusを変える
+        //     $status = false;
+        //     $this->json_put_status($status,$invoices->customer_id);
+        //     $errormsg = 'invoices更新出来ませんでした。';
+        //     return \Response::json(['error'=>$errormsg,'status'=>'NG'], 400);
+        // }
 
         Log::info('invoicehistory show_up01 END');
 
@@ -294,5 +295,114 @@ class invoicehistoryController extends Controller
             // ->header('Content-Type', 'application/zip')
             ->header('Content-Disposition', 'inline; filename="' . $filename . '"');
     }
+    /**
+     * [webapi]invoiceテーブルの更新
+     */
+    public function update_api(Request $request)
+    {
+        Log::info('update_api invoicehistory START');
 
+        // Log::debug('update_api request = ' .print_r($request->all(),true));
+        $id = $request->input('id');
+
+        $urgent_flg     = 1;  // 1:既読 2:未読
+
+        $counts = array();
+        $update = [];
+        $update['urgent_flg'] = $urgent_flg;
+        $update['updated_at'] = date('Y-m-d H:i:s');
+        // Log::debug('update_api invoicehistory update : ' . print_r($update,true));
+
+        $status = array();
+        DB::beginTransaction();
+        Log::info('update_api invoicehistory beginTransaction - start');
+        try{
+            // 更新処理
+            Invoice::where( 'id', $id )->update($update);
+
+            $status = array( 'error_code' => 0, 'message'  => 'Your data has been changed!' );
+            $counts = 1;
+            DB::commit();
+            Log::info('update_api invoicehistory beginTransaction - end');
+        }
+        catch(Exception $e){
+            Log::error('update_api invoicehistory exception : ' . $e->getMessage());
+            DB::rollback();
+            Log::info('update_api invoicehistory beginTransaction - end(rollback)');
+            echo "エラー：" . $e->getMessage();
+            $counts = 0;
+            $status = array( 'error_code' => 501, 'message'  => $e->getMessage() );
+        }
+
+        Log::info('update_api invoicehistory END');
+        return response()->json([ compact('status','counts') ]);
+
+    }
+    
+    public function more(Request $request)
+    {
+        // 2023/09/26 うまくいかないので未使用
+        // $page = $request->input('page');
+        // $informations = viewに渡したいデータを取得
+        // return response()->json([
+        //     'list' => view('admin.information.more', compact('informations'))->render()
+        // ]);
+
+        Log::info('invoicehistory more START');
+
+        // $customer_id = $request->input('id');
+        //FileNameは「latestinformation.pdf」固定 2022/09/24
+        $books = DB::table('books')->first();
+        $str   = ( new DateTime($books->info_date))->format('Y-m-d');
+        $latestinfodate = '最新情報'.'('.$str.')';
+
+        // ログインユーザーのユーザー情報を取得する
+        $user  = $this->auth_user_info();
+        $u_id  = $user->id;
+        $organization_id =  $user->organization_id;
+
+        // Customer(複数レコード)情報を取得する
+        $customer_findrec = $this->auth_customer_findrec();
+        $customer_id = $customer_findrec[0]['id'];
+
+        // 2022/11/10
+        $indiv_class = $customer_findrec[0]['individual_class'];
+
+        // Log::debug('invoicehistory index  customer_findrec = ' . print_r($customer_findrec,true));
+
+        // Customer(all)情報を取得する
+        if($organization_id == 0) {
+            $customers = Customer::whereNull('organization_id','>=',$organization_id)
+                        ->where('active_cancel','!=', 3)
+                        ->whereNull('deleted_at')
+                        ->orderBy('individual_class', 'asc')
+                        ->orderBy('business_name', 'asc')
+                        ->get();
+        } else {
+            $customers = Customer::where('organization_id','=',$organization_id)
+                        ->where('active_cancel','!=', 3)
+                        ->whereNull('deleted_at')
+                        ->orderBy('individual_class', 'asc')
+                        ->orderBy('business_name', 'asc')
+                        ->get();
+        }
+
+        $invoices = Invoice::where('customer_id',$customer_id)
+                    ->whereNull('deleted_at')
+                    ->orderByRaw('created_at DESC')
+                    ->sortable()
+                    ->paginate(10);
+
+        $keyword = null;
+        $common_no = 'invoice';
+
+        $compacts = compact( 'common_no','indiv_class','invoices','customers','customer_findrec','customer_id','latestinfodate','keyword' );
+
+        Log::info('invoicehistory more END');
+
+        return response()->json([
+            'view' => view('invoicehistory.index', $compacts)->render()
+        ]);
+
+    }
 }

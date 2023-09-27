@@ -66,105 +66,6 @@
         <!-- 検索エリア -->
     </div>
     <hr class="mb-4">  {{-- // line --}}
-    <div class="table-responsive">
-
-        <table class="table table-striped table-borderd table-scroll">
-            <thead>
-                <tr>
-                    <th scope="col" class ="col-xs-3 col-md-1 bg-secondary text-left">ID</th>
-                    {{-- <th scope="col" class ="col-xs-3 col-md-4 bg-info text-right">@sortablelink('business_name', '顧客名')</th> --}}
-                    <th scope="col" class ="col-xs-3 col-md-2 bg-info text-right">顧客名</th>
-                    {{-- <th scope="col" class ="col-xs-3 col-md-2 bg-info text-right">ファイルパス</th> --}}
-                    <th scope="col" class ="col-xs-3 col-md-2 bg-info text-right">送信ファイル名</th>
-                    {{-- <th scope="col" class ="col-xs-3 col-md-1 bg-info text-right">@sortablelink('created_at', '送信日')</th> --}}
-                    <th scope="col" class ="col-xs-3 col-md-1 bg-info text-right">ファイルサイズ</th>
-                    <th scope="col" class ="col-xs-3 col-md-1 bg-info text-right">送信日</th>
-                    <th scope="col" class ="col-xs-3 col-md-1 bg-info text-right">未読/既読</th>
-                </tr>
-
-                <tbody>
-                    @if($invoices->count())
-                        @foreach($invoices as $invoices2)
-                            <tr>
-                                {{-- ID --}}
-                                <td>{{ $invoices2->id }}</td>
-
-                                {{-- 社名/氏名 --}}
-                                @foreach ($customer_findrec as $customers2)
-                                    @if ($customers2->id==$invoices2->customer_id)
-                                        <td>{{ $customers2->business_name }}</td>
-                                    @endif
-                                @endforeach
-
-                                {{-- ファイルパス --}}
-                                {{-- <td>{{ $invoices2->filepath }}</td> --}}
-
-                                {{-- ファイル名 --}}
-                                <td>{{ $invoices2->filename }}</td>
-
-                                {{-- ファイルサイズ / 送信日 --}}
-                                @php
-                                    $str = "";
-                                    if (isset($invoices2->created_at)) {
-                                        $str = ( new DateTime($invoices2->created_at))->format('Y-m-d');
-                                    }
-
-                                    $insize = $invoices2->filesize;
-                                    if ($insize >= 1073741824) {
-                                        $fileSize = round($insize / 1024 / 1024 / 1024,1) . ' GB';
-                                    } elseif ($insize >= 1048576) {
-                                        $fileSize = round($insize / 1024 / 1024,1) . ' MB';
-                                    } elseif ($insize >= 1024) {
-                                        $fileSize = round($insize / 1024,1) . ' KB';
-                                    } else {
-                                        $fileSize = $insize . ' bytes';
-                                    }
-                                    $temp = $fileSize;
-
-                                    if($invoices2->urgent_flg == 2) {
-                                        $kidoku = '未読';
-                                        $textcolor = 'text-danger';
-                                    } else {
-                                        $kidoku = '既読';
-                                        $textcolor = 'text-secondary';
-                                    }
-                                @endphp
-                                
-                                {{-- ファイルサイズ --}}
-                                <td class="text-left">{{ $temp }}</td>
-
-                                {{-- 送信日 --}}
-                                <td>{{ $str }}</td>
-
-                                {{-- 未読/既読 --}}
-                                <td>
-                                    <h6>
-                                        <p class={{ $textcolor }}>{{ $kidoku }}</p>
-                                    </h6>
-                                </td>
-                            </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td><p>0件です。</p></td>
-                            <td><p> </p></td>
-                            {{-- <td><p> </p></td> --}}
-                            <td><p> </p></td>
-                            <td><p> </p></td>
-                            <td><p> </p></td>
-                            <td><p> </p></td>
-                        </tr>
-                    @endif
-                </tbody>
-            </thead>
-        </table>
-
-        {{-- ページネーション / pagination）の表示 --}}
-        <ul class="pagination justify-content-center">
-            {{ $invoices->appends(request()->query())->render() }}
-        </ul>
-
-    </div>
 
     <div class="container">
         <h6 class="jumbotron" >請求書データファイルアップロード</h6>
@@ -185,7 +86,8 @@
             </select>
             <a >
                 <span style="margin-left:5px;" style="color:rgb(0, 0, 0)"> アップロード後は、</span>
-                <span style="color:rgb(0, 0, 0)"> ファイルが送信できているか確認してください。</span>
+                <span style="color:blue"> 請求書データ送信確認ページ</span>
+                <span style="color:rgb(0, 0, 0)"> で、ファイルが送信できているか確認してください。</span>
             </a>
             <div class="flow-error">
                 <div class="alert alert-danger">

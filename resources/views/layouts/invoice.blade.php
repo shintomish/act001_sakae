@@ -226,10 +226,17 @@
                                     顧問料金編集
                                 </a>
                             </li>
+                            {{-- 2023/09/26 --}}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{route('invoiceconfirm.index')}}">
+                                    <i class="fas fa-wallet"></i>
+                                    請求書データ送信確認ページ
+                                </a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{route('invoice.index')}}">
                                     <i class="fas fa-file-upload"></i>
-                                    請求書データ送信・確認
+                                    請求書データファイルアップロード
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -318,9 +325,14 @@
                                 <h3>顧問料金編集</h3>
                                 <form  class="form-inline my-2 my-lg-0 ml-2" action="{{route('advisorsfee_custom')}}" method="GET">
                                 @break;
+                            @case ('06_1')
+                                <!-- タイトル -->
+                                <h3>請求書データ送信確認ページ</h3>
+                                <form  class="form-inline my-2 my-lg-0 ml-2" action="{{route('invoiceconfirm_custom')}}" method="GET">
+                                @break;
                             @case ('06_2')
                                 <!-- タイトル -->
-                                <h3>請求書データ送信・確認</h3>
+                                <h3>請求書データファイルアップロード</h3>
                                 <form  class="form-inline my-2 my-lg-0 ml-2" action="{{route('invoice_custom')}}" method="GET">
                                 @break;
                             @case ('07')
@@ -430,7 +442,7 @@
                                     @else
                                         @if( $common_no == '00_3' )
                                         @else
-                                            <input type="text" value="{{$keyword2}}" name="keyword" class="form-control" placeholder="顧客名検索">
+                                            <input  style="margin-right:5px;" type="text" value="{{$keyword2}}" name="keyword" class="form-control" placeholder="顧客名検索">
                                             <div class="input-group-append">
                                                 <button type="submit" class="btn btn-secondary btn_sm">検索</button>
                                             </div>
