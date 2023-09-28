@@ -34,12 +34,18 @@
         <!-- Custom styles for this template -->
         <link href="{{ asset('css/back/dashboard.css') }}" rel="stylesheet">
 
+        <!-- jQuery -->
+        <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src = "https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+        <!-- My js -->
+        <script src="{{asset('js/back/common.js')}}"></script>
+
+        {{-- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css"> --}}
+
         <!-- flash_message -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script src = "https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
         {{-- プラグイン(pace.min.js center-atom.css) loading-bar.css center-circle.css--}}
         <script type="text/javascript" src="{{ asset('js/back/pace.min.js') }}"></script>

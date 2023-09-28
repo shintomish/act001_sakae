@@ -22,7 +22,6 @@
                     <th scope="col">会社名</th>
                     <th scope="col"> </th>
                     <th scope="col">操作</th>
-
                 </tr>
             </thead>
 
@@ -78,8 +77,8 @@
                         </td>
                         <td>
                             <h6 >
-                                <div name="shine_{{$invoice->id}}" class="{{$clslight}}" ><label name="label_{{$invoice->id}}" style="margin-top:10px;" >{{$strnews}}</label>
-                                </div>
+                                <p name="shine_{{$invoice->id}}" id="shine_{{$invoice->id}}" class="{{$clslight}}" ><label name="label_{{$invoice->id}}" style="margin-top:10px;" >{{$strnews}}</label>
+                                </p>
                             </h6>
                         </td>
                         <td>
@@ -124,13 +123,14 @@
                     }
                 }
             </style>
+
             <script type="text/javascript">
                 $('input[name^="btn_del_"]').click( function(e){
-                    // alert('詳細Click');
+                    // alert('ダウンロードbtnClick');
                     var wok_id       = $(this).attr("name").replace('btn_del_', '');
                     var this_id      = $(this).attr("id");
                     var urgent_flg   = $(this).attr("id2").replace('btn_del_', '');
-                    var url      = "invoicehistory/pdf/" + wok_id;
+                    var url          = "invoicehistory/pdf/" + wok_id;
                     $('#temp_form').method = 'POST';
                     $('#temp_form').submit();
                     var popup = window.open(url,"preview","width=800, height=600, top=200, left=500 scrollbars=yes");
@@ -139,6 +139,7 @@
                                         , urgent_flg    // invoiceテーブルのurgent_flgの値
                                         );
                 });
+
                 /**
                 * this_id         : 対象コントロール
                 * wok_id          : invoiceテーブルのID
@@ -148,75 +149,75 @@
                                             , wok_id        // invoiceテーブルのID
                                             , urgent_flg    // invoiceテーブルのurgent_flgの値
                                             ) {
+                    var reqData = new FormData();
+                                                reqData.append( "id"             , wok_id      );
+                    if( null != urgent_flg    ) reqData.append( "urgent_flg"     , urgent_flg );
 
-                    // console.log('urgent_flg');
-                    // console.log(urgent_flg);
-                    
-                    // Ajax通信呼出(データファイルのアップロード)
-                    $.ajax({
-                    // AjaxAPI.callAjax(
-                        url:'{{ route('invoicehistory.update_api') }}',
-                        type:'POST',
-                        dataType:'json',
-                        data : { id:wok_id },
-                        context: document.body,
-                        headers: {'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')},
-                    }).done(function(json) {
-                        // console.log(json);
-                        $(this).addClass("done");
-                        // 1秒ごとに更新
-                        // setTimeout("change_invoice_info()", 1000);
-                    }).fail(function() {
-                        // alert('エラーが起きました');
-                        console.log('ajax error');
-                    });
+                    AjaxAPI.callAjax(
+                        "{{ route('invoicehistory.update_api') }}",
+                        reqData,
+                        function (res) {
+                            var shinename = 'shine_'   + wok_id;
+                            var btnname   = 'btn_del_' + wok_id;
+
+                            // console.log( shinename );
+                            // console.log( btnname );
+
+                            // 至急フラグ(1):通常 (2):至急
+                            if(urgent_flg == 2) {
+                                // 点滅のclass削除
+                                const elem = document.getElementById(shinename);
+                                if (elem) {
+                                    // クラス名を削除
+                                    elem.classList.remove("light_box");
+                                    // テキストを削除
+                                    elem.textContent = "";
+                                } else {
+                                    console.log( 'shine_non' );
+                                }
+
+                                // btnのclass変更
+                                const elem2 = document.getElementById(btnname);
+                                if (elem2) {
+                                    // クラス名を削除
+                                    elem2.classList.remove("btn-danger");
+                                    // クラス名を追加
+                                    elem2.classList.add("btn-secondary");
+                                } else {
+                                    console.log( 'btn_del_non' );
+                                }
+
+                                $('#'+this_id).effect("pulsate", { times:2 }, 500);
+                            }
+                        }
+                    )
 
                     // 至急フラグ(1):通常 (2):至急
                     if(urgent_flg == 1) {
+                        // 何もしない
                         console.log('no repaint');
                         return;
-                    } else {
-                        // // 2秒ごとに更新
-                        // setTimeout("change_invoice_info()", 2000);
-                        // function (res) {
-                        //     $('#'+this_id).effect("pulsate", { times:2 }, 500);
-                        // }
                     }
-
- 
-                    // 再表示
+                    
+                    // Ajax通信呼出(データファイルのアップロード)
                     // $.ajax({
-                    //     url: '{{ route('invoicehistory.more') }}',
-                    //     type: 'get',
-                    //     dataType: 'JSON',
-                    //     data : { id:wok_id,flg:urgent_flg},
-                    //     // data : null,
-                    // })
-                    // .done(function(data){
-
-                    //     // Ajaxで取得した要素を追加する場所を指定
-                    //     // $('#table').append(data['view']);
-                    //     // 取得成功
-                    //     //取得jsonデータ
-                    //     var data_stringify = JSON.stringify(data);
-                    //     var data_json = JSON.parse(data_stringify);
-                    //     console.log(data_json);                    
-                    //     //jsonデータから各データを取得
-                    //     // var id = "";
-                    //     // var user_name = "";
-                    
-                    //     // if (data_json[0] != null){
-                    //     //     id = data_json[0]["id"];
-                    //     //     user_name = data_json[0]["user_name"];
-                    //     // }
-                    
-                    //     // $(userid).next('input').val(user_name);
-
-                    // })
-                    // .fail(function(){
-                    //     alert('repaint error');
+                    //     url:'{{ route('invoicehistory.update_api') }}',
+                    //     type:'POST',
+                    //     dataType:'json',
+                    //     data : { id:wok_id },
+                    //     context: document.body,
+                    //     headers: {'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')},
+                    // }).done(function(json) {
+                    //     // console.log(json);
+                    //     $(this).addClass("done");
+                    //     // 1秒ごとに更新
+                    //     // setTimeout("change_invoice_info()", 1000);
+                    // }).fail(function() {
+                    //     // alert('エラーが起きました');
+                    //     console.log('ajax error');
                     // });
                 };
+
             </script>
 
         </table>
