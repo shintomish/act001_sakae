@@ -146,7 +146,7 @@
             <thead>
                 <tr>
                     <th scope="row" class ="fixed01 bg-info text-right">@sortablelink('refnumber',      '整理番号')</th>
-                    <th scope="row" class ="fixed02 bg-info p-4">@sortablelink('business_name',  '顧客名')</th>
+                    <th scope="row" class ="fixed02 bg-info text-right">@sortablelink('business_name',  '顧客名')</th>
                     <th scope="row" class ="fixed02 bg-info text-right">@sortablelink('busi_class',     '業務区分')</th>
                     <th scope="row" class ="fixed02 bg-info text-right">@sortablelink('contents_class', '内容')</th>
                     <th scope="row" class ="fixed02 bg-info text-right">@sortablelink('facts_class',    '顛末')</th>
