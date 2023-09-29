@@ -51,6 +51,9 @@ class NotaccountController extends Controller
                             ->orWhereNull('final_accounting_at')
                             // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
                             ->where('active_cancel','!=', 3)
+                            // 2023/09/29 add
+                            ->orderBy('individual_class', 'asc')
+                            ->orderBy('business_name', 'asc')
                             ->sortable()
                             ->paginate(300);
             $customers3 = Customer::whereNull('deleted_at')
@@ -66,6 +69,9 @@ class NotaccountController extends Controller
                             // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
                             ->where('active_cancel','!=', 3)
                             ->whereNull('deleted_at')
+                            // 2023/09/29 add
+                            ->orderBy('individual_class', 'asc')
+                            ->orderBy('business_name', 'asc')
                             ->sortable()
                             ->paginate(300);
             $customers3 = Customer::where('organization_id','=',$organization_id)
