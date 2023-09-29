@@ -173,8 +173,7 @@ class AdvisorsfeeController extends Controller
         if($organization_id == 0) {
             $customers = Customer::where('organization_id','>=',$organization_id)
                             // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
-                            ->where('active_cancel','!=', 3)
-                                                        // 削除されていない
+                            // ->where('active_cancel','!=', 3)
                             ->whereNull('deleted_at')
                             ->get();
             $advisorsfees = Advisorsfee::select(
@@ -214,8 +213,7 @@ class AdvisorsfeeController extends Controller
         } else {
             $customers = Customer::where('organization_id','=',$organization_id)
                             // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
-                            ->where('active_cancel','!=', 3)                            // 削除されていない
-                            // 削除されていない
+                            // ->where('active_cancel','!=', 3)                            // 削除されていない
                             ->whereNull('deleted_at')
                             ->get();
 
