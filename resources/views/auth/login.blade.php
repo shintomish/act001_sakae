@@ -53,7 +53,25 @@
             </a>
         @endif
 
+        {{-- 2023/10/03 お詫び対応 --}}
+        <div class="text-center">
+            <div class="btn-group me-2 mb-0">
+             <input class="btn btn-warning btn-sm" type="submit" id="btn_owabi" name="btn_owabi" value="お詫び" >
+            </div>
+        </div>
+
         <p class="mt-5 mb-3 text-muted">AizenSolution Inc &copy; 2011-2023</p>
 
+        {{-- 2023/10/03 お詫び対応 --}}
+        <script type="text/javascript">
+            $('input[name^="btn_owabi"]').click( function(e){
+                // alert('ダウンロードbtnClick');
+                var this_id      = $(this).attr("id");
+                var url          = "/login/alert";
+                $('#temp_form').method = 'POST';
+                $('#temp_form').submit();
+                var popup = window.open(url,"preview","width=700, height=550, top=100, left=400 scrollbars=yes");
+            });
+        </script>
     </form>
 @endsection

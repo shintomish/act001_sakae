@@ -34,6 +34,8 @@ Route::get('log/log', 'App\Http\Controllers\LogController@log');
 //-----------------------------------------------------------------------------------------------
 // Route::get('alert',  'App\View\Components\Alert@render')    -> name('alertindex');
 // Route::resource('alert',  'App\View\Components\Alert');
+// 2023/10/03
+Route::get('login/alert',  'App\Http\Controllers\Auth\LoginController@show')->name('loginalert');
 
 //-----------------------------------------------------------------------------------------------
 //- Actlog
