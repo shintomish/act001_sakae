@@ -187,7 +187,7 @@ class LoginController extends Controller
     システム開発時に開発環境連携に於いて、
     テスト環境の送信元名が反映されてしまった。';
 
-    return view('components.alert', [
+    return view('components.apology', [
         'comment' => $comment,
     ]);
 }

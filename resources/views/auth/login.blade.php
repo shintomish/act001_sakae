@@ -67,7 +67,7 @@
             $('input[name^="btn_owabi"]').click( function(e){
                 // alert('ダウンロードbtnClick');
                 var this_id      = $(this).attr("id");
-                var url          = "/login/alert";
+                var url          = "/login/apology";
                 $('#temp_form').method = 'POST';
                 $('#temp_form').submit();
                 var popup = window.open(url,"preview","width=700, height=550, top=100, left=400 scrollbars=yes");

@@ -30,6 +30,11 @@ Route::group(['middleware' => 'web'], function () {
 Route::get('log/log', 'App\Http\Controllers\LogController@log');
 
 //-----------------------------------------------------------------------------------------------
+//- Apology (お詫び) 2023/10/03
+//-----------------------------------------------------------------------------------------------
+Route::get('login/apology',  'App\Http\Controllers\Auth\LoginController@show')->name('loginapology');
+
+//-----------------------------------------------------------------------------------------------
 //- Alert
 //-----------------------------------------------------------------------------------------------
 // Route::get('alert',  'App\View\Components\Alert@render')    -> name('alertindex');
