@@ -114,7 +114,7 @@ class Controller extends BaseController
         $controlusers = ControlUser::select(
                 'controlusers.id              as id'
                 ,'controlusers.organization_id as organization_id'
-                ,'controlusers.user_id         AS user_id'
+                ,'controlusers.user_id         as user_id'
                 ,'controlusers.customer_id     as customer_id'
                 ,'users.id                     as users_id'
                 ,'users.name                   as users_name'
