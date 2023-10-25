@@ -107,9 +107,40 @@ class Controller extends BaseController
             return $ret_val;
         }
 
-        $controlusers = ControlUser::where('user_id',$u_id)
-            ->whereNull('deleted_at')
-            ->get();
+        // 2023/10/25 解約は表示しない対応
+        // $controlusers = ControlUser::where('user_id',$u_id)
+        //     ->whereNull('deleted_at')
+        //     ->get();
+        $controlusers = ControlUser::select(
+                'controlusers.id              as id'
+                ,'controlusers.organization_id as organization_id'
+                ,'controlusers.user_id         AS user_id'
+                ,'controlusers.customer_id     as customer_id'
+                ,'users.id                     as users_id'
+                ,'users.name                   as users_name'
+                ,'customers.id                 as customers_id'
+                ,'customers.individual_class   as individual_class'
+                ,'customers.active_cancel      as active_cancel'
+                ,'customers.business_name      as business_name'
+                )
+
+                ->leftJoin('users', function ($join) {
+                    $join->on('controlusers.user_id', '=', 'users.id');
+                })
+                ->leftJoin('customers', function ($join) {
+                    $join->on('controlusers.customer_id', '=', 'customers.id');
+                })
+                // `active_cancel` 1:契約 2:SPOT 3:解約',
+                ->where('customers.active_cancel','!=', 3)
+                ->where('controlusers.user_id','=',$u_id)
+                ->whereNull('customers.deleted_at')
+                ->whereNull('users.deleted_at')
+                ->whereNull('controlusers.deleted_at')
+                ->orderBy('customers.individual_class', 'asc')
+                ->orderBy('controlusers.user_id', 'asc')
+                ->orderBy('controlusers.customer_id', 'asc')
+                ->get();
+
         // Log::debug('auth_customer_findrec count = ' . print_r($controlusers->count(),true));
         if($controlusers->count() > 0) {
             $ret_val = array();
