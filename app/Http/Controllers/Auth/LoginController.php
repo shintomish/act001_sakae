@@ -155,41 +155,4 @@ class LoginController extends Controller
 
         return;
     }
-
-    /**
-     * Display the specified resource.
-     * [webapi]お詫びを表示
-     * 2023/10/03
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show()
-    {
-
-    Log::info('login show START');
-
-    Log::info('login show END');
-
-    $comment = 'タイトル：【お詫び】メール送信時の社名誤送信について
-
-    お客様各位
-    
-    いつも、Tax-Affairsをご使用頂きまして誠にありがとうございます。
-    2023年9月29日にて、以下事案が発生致しました。
-    お客様に於かれましては、大変ご迷惑をお掛けし申し訳ありませんでした。
-    発生致しました、事案は修正を完了致しました。
-    今後このような事が起きませんよう、チェック体制を強化して参ります。
-    今後とも何卒宜しくお願い申し上げます。
-    
-    【内容】
-    メール送信時、送信元名の誤送信。
-    【詳細】
-    システム開発時に開発環境連携に於いて、
-    テスト環境の送信元名が反映されてしまった。';
-
-    return view('components.apology', [
-        'comment' => $comment,
-    ]);
-}
-
 }

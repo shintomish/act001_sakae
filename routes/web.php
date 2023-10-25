@@ -30,17 +30,10 @@ Route::group(['middleware' => 'web'], function () {
 Route::get('log/log', 'App\Http\Controllers\LogController@log');
 
 //-----------------------------------------------------------------------------------------------
-//- Apology (お詫び) 2023/10/03
-//-----------------------------------------------------------------------------------------------
-Route::get('login/apology',  'App\Http\Controllers\Auth\LoginController@show')->name('loginapology');
-
-//-----------------------------------------------------------------------------------------------
 //- Alert
 //-----------------------------------------------------------------------------------------------
 // Route::get('alert',  'App\View\Components\Alert@render')    -> name('alertindex');
 // Route::resource('alert',  'App\View\Components\Alert');
-// 2023/10/03
-Route::get('login/alert',  'App\Http\Controllers\Auth\LoginController@show')->name('loginalert');
 
 //-----------------------------------------------------------------------------------------------
 //- Actlog
@@ -59,7 +52,6 @@ Route::post('ajax/chatcr', 'App\Http\Controllers\Ajax\ChatController@create')->n
 //- ChatClient
 //-----------------------------------------------------------------------------------------------
 Route::get('chatclient',         'App\Http\Controllers\ChatClientController@index')->name('chatclientin');
-Route::get('chatclient/serch',   'App\Http\Controllers\ChatClientController@serch')->name('chatclientserch'); // メッセージ一覧を取得
 Route::get('ajax/chatclientin',  'App\Http\Controllers\Ajax\ChatClientController@index')->name('ajaxchatclientin'); // メッセージ一覧を取得
 Route::post('ajax/chatclientcr', 'App\Http\Controllers\Ajax\ChatClientController@create')->name('ajaxchatclientcr'); // チャット登録
 
@@ -92,15 +84,6 @@ Route::post('topclient/upload/{id}','App\Http\Controllers\UploaderController@pos
 Route::get('transhistory',        'App\Http\Controllers\TransHistoryController@index')->name('transhistory');
 Route::get('transserch',          'App\Http\Controllers\TransHistoryController@serch')->name('transserch');
 // Route::get('transserch_custom',   'App\Http\Controllers\TransHistoryController@serch_custom')->name('transserch_custom');
-
-//-----------------------------------------------------------------------------------------------
-//- InvoiceHistory 請求書 送信履歴
-//-----------------------------------------------------------------------------------------------
-Route::get('invoicehistory',             'App\Http\Controllers\InvoiceHistoryController@index')->name('invoicehistory');
-Route::get('invoicehistoryserch',        'App\Http\Controllers\InvoiceHistoryController@serch')->name('invoicehistoryserch');
-Route::get('invoicehistory/pdf/{id}',    'App\Http\Controllers\InvoiceHistoryController@show_up01')->name('invoice_pdf01');
-Route::get('invoicehistorymore',         'App\Http\Controllers\InvoiceHistoryController@more')->name('invoicehistory.more');
-Route::post('invoicehistory/update_api', 'App\Http\Controllers\InvoiceHistoryController@update_api')->name('invoicehistory.update_api');
 
 //-----------------------------------------------------------------------------------------------
 //- top 事務所 00_3
@@ -153,7 +136,6 @@ Route::get('uploadserch_customer', 'App\Http\Controllers\UploadUserController@se
 Route::post('upload_check',        'App\Http\Controllers\UploadUserController@file_check')->name('upload_file_check');
 Route::post('upload_custum',        'App\Http\Controllers\UploadUserController@custum')->name('upload_custum');
 Route::post('uploaduser/update_api',  'App\Http\Controllers\UploadUserController@update_api')->name('uploaduser.update_api');
-
 //-----------------------------------------------------------------------------------------------
 //- 事務所 Filemaneger
 //-----------------------------------------------------------------------------------------------
@@ -176,7 +158,6 @@ Route::resource('newsrepo',   'App\Http\Controllers\NewsrepoController');
 Route::post('newsrepo/sendmail',  'App\Http\Controllers\NewsrepoController@sendmail')->name('newsmail');
 Route::post('newsrepo/temp',  'App\Http\Controllers\NewsrepoController@temp_serch')->name('newstemp');
 // Route::post('newsrepo/non',  'App\Http\Controllers\NewsrepoController@non_serch')->name('newsnon');
-
 //-----------------------------------------------------------------------------------------------
 //- 事務所 spedelidate 納期特例 03
 //-----------------------------------------------------------------------------------------------
@@ -209,24 +190,6 @@ Route::get('advisorsfee_custom',       'App\Http\Controllers\AdvisorsfeeControll
 Route::get('advisorsfee/input',        'App\Http\Controllers\AdvisorsfeeController@input')->name('advisorsfee.input');
 Route::post('advisorsfee/update_api',  'App\Http\Controllers\AdvisorsfeeController@update_api')->name('advisorsfee.update_api');
 Route::resource('advisorsfee',         'App\Http\Controllers\AdvisorsfeeController');
-
-//-----------------------------------------------------------------------------------------------
-//- 事務所 invoice 請求書 送信
-//-----------------------------------------------------------------------------------------------
-Route::get('invoice/index',        'App\Http\Controllers\InvoiceController@index')->name('invoicein');
-Route::get('invoice/custom',       'App\Http\Controllers\InvoiceController@serch_custom')->name('invoice_custom');
-Route::get('invoice/serch',        'App\Http\Controllers\InvoiceController@serch')->name('invoiceserch');
-Route::post('invoice/upload/{id}', 'App\Http\Controllers\InvoiceController@postUpload')->name('invoicepostUpload');
-Route::resource('invoice',         'App\Http\Controllers\InvoiceController');
-
-//-----------------------------------------------------------------------------------------------
-//- 事務所 invoiceconfirm 請求書 確認
-//-----------------------------------------------------------------------------------------------
-Route::get('invoiceconfirm/index',        'App\Http\Controllers\InvoiceconfirmController@index')->name('invoiceconfirmin');
-Route::get('invoiceconfirm/custom',       'App\Http\Controllers\InvoiceconfirmController@serch_custom')->name('invoiceconfirm_custom');
-Route::get('invoiceconfirm/serch',        'App\Http\Controllers\InvoiceconfirmController@serch')->name('invoiceconfirmserch');
-Route::post('invoiceconfirm/upload/{id}', 'App\Http\Controllers\InvoiceconfirmController@postUpload')->name('invoiceconfirmpostUpload');
-Route::resource('invoiceconfirm',         'App\Http\Controllers\InvoiceconfirmController');
 
 //-----------------------------------------------------------------------------------------------
 //- 事務所 wokprocbook 税理士業務処理簿 07
