@@ -212,7 +212,7 @@
                         </h6>
                         {{-- 2023/11/17 上追加 --}}
 
-                        {{-- 2023/11/06 以下追加  --}}
+                        {{-- 2023/11/06 以下追加 --}}
                         @if($indiv_class == 1 )
                             <ul class="nav flex-column mb-2">
                                 <li class="nav-item">
