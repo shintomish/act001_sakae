@@ -585,7 +585,6 @@ class TopClientController extends Controller
         return response($file, 200)
             ->header('Content-Type', 'application/zip')
             ->header('Content-Disposition', 'inline; filename="' . $file_name . '"');
-
     }
 
     /**
