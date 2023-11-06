@@ -580,7 +580,7 @@ class TopClientController extends Controller
         $pdf_path = 'public/pdf/' . $file_name;
         $file = $storage->get($pdf_path);
 
-        Log::info('topclient show_houjin END');
+        Log::info('topclient show_houjin_2023 END');
 
         return response($file, 200)
             ->header('Content-Type', 'application/zip')
