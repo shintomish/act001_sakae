@@ -210,7 +210,22 @@
                                 <span data-feather="plus-circle"></span>
                             </a>
                         </h6>
-                        {{-- 2023/08/17 上追加 --}}
+                        {{-- 2023/11/17 上追加 --}}
+
+                        {{-- 2023/11/06 以下追加  --}}
+                        @if($indiv_class == 1 )
+                            <ul class="nav flex-column mb-2">
+                                <li class="nav-item">
+                                    <a class="nav-link" target="_blank" href="{{route('topclinewzip2023')}}">
+                                        <i class="fas fa-download"></i>
+                                        <span style="color:red">
+                                            2023年_年末調整資料
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        @endif
+                        {{-- 2023/11/06 上追加 --}}
 
                         {{-- 2023/08/17 以下追加 --}}
                         <ul class="nav flex-column mb-2">

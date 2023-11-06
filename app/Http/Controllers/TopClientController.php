@@ -566,6 +566,30 @@ class TopClientController extends Controller
 
     /**
      * Display the specified resource.
+     * 2023/11/06 '2023年_年末調整資料.zip' 配置
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show_houjin_2023()
+    {
+        Log::info('topclient show_houjin_2023 START');
+
+        $disk = 'local';  // or 's3'
+        $storage = Storage::disk($disk);
+        $file_name = '2023年_年末調整資料.zip';
+        $pdf_path = 'public/pdf/' . $file_name;
+        $file = $storage->get($pdf_path);
+
+        Log::info('topclient show_houjin END');
+
+        return response($file, 200)
+            ->header('Content-Type', 'application/zip')
+            ->header('Content-Disposition', 'inline; filename="' . $file_name . '"');
+
+    }
+
+    /**
+     * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

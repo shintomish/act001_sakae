@@ -58,12 +58,13 @@ Route::post('ajax/chatclientcr', 'App\Http\Controllers\Ajax\ChatClientController
 //-----------------------------------------------------------------------------------------------
 //- TopClient クライアントTOP
 //-----------------------------------------------------------------------------------------------
-Route::get('topclient/index',  'App\Http\Controllers\TopClientController@index')->name('topclient');
-Route::get('topclientserch',   'App\Http\Controllers\TopClientController@serch')->name('topclientserch');
-Route::get('topclientpdf',     'App\Http\Controllers\TopClientController@show')->name('topclientpdf');
-Route::get('topclinewpdf',     'App\Http\Controllers\TopClientController@show_new')->name('topclinewpdf');
-Route::get('topclinewzip',     'App\Http\Controllers\TopClientController@show_houjin')->name('topclinewzip');
-Route::get('topclient/alert/{id}',  'App\Http\Controllers\TopClientController@show_alert')->name('topclialert');
+Route::get('topclient/index',      'App\Http\Controllers\TopClientController@index')->name('topclient');
+Route::get('topclientserch',       'App\Http\Controllers\TopClientController@serch')->name('topclientserch');
+Route::get('topclientpdf',         'App\Http\Controllers\TopClientController@show')->name('topclientpdf');
+Route::get('topclinewpdf',         'App\Http\Controllers\TopClientController@show_new')->name('topclinewpdf');
+Route::get('topclinewzip',         'App\Http\Controllers\TopClientController@show_houjin')->name('topclinewzip');
+Route::get('topclinewzip2023',     'App\Http\Controllers\TopClientController@show_houjin_2023')->name('topclinewzip2023');
+Route::get('topclient/alert/{id}', 'App\Http\Controllers\TopClientController@show_alert')->name('topclialert');
 Route::get('topcli_pdf01',     'App\Http\Controllers\TopClientController@show_up01')->name('topcli_pdf01');
 Route::get('topcli_pdf02',     'App\Http\Controllers\TopClientController@show_up02')->name('topcli_pdf02');
 Route::get('topcli_pdf03',     'App\Http\Controllers\TopClientController@show_up03')->name('topcli_pdf03');
