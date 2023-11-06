@@ -220,9 +220,10 @@
                                 <li class="nav-item">
                                     <a class="nav-link" target="_blank" href="{{route('topclinewzip2023')}}">
                                         <i class="fas fa-download"></i>
-                                        <span style="color:red">
-                                            2023年_年末調整資料
-                                        </span>
+                                        {{-- <span style="color:red">
+                                            2023年_年末調整資料（法人様向け資料）
+                                        </span> --}}
+                                        2023年_年末調整資料（法人様向け資料）
                                     </a>
                                 </li>
                             </ul>
