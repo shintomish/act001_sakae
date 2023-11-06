@@ -288,7 +288,7 @@
                         <h1 class="h2">
                         </h1>
                         <!-- 検索エリア -->
-                        @switch ($common_no)
+                        {{-- @switch ($common_no)
                         @case ('trans')
                         <form  class="form-inline my-2 my-lg-0 ml-2" action="{{route('transserch')}}" method="GET">
                             @break;
@@ -297,7 +297,7 @@
                             @break;
                         @default:
                             @break;
-                        @endswitch
+                        @endswitch --}}
                             @csrf
                             @method('get')
                             <div class='btn-toolbar' role="toolbar">

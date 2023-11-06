@@ -51,9 +51,9 @@ Route::post('ajax/chatcr', 'App\Http\Controllers\Ajax\ChatController@create')->n
 //-----------------------------------------------------------------------------------------------
 //- ChatClient
 //-----------------------------------------------------------------------------------------------
-Route::get('chatclient',         'App\Http\Controllers\ChatClientController@index')->name('chatclientin');
-Route::get('ajax/chatclientin',  'App\Http\Controllers\Ajax\ChatClientController@index')->name('ajaxchatclientin'); // メッセージ一覧を取得
-Route::post('ajax/chatclientcr', 'App\Http\Controllers\Ajax\ChatClientController@create')->name('ajaxchatclientcr'); // チャット登録
+// Route::get('chatclient',         'App\Http\Controllers\ChatClientController@index')->name('chatclientin');
+// Route::get('ajax/chatclientin',  'App\Http\Controllers\Ajax\ChatClientController@index')->name('ajaxchatclientin'); // メッセージ一覧を取得
+// Route::post('ajax/chatclientcr', 'App\Http\Controllers\Ajax\ChatClientController@create')->name('ajaxchatclientcr'); // チャット登録
 
 //-----------------------------------------------------------------------------------------------
 //- TopClient クライアントTOP
