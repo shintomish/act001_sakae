@@ -232,12 +232,16 @@ class TransHistoryController extends Controller
 
         // Customer(all)情報を取得する
         if($organization_id == 0) {
-            $customers = Customer::whereNull('deleted_at');
+            $customers = Customer::whereNull('deleted_at')
+                            ->where('id',$customer_id)
+                            ->first();
                             // ->sortable()
                             // ->paginate(10);
         } else {
             $customers = Customer::where('organization_id','=',$organization_id)
-                            ->whereNull('deleted_at');
+                            ->whereNull('deleted_at')
+                            ->where('id',$customer_id)
+                            ->first();
                             // ->sortable()
                             // ->paginate(10);
         }

@@ -288,11 +288,11 @@
                         <h1 class="h2">
                         </h1>
                         <!-- 検索エリア -->
-                        {{-- @switch ($common_no)
-                        @case ('trans')
+                        {{-- @switch ($common_no) --}}
+                        {{-- @case ('trans') --}}
                         <form  class="form-inline my-2 my-lg-0 ml-2" action="{{route('transserch')}}" method="GET">
-                            @break;
-                        @case ('invoice')
+                            {{-- @break; --}}
+                        {{-- @case ('invoice')
                         <form  class="form-inline my-2 my-lg-0 ml-2" action="{{route('invoicehistoryserch')}}" method="GET">
                             @break;
                         @default:
