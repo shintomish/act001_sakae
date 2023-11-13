@@ -347,13 +347,13 @@ class NewsrepoController extends Controller
         $rules   = [
                     'comment'         => [
                                         'required',
-                                        'max:1000',
+                                        'max:2000', //2023/11/13 1000->2000 DB=2048
                                         ],
                 ];
 
         $messages = [
                     'comment.required'         => 'コメントは入力必須項目です。',
-                    'comment.max'              => 'コメントは1000文字までです。',
+                    'comment.max'              => 'コメントは2000文字までです。',
                     ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -468,15 +468,17 @@ class NewsrepoController extends Controller
         Log::info('newsrepo sendmail $count = ' . print_r($count, true));
 
         if($count > 0){
-            $dbug  = 1;     // 1:Aizen 1以外:arkhe
-            $books = DB::table('books')->first();
-            $dbug  = $books->price;
+            // 2023/09/30 9/28 TEST用で送信されたので、$toadr   = "system@arkhe-eco.com";は固定。
+            // $dbug  = 2;     // 1:Aizen 1以外:arkhe
+            // $books = DB::table('books')->first();
+            // $dbug  = $books->price;
+            // if($dbug == 1){
+            //     $toadr   = "y-shintomi@aizen-sol.co.jp";
+            // } else {
+            //     $toadr   = "system@arkhe-eco.com";
+            // }
 
-            if($dbug == 1){
-                $toadr   = "y-shintomi@aizen-sol.co.jp";
-            } else {
-                $toadr   = "system@arkhe-eco.com";
-            }
+            $toadr   = "system@arkhe-eco.com";
 
             //複数宛先をまとめて
             $comment = $request->input('comment');
