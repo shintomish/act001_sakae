@@ -1,0 +1,8 @@
+[Sat Dec 02 03:49:02.117396 2023] [lbmethod_heartbeat:notice] [pid 821:tid 139807896656192] AH02282: No slotmem from mod_heartmonitor
+[Sat Dec 02 03:49:02.118771 2023] [mpm_event:notice] [pid 821:tid 139807896656192] AH00489: Apache/2.4.37 (AlmaLinux) OpenSSL/1.1.1k configured -- resuming normal operations
+[Sat Dec 02 03:49:02.118799 2023] [core:notice] [pid 821:tid 139807896656192] AH00094: Command line: '/usr/sbin/httpd -D FOREGROUND'
+[Sat Dec 02 17:04:25.765797 2023] [mpm_event:notice] [pid 821:tid 139807896656192] AH00492: caught SIGWINCH, shutting down gracefully
+[Sat Dec 02 17:04:26.838709 2023] [suexec:notice] [pid 799729:tid 140305178483008] AH01232: suEXEC mechanism enabled (wrapper: /usr/sbin/suexec)
+[Sat Dec 02 17:04:26.853857 2023] [lbmethod_heartbeat:notice] [pid 799729:tid 140305178483008] AH02282: No slotmem from mod_heartmonitor
+[Sat Dec 02 17:04:26.860392 2023] [mpm_event:notice] [pid 799729:tid 140305178483008] AH00489: Apache/2.4.37 (AlmaLinux) OpenSSL/1.1.1k configured -- resuming normal operations
+[Sat Dec 02 17:04:26.860424 2023] [core:notice] [pid 799729:tid 140305178483008] AH00094: Command line: '/usr/sbin/httpd -D FOREGROUND'

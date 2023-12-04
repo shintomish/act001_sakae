@@ -1,0 +1,4 @@
+[Fri Dec 01 03:39:01.663512 2023] [lbmethod_heartbeat:notice] [pid 821:tid 139807896656192] AH02282: No slotmem from mod_heartmonitor
+[Fri Dec 01 03:39:01.664954 2023] [mpm_event:notice] [pid 821:tid 139807896656192] AH00489: Apache/2.4.37 (AlmaLinux) OpenSSL/1.1.1k configured -- resuming normal operations
+[Fri Dec 01 03:39:01.664978 2023] [core:notice] [pid 821:tid 139807896656192] AH00094: Command line: '/usr/sbin/httpd -D FOREGROUND'
+[Sat Dec 02 03:49:02.051360 2023] [mpm_event:notice] [pid 821:tid 139807896656192] AH00493: SIGUSR1 received.  Doing graceful restart
