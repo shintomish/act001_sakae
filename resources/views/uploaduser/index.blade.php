@@ -85,10 +85,12 @@
         <table class="table table-responsive text-nowrap table-striped table-borderd table_sticky">
             <thead>
                 <tr>
-                    <th scope="col" class="fixed01">顧客ID</th>
+                    {{-- <th scope="col" class="fixed01">顧客ID</th> closing_month--}}
                     <th scope="col" class="fixed01">@sortablelink('business_name', '顧客名')</th>
                     {{-- 2023/08/25  --}}
                     {{-- <th scope="col" class="fixed01">@sortablelink('updated_at', '受信日')</th> --}}
+                    {{-- 2024/01/13 closing_month --}}
+                    <th scope="col" class="fixed01">@sortablelink('closing_month', '決算月')</th>
                     <th scope="col" class="fixed01">@sortablelink('updated_at', '更新日')</th>
                     <th scope="col" class="fixed01">@sortablelink('yearmonth','年月')</th>
                     <th scope="col" class="fixed01">@sortablelink('check_flg','ファイル有無')</th>
@@ -102,30 +104,58 @@
                 @if($uploadusers->count())
                     @foreach($uploadusers as $uploaduser)
                     <tr>
-                        @php
+                        {{-- 2024/01/13 --}}
+                        {{-- @php
                             $str  = sprintf("%04d", $uploaduser->customer_id);
-                        @endphp
+                        @endphp --}}
                         {{-- <td class="text-end">{{ number_format($uploaduser->customer_id) }}</td> --}}
-                        <td class="">{{ $str }}</td>
+                        {{-- 2024/01/13 --}}
+                        {{-- <td class="">{{ $str }}</td> --}}
                         @php
                             if($uploaduser->prime_flg == 4 ||$uploaduser->prime_flg == 5){
-                                $colvalue = "color:red";
+                                if($uploaduser->check_flg == 2){
+                                    $colvalue = "font-weight:bold;color:red;";
+                                } else {
+                                    $colvalue = "bold;color:red;";
+                                }
                             }else{
                                 $colvalue = "";
                             }
                         @endphp
+
+                        {{-- 2024/01/13 --}}
                         <td style={{ $colvalue }} id="bname_{{$uploaduser->id}}" name="bname_{{$uploaduser->id}}" >
                             {{ $uploaduser->business_name }}
                         </td>
-                        {{-- <td>{{ $uploaduser->created_at }}</td> 2022/12/16 --}}
+
+                        {{-- 2024/01/13 --}}
+                        @php
+                            if($uploaduser->closing_month == 13){
+                                $closing_month = "確定申告";
+                            } else {
+                                $closing_month = $uploaduser->closing_month ."月";                                
+                            }
+                        @endphp
+                        <td>{{ $closing_month }}</td>
 
                         <td>{{ $uploaduser->updated_at }}</td>
                         <td>{{ $uploaduser->yearmonth }}</td>
 
+                        {{-- 2024/01/13 --}}
+                        @php
+                            if($uploaduser->check_flg == 2){
+                                $colvalue = "font-weight:bold;color:red;";
+                            } else {
+                                $colvalue = "";
+                            }
+                        @endphp
+
                         {{-- ファイル無し(1):ファイル有り(2) --}}
                         @foreach ($loop_file_check_flg as $loop_file_check_flg2)
                             @if ($loop_file_check_flg2['no']==$uploaduser->check_flg)
-                                <td>{{ $loop_file_check_flg2['name'] }}</td>
+
+                                <td style={{ $colvalue }}>{{ $loop_file_check_flg2['name'] }}</td>
+
                             @endif
                         @endforeach
 

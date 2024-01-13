@@ -50,6 +50,9 @@ class OperationController extends Controller
             ->leftJoin('customers', function ($join) {
                 $join->on('customers.id', '=', 'operations.user_id');
             })
+            // 2024/01/13
+            // `active_cancel 1:契約 2:SPOT 3:解約',
+            ->where('customers.active_cancel','!=', 3)
             // 組織の絞り込み
             // ->where('users.organization_id','=',$organization_id)
             ->where('operations.id', '>=', '10')
@@ -129,6 +132,9 @@ class OperationController extends Controller
                 $join->on('customers.id', '=', 'operations.user_id');
             })
                 ->where('operations.id', '>=', '10')
+                // 2024/01/13
+                // `active_cancel 1:契約 2:SPOT 3:解約',
+                ->where('customers.active_cancel','!=', 3)
                 // 削除されていない
                 ->whereNull('operations.deleted_at')
                 ->whereNull('customers.deleted_at')
@@ -145,57 +151,64 @@ class OperationController extends Controller
             if($organization_id == 0) {
                 $operations = Operation::select(
                     'operations.id as id'
-                   ,'operations.user_id as user_id'
-                   ,'operations.name as name'
-                   ,'operations.status_flg as status_flg'
-                   ,'operations.login_verified_at as login_verified_at'
-                   ,'operations.logout_verified_at as logout_verified_at'
-                   ,'operations.organization_id as organization_id'
-                   ,'operations.login_flg as login_flg'
-                   ,'operations.admin_flg as admin_flg'
-                   ,'customers.id as customers_id'
-                   ,'customers.business_name as business_name'
-               )
-               ->leftJoin('customers', function ($join) {
-                   $join->on('customers.id', '=', 'operations.user_id');
-               })
-                   ->where('operations.organization_id','>=',$organization_id)
-                   ->where('operations.id', '>=', '10')
-                   // 削除されていない
-                   ->whereNull('operations.deleted_at')
-                   ->whereNull('customers.deleted_at')
-                   ->sortable('status_flg','login_verified_at','business_name')
-                   ->orderBy('operations.status_flg', 'asc')
-                   ->orderBy('operations.login_verified_at', 'desc')
-                   ->orderBy('customers.business_name', 'asc')
-                   ->paginate(300);
+                    ,'operations.user_id as user_id'
+                    ,'operations.name as name'
+                    ,'operations.status_flg as status_flg'
+                    ,'operations.login_verified_at as login_verified_at'
+                    ,'operations.logout_verified_at as logout_verified_at'
+                    ,'operations.organization_id as organization_id'
+                    ,'operations.login_flg as login_flg'
+                    ,'operations.admin_flg as admin_flg'
+                    ,'customers.id as customers_id'
+                    ,'customers.business_name as business_name'
+                )
+                ->leftJoin('customers', function ($join) {
+                    $join->on('customers.id', '=', 'operations.user_id');
+                })
+                    ->where('operations.organization_id','>=',$organization_id)
+                    ->where('operations.id', '>=', '10')
+                    // 2024/01/13
+                    // `active_cancel 1:契約 2:SPOT 3:解約',
+                    ->where('customers.active_cancel','!=', 3)
+                    // 削除されていない
+                    ->whereNull('operations.deleted_at')
+                    ->whereNull('customers.deleted_at')
+                    ->sortable('status_flg','login_verified_at','business_name')
+                    ->orderBy('operations.status_flg', 'asc')
+                    ->orderBy('operations.login_verified_at', 'desc')
+                    ->orderBy('customers.business_name', 'asc')
+                    ->paginate(300);
             } else {
                 $operations = Operation::select(
                     'operations.id as id'
-                   ,'operations.user_id as user_id'
-                   ,'operations.name as name'
-                   ,'operations.status_flg as status_flg'
-                   ,'operations.login_verified_at as login_verified_at'
-                   ,'operations.logout_verified_at as logout_verified_at'
-                   ,'operations.organization_id as organization_id'
-                   ,'operations.login_flg as login_flg'
-                   ,'operations.admin_flg as admin_flg'
-                   ,'customers.id as customers_id'
-                   ,'customers.business_name as business_name'
-               )
-               ->leftJoin('customers', function ($join) {
-                   $join->on('customers.id', '=', 'operations.user_id');
-               })
-                   ->where('operations.organization_id','=',$organization_id)
-                   ->where('operations.id', '>=', '10')
-                   // 削除されていない
-                   ->whereNull('operations.deleted_at')
-                   ->whereNull('customers.deleted_at')
-                   ->sortable('status_flg','login_verified_at','business_name')
-                   ->orderBy('operations.status_flg', 'asc')
-                   ->orderBy('operations.login_verified_at', 'desc')
-                   ->orderBy('customers.business_name', 'asc')
-                   ->paginate(300);
+                    ,'operations.user_id as user_id'
+                    ,'operations.name as name'
+                    ,'operations.status_flg as status_flg'
+                    ,'operations.login_verified_at as login_verified_at'
+                    ,'operations.logout_verified_at as logout_verified_at'
+                    ,'operations.organization_id as organization_id'
+                    ,'operations.login_flg as login_flg'
+                    ,'operations.admin_flg as admin_flg'
+                    ,'customers.id as customers_id'
+                    ,'customers.business_name as business_name'
+                )
+                ->leftJoin('customers', function ($join) {
+                    $join->on('customers.id', '=', 'operations.user_id');
+                })
+                    ->where('operations.organization_id','=',$organization_id)
+                    ->where('operations.id', '>=', '10')
+                    // 2024/01/13
+                    // `active_cancel 1:契約 2:SPOT 3:解約',
+                    ->where('customers.active_cancel','!=', 3)
+
+                    // 削除されていない
+                    ->whereNull('operations.deleted_at')
+                    ->whereNull('customers.deleted_at')
+                    ->sortable('status_flg','login_verified_at','business_name')
+                    ->orderBy('operations.status_flg', 'asc')
+                    ->orderBy('operations.login_verified_at', 'desc')
+                    ->orderBy('customers.business_name', 'asc')
+                    ->paginate(300);
             }
         };
 
@@ -294,6 +307,10 @@ class OperationController extends Controller
             // 組織の絞り込み
             // ->where('users.organization_id','=',$organization_id)
             ->where('operations.id', '>=', '10')
+            // 2024/01/13
+            // `active_cancel 1:契約 2:SPOT 3:解約',
+            ->where('customers.active_cancel','!=', 3)
+
             // 削除されていない
             ->whereNull('operations.deleted_at')
             ->whereNull('customers.deleted_at')

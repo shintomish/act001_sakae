@@ -112,8 +112,10 @@
                 <tr>
                     {{-- <th scope="col" class ="fixed01">@sortablelink('id', 'ID')</th> --}}
                     <th scope="col" class ="fixed02">ID</th>
-                    <th scope="col" class ="fixed01">@sortablelink('name', 'ユーザー名')</th>
+                    {{-- 2024/01/13 --}}
                     <th scope="col" class ="fixed01">@sortablelink('business_name', '顧客名')</th>
+                    <th scope="col" class ="fixed01">@sortablelink('name', 'ユーザー名')</th>
+
                     <th scope="col" class ="fixed01">@sortablelink('status_flg', '状態')</th>
                     <th scope="col" class ="fixed01">@sortablelink('login_verified_at', 'ログイン日時')</th>
                     {{-- <th scope="col" class ="fixed01">@sortablelink('logout_verified_at', 'ログアウト日時')</th> --}}
@@ -125,7 +127,6 @@
                     @foreach($operations as $operation)
                     <tr>
                         <td>{{ $operation->id }}</td>
-                        <td>{{ $operation->name }}</td>
                         <td>
                             @foreach ($customers as $customers2)
                                 @if ($customers2->id==$operation->user_id)
@@ -133,26 +134,22 @@
                                 @endif
                             @endforeach
                         </td>
-                            @php
-                                if ($operation->status_flg == 1) {
-                                    $str = "ログイン中";
-                                }
-                                if ($operation->status_flg == 2) {
-                                    $str = "ログアウト";
-                                }
-                                if ($operation->status_flg == 3) {
-                                    $str = "ログインなし";
-                                }
-                            @endphp
+                        <td>{{ $operation->name }}</td>
+
+                        @php
+                            if ($operation->status_flg == 1) {
+                                $str = "ログイン中";
+                            }
+                            if ($operation->status_flg == 2) {
+                                $str = "ログアウト";
+                            }
+                            if ($operation->status_flg == 3) {
+                                $str = "ログインなし";
+                            }
+                        @endphp
 
                         <td>{{ $str }}</td>
-                        {{-- <select class="custom-select" id="attach_doc_{{$operation->id}}" name="attach_doc_{{$operation->id}}">
-                            <option value="1" {{ $operation->status_flg == 1 ? 'selected' : '' }}>ログイン中</option>
-                            <option value="2" {{ $operation->status_flg == 2 ? 'selected' : '' }}>ログアウト</option>
-                            <option value="3" {{ $operation->status_flg == 3 ? 'selected' : '' }}>ログインなし</option>
-                        </select> --}}
                         <td>{{ $operation->login_verified_at }}</td>
-                        {{-- <td>{{ $operation->logout_verified_at }}</td> --}}
 
                     </tr>
                     @endforeach

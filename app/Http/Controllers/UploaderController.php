@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 $request = Request::createFromGlobals();
 use Flow\Config as FlowConfig;
 use Flow\Request as FlowRequest;
-
+use League\CommonMark\Extension\CommonMark\Renderer\Block\ThematicBreakRenderer;
 
 // use Storage;
 // use Illuminate\Http\UploadedFile;
@@ -262,6 +262,20 @@ class UploaderController extends Controller
 
                 //更新
                 if( $data['count'] > 0 ) {
+                    // 優先順位 1:- 2:低 3:中 4:高 5:急 2024/01/13
+                    // 「高」「急」に設定している場合、お客様が追加アップしても、変わらないようにしてください。
+                    $uploadusers = DB::table('uploadusers')
+                    // ユーザーの絞り込み
+                    ->where('customer_id',$compacts['customer_id'])
+                    // 削除されていない
+                    ->whereNull('deleted_at')
+                    ->first();
+                    if($uploadusers->prime_flg <= 3) {
+                        $prime_flg = 3; 
+                    } else {
+                        $prime_flg = $uploadusers->prime_flg; 
+                    }
+                    // 2024/01/13 END
                     $uploadusers = DB::table('uploadusers')
                     // ユーザーの絞り込み
                     ->where('customer_id',$compacts['customer_id'])
@@ -269,8 +283,8 @@ class UploaderController extends Controller
                     ->whereNull('deleted_at')
                     ->update([
                         'yearmonth'  =>  $compacts['dateNew'],
-                        'check_flg'  =>  2,                     // ファイル無し(1):ファイル有り(2)
-                        'prime_flg'  =>  3,                     // 優先順位 -(1): 低(2): 中(3): 高(4) 2022/11/04
+                        'check_flg'  =>  2,             // ファイル無し(1):ファイル有り(2)
+                        'prime_flg'  =>  $prime_flg,    // 優先順位 1:- 2:低 3:中 4:高 5:急 2022/11/04
                         // 'created_at' =>  now()  2022/12/16
                         'updated_at' =>  now()
                     ]);

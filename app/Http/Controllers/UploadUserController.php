@@ -83,13 +83,41 @@ class UploadUserController extends Controller
         $customers  = $this->auth_customer_all();
 
         // $uploadusers = $uploaduser 2022/12/12
-        $uploadusers = Uploaduser::where('organization_id','>=',$organization_id)
-                    ->whereNull('deleted_at')
-                    ->sortable()
-                    ->orderBy('prime_flg', 'desc')
-                    ->orderBy('updated_at', 'asc')
-                    ->orderBy('check_flg', 'desc')
-                    ->paginate(300);
+        // 2024/01/13　④　「解約」ステータスのお客様は非表示になるようにできますか？（SPOTはそのまま）
+        // $uploadusers = Uploaduser::where('organization_id','>=',$organization_id)
+        //             ->whereNull('deleted_at')
+        //             ->sortable()
+        //             ->orderBy('prime_flg', 'desc')
+        //             ->orderBy('updated_at', 'asc')
+        //             ->orderBy('check_flg', 'desc')
+        //             ->paginate(300);
+        $uploadusers = Uploaduser::select(
+            'uploadusers.id as id'
+            ,'uploadusers.organization_id as organization_id'
+            ,'uploadusers.customer_id     as customer_id'
+            ,'uploadusers.yearmonth       as yearmonth'
+            ,'uploadusers.check_flg       as check_flg'
+            ,'uploadusers.prime_flg       as prime_flg'
+            ,'uploadusers.updated_at      as updated_at'
+
+            ,'customers.id as customers_id'
+            ,'customers.business_name as business_name'
+            ,'customers.foldername    as foldername'
+            ,'customers.closing_month as closing_month'
+
+            )
+            ->leftJoin('customers', function ($join) {
+                $join->on('uploadusers.customer_id', '=', 'customers.id');
+            })
+            // `active_cancel 1:契約 2:SPOT 3:解約',
+            ->where('customers.active_cancel','!=', 3)
+            ->whereNull('customers.deleted_at')
+            ->whereNull('uploadusers.deleted_at')
+            ->sortable()
+            ->orderBy('uploadusers.prime_flg', 'desc')
+            ->orderBy('uploadusers.updated_at', 'asc')
+            ->orderBy('uploadusers.check_flg', 'desc')
+            ->paginate(300);
 
         $common_no = '01';
         $keyword2  = null;
@@ -118,11 +146,35 @@ class UploadUserController extends Controller
         $now = DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
         $dateNew = ($now->format('Y/m'));
 
-        $uploadusers = DB::table('uploadusers')
-                    ->where('organization_id','>=',$organization_id) // 2022/12/12
-                    ->whereNull('deleted_at')
-                    ->where('check_flg', 2)     // ファイル無し(1):ファイル有り(2)
-                    ->get();
+        // 2024/01/13
+        // $uploadusers = DB::table('uploadusers')
+        //             ->where('organization_id','>=',$organization_id) // 2022/12/12
+        //             ->whereNull('deleted_at')
+        //             ->where('check_flg', 2)     // ファイル無し(1):ファイル有り(2)
+        //             ->get();
+        $uploadusers = Uploaduser::select(
+            'uploadusers.id as id'
+            ,'uploadusers.organization_id as organization_id'
+            ,'uploadusers.customer_id     as customer_id'
+            ,'uploadusers.yearmonth       as yearmonth'
+            ,'uploadusers.check_flg       as check_flg'
+            ,'uploadusers.prime_flg       as prime_flg'
+            ,'uploadusers.updated_at      as updated_at'
+
+            ,'customers.id as customers_id'
+            ,'customers.business_name as business_name'
+            ,'customers.foldername    as foldername'
+            ,'customers.closing_month as closing_month'
+
+            )
+            ->leftJoin('customers', function ($join) {
+                $join->on('uploadusers.customer_id', '=', 'customers.id');
+            })
+            // `active_cancel 1:契約 2:SPOT 3:解約',
+            ->where('customers.active_cancel','!=', 3)
+            ->whereNull('customers.deleted_at')
+            ->whereNull('uploadusers.deleted_at')
+            ->get();
 
         $data['count'] = $uploadusers->count();
 
@@ -170,22 +222,27 @@ class UploadUserController extends Controller
         $uploadusers = Uploaduser::select(
                     'uploadusers.id as id'
                     ,'uploadusers.foldername as foldername'
-                    ,'uploadusers.business_name as business_name'
+                    // ,'uploadusers.business_name as business_name'
                     ,'uploadusers.organization_id as organization_id'
                     ,'uploadusers.customer_id as customer_id'
                     ,'uploadusers.yearmonth as yearmonth'
                     ,'uploadusers.check_flg as check_flg'
                     ,'uploadusers.prime_flg as prime_flg'
+                    ,'uploadusers.updated_at      as updated_at'
+
                     // 2023/08/18
                     ,'uploadusers.txt_memo as txt_memo'
                     ,'customers.id as cus_id'
-                )
+                    ,'customers.business_name as business_name'
+                    ,'customers.closing_month as closing_month'
+
+
+                    )
                 ->leftJoin('customers', function ($join) {
                     $join->on('uploadusers.customer_id', '=', 'customers.id');
                 })
-                ->where('customers.organization_id','>=',$organization_id) // 2022/12/12
+                // ->where('customers.organization_id','>=',$organization_id) // 2022/12/12
                 ->where('customers.active_cancel','!=', 3)      // `active_cancel` 1:契約 2:SPOT 3:解約',
-                // ->where('customers.notificationl_flg','=',2 )   // 通知しない(1):通知する(2)
                 ->whereIn('customers.individual_class',$_indiv )
                 ->sortable()
                 ->orderBy('uploadusers.prime_flg', 'desc')
@@ -279,30 +336,90 @@ class UploadUserController extends Controller
         $user  = $this->auth_user_info();
         $u_id = $user->user_id;
 
-        // 日付が入力された
+        // 2024/01/13
+        // // 顧客名が入力された
+        // if($keyword) {
+        //     // $uploadusers = $uploaduser 2022/12/12
+        //     $uploadusers = Uploaduser::where('organization_id','>=',$organization_id)
+        //                 // ($keyword)の絞り込み
+        //                 ->where('business_name', 'like', "%$keyword%")
+        //                 ->whereNull('deleted_at')
+        //                 ->sortable()
+        //                 ->orderBy('prime_flg', 'desc')
+        //                 ->orderBy('updated_at', 'asc')
+        //                 ->orderBy('check_flg', 'desc')
+        //                 ->paginate(300);
+        // } else {
+        //     // $uploadusers = $uploaduser 2022/12/12
+        //     $uploadusers = Uploaduser::where('organization_id','>=',$organization_id)
+        //                 ->whereNull('deleted_at')
+        //                 ->sortable()
+        //                 ->orderBy('prime_flg', 'desc')
+        //                 ->orderBy('updated_at', 'asc')
+        //                 ->orderBy('check_flg', 'desc')
+        //                 ->paginate(300);
+        // };
+
+        // 顧客名が入力された
         if($keyword) {
-            // $uploadusers = $uploaduser 2022/12/12
-            $uploadusers = Uploaduser::where('organization_id','>=',$organization_id)
-                        // ($keyword)の絞り込み
-                        ->where('business_name', 'like', "%$keyword%")
-                        ->whereNull('deleted_at')
-                        ->sortable()
-                        ->orderBy('prime_flg', 'desc')
-                        ->orderBy('updated_at', 'asc')
-                        ->orderBy('check_flg', 'desc')
-                        ->paginate(300);
+            $uploadusers = Uploaduser::select(
+                'uploadusers.id as id'
+                ,'uploadusers.organization_id as organization_id'
+                ,'uploadusers.customer_id     as customer_id'
+                ,'uploadusers.yearmonth       as yearmonth'
+                ,'uploadusers.check_flg       as check_flg'
+                ,'uploadusers.prime_flg       as prime_flg'
+                ,'uploadusers.updated_at      as updated_at'
+    
+                ,'customers.id as customers_id'
+                ,'customers.business_name as business_name'
+                ,'customers.foldername    as foldername'
+                ,'customers.closing_month as closing_month'
+
+                )
+                ->leftJoin('customers', function ($join) {
+                    $join->on('uploadusers.customer_id', '=', 'customers.id');
+                })
+                // `active_cancel 1:契約 2:SPOT 3:解約',
+                ->where('customers.active_cancel','!=', 3)
+                ->where('customers.business_name', 'like', "%$keyword%")
+                ->whereNull('customers.deleted_at')
+                ->whereNull('uploadusers.deleted_at')
+                ->sortable()
+                ->orderBy('uploadusers.prime_flg', 'desc')
+                ->orderBy('uploadusers.updated_at', 'asc')
+                ->orderBy('uploadusers.check_flg', 'desc')
+                ->paginate(300);
+
         } else {
-            // $uploadusers = $uploaduser 2022/12/12
-            $uploadusers = Uploaduser::where('organization_id','>=',$organization_id)
-                        ->whereNull('deleted_at')
-                        ->sortable()
-                        ->orderBy('prime_flg', 'desc')
-                        ->orderBy('updated_at', 'asc')
-                        ->orderBy('check_flg', 'desc')
-                        ->paginate(300);
-        };
-        // toastrというキーでメッセージを格納
-        // session()->flash('toastr', config('toastr.serch'));
+            $uploadusers = Uploaduser::select(
+                'uploadusers.id as id'
+                ,'uploadusers.organization_id as organization_id'
+                ,'uploadusers.customer_id     as customer_id'
+                ,'uploadusers.yearmonth       as yearmonth'
+                ,'uploadusers.check_flg       as check_flg'
+                ,'uploadusers.prime_flg       as prime_flg'
+                ,'uploadusers.updated_at      as updated_at'
+    
+                ,'customers.id as customers_id'
+                ,'customers.business_name as business_name'
+                ,'customers.foldername    as foldername'
+                ,'customers.closing_month as closing_month'
+
+                )
+                ->leftJoin('customers', function ($join) {
+                    $join->on('uploadusers.customer_id', '=', 'customers.id');
+                })
+                // `active_cancel 1:契約 2:SPOT 3:解約',
+                ->where('customers.active_cancel','!=', 3)
+                ->whereNull('customers.deleted_at')
+                ->whereNull('uploadusers.deleted_at')
+                ->sortable()
+                ->orderBy('uploadusers.prime_flg', 'desc')
+                ->orderBy('uploadusers.updated_at', 'asc')
+                ->orderBy('uploadusers.check_flg', 'desc')
+                ->paginate(300);
+        }
 
         Log::info('uploaduser serch_customer END');
         $common_no = '01';
@@ -374,13 +491,41 @@ class UploadUserController extends Controller
         // Customer情報を取得する
         $customers  = $this->auth_customer_all();
 
-        $uploadusers = Uploaduser::where('organization_id','>=',$organization_id)
-                    ->whereNull('deleted_at')
-                    ->sortable()
-                    ->orderBy('prime_flg', 'desc')
-                    ->orderBy('updated_at', 'asc')
-                    ->orderBy('check_flg', 'desc')
-                    ->paginate(300);
+        // 2024/01/13
+        // $uploadusers = Uploaduser::where('organization_id','>=',$organization_id)
+        //             ->whereNull('deleted_at')
+        //             ->sortable()
+        //             ->orderBy('prime_flg', 'desc')
+        //             ->orderBy('updated_at', 'asc')
+        //             ->orderBy('check_flg', 'desc')
+        //             ->paginate(300);
+        $uploadusers = Uploaduser::select(
+            'uploadusers.id as id'
+            ,'uploadusers.organization_id as organization_id'
+            ,'uploadusers.customer_id     as customer_id'
+            ,'uploadusers.yearmonth       as yearmonth'
+            ,'uploadusers.check_flg       as check_flg'
+            ,'uploadusers.prime_flg       as prime_flg'
+            ,'uploadusers.updated_at      as updated_at'
+
+            ,'customers.id as customers_id'
+            ,'customers.business_name as business_name'
+            ,'customers.foldername    as foldername'
+            ,'customers.closing_month as closing_month'
+
+            )
+            ->leftJoin('customers', function ($join) {
+                $join->on('uploadusers.customer_id', '=', 'customers.id');
+            })
+            // `active_cancel 1:契約 2:SPOT 3:解約',
+            ->where('customers.active_cancel','!=', 3)
+            ->whereNull('customers.deleted_at')
+            ->whereNull('uploadusers.deleted_at')
+            ->sortable()
+            ->orderBy('uploadusers.prime_flg', 'desc')
+            ->orderBy('uploadusers.updated_at', 'asc')
+            ->orderBy('uploadusers.check_flg', 'desc')
+            ->paginate(300);
 
         $common_no = '01';
         $keyword2  = null;

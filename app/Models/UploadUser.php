@@ -30,14 +30,15 @@ class UploadUser extends Model
     public $sortable = [
         'id',
         'foldername',
-        'business_name',
+        // 'business_name',
         'yearmonth',
         'check_flg',
         'prime_flg',
         'created_at',
         'updated_at'
     ];
-
+    // 2024/01/13 ③　可能であれば「顧客名」と「更新日」の間に「決算月」を入れて頂けたら助かります
+    public $sortableAs = ['business_name','closing_month'];
     /**
      * The attributes that are mass assignable.
      *
