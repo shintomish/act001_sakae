@@ -3,23 +3,24 @@
 namespace App\Http\Controllers;
 
 use Validator;
-use DateTime;
+// use DateTime;
 use App\Models\User;
-use App\Models\Organization;
-use App\Models\Customer;
-use App\Models\Parameter;
+use App\Models\Operation;
+// use App\Models\Organization;
+// use App\Models\Customer;
+// use App\Models\Parameter;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
+// use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+// use Illuminate\Foundation\Bus\DispatchesJobs;
+// use Illuminate\Foundation\Validation\ValidatesRequests;
+// use Illuminate\Routing\Controller as BaseController;
 
 class UserController extends Controller
 {
@@ -167,7 +168,7 @@ class UserController extends Controller
         // customersを取得
         $customers = DB::table('customers')
                             // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
-                            // ->where('active_cancel','!=', 3)
+                            ->where('active_cancel','!=', 3)
                             // 削除されていない
                             ->whereNull('deleted_at')
                             // 2021/12/13
@@ -215,7 +216,9 @@ class UserController extends Controller
         try {
             // User::create($request->all());
             $user = new User();
-            $user->password        = Hash::make($request->password);
+            // 2024/01/13 上のmerge時にHash::makeしていたので、最初のログインができなかった。
+            // $user->password        = Hash::make($request->password);
+            $user->password        = $request->password;
             $user->name            = $request->name;
             $user->email           = $request->email;
             $user->organization_id = $request->organization_id;
@@ -223,6 +226,17 @@ class UserController extends Controller
             $user->login_flg       = $request->login_flg;
             $user->admin_flg       = $request->admin_flg;
             $user->save();         //  Inserts
+
+            // 2024/01/13 operationsテーブルにレコードがないため。
+            $operation = new Operation();
+            $operation->user_id         = $request->user_id;
+            $operation->name            = $request->name;
+            $operation->organization_id = $request->organization_id;
+            $operation->status_flg      = 3;
+            $operation->login_flg       = $request->login_flg;
+            $operation->admin_flg       = $request->admin_flg;
+            $operation->save();         //  Inserts
+
             DB::commit();
             Log::info('beginTransaction - user store end(commit)');
         }
@@ -279,7 +293,7 @@ class UserController extends Controller
         // customerを取得
         $customers = DB::table('customers')
                             // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
-                            // ->where('active_cancel','!=', 3)
+                            ->where('active_cancel','!=', 3)
                             // 削除されていない
                             ->whereNull('deleted_at')
                             // 組織の絞り込み
