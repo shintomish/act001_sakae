@@ -42,7 +42,7 @@
             width: 1800px;
         }
         th,td{
-            width: 200px;
+            width: 250px;
             height: 10px;
             vertical-align: middle;
             padding: 0 15px;
@@ -82,14 +82,14 @@
         <table class="table table-responsive text-nowrap table-striped table-borderd table_sticky">
             <thead>
                 <tr>
-                    <th scope="row" class ="fixed01">@sortablelink('id', 'ID')</th>
-                    <th scope="row" class ="fixed01">@sortablelink('name', 'ユーザー名')</th>
-                    <th scope="row" class ="fixed01">@sortablelink('email', 'メールアドレス')</th>
-                    <th scope="row" class ="fixed01">所属組織</th>
-                    <th scope="row" class ="fixed01">@sortablelink('business_name', '顧客名')</th>
-                    <th scope="row" class ="fixed01">@sortablelink('login_flg', '利用区分')</th>
-                    <th scope="row" class ="fixed01">@sortablelink('admin_flg', '管理区分')</th>
-                    <th scope="row" class ="fixed01">操作</th>
+                    <th scope="col" class ="fixed01">@sortablelink('id', 'ID')</th>
+                    <th scope="col" class ="fixed01">@sortablelink('name', 'ユーザー名')</th>
+                    <th scope="col" class ="fixed01">@sortablelink('email', 'メールアドレス')</th>
+                    <th scope="col" class ="fixed01">所属組織</th>
+                    <th scope="col" class ="fixed01">@sortablelink('business_name', '顧客名')</th>
+                    <th scope="col" class ="fixed01">@sortablelink('login_flg', '利用区分')</th>
+                    <th scope="col" class ="fixed01">@sortablelink('admin_flg', '管理区分')</th>
+                    <th scope="col" class ="fixed01">操作</th>
                 </tr>
             </thead>
 
@@ -167,9 +167,9 @@
         </table>
     {{-- </div> --}}
 
-     {{-- ページネーション / pagination）の表示 --}}
+    {{-- ページネーション / pagination）の表示 --}}
     <ul class="pagination justify-content-center">
-       {{ $users->appends(request()->query())->render() }}
+        {{ $users->appends(request()->query())->render() }}
     </ul>
 
 @endsection
