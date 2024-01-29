@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use Validator;
-use App\Models\User;
+// use Validator;
+// use App\Models\User;
 use App\Models\Customer;
 use App\Models\Applestabl;
 
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
+// use Illuminate\Validation\Rule;
+// use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Hash;
+// use Illuminate\Support\Facades\Hash;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
+// use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+// use Illuminate\Foundation\Bus\DispatchesJobs;
+// use Illuminate\Foundation\Validation\ValidatesRequests;
+// use Illuminate\Routing\Controller as BaseController;
 
 class TopController extends Controller
 {
@@ -196,9 +196,15 @@ class TopController extends Controller
         // * 今年の年を取得
         $nowyear = $this->get_now_year();
 
-        //2023/01/11
-        // $compacts = compact( 'userid','customers2','customers3','count2','count3','applestabls','common_no','nowyear' );
-        $compacts = compact( 'userid','customers2','customers3','count2','count3','common_no','nowyear' );
+        // 2024/01/20
+        $books = DB::table('books')
+            // 削除されていない
+            ->whereNull('deleted_at')
+            ->first();
+
+        $topurl = $books->topurl;
+
+        $compacts = compact( 'userid','customers2','customers3','count2','count3','common_no','nowyear', 'topurl' );
 
         Log::info('office top index END $user->name = ' . print_r($user->name ,true));
         return view( 'top.index', $compacts);

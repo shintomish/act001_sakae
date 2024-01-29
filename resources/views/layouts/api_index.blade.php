@@ -309,6 +309,16 @@
                             @case ('00_3')
                                 <!-- タイトル -->
                                 <!-- TOP -->
+                                {{-- 2024/01/20 --}}
+                                @php
+                                    // $topurl = 'https://1drv.ms/x/s!BMDsqxfiFFuQgcZFB9ZmfbxYHz2IKQ?e=BBggnnA9x0S3XyZ5VBqlJQ&at=9'
+                                @endphp
+                                <h4>
+                                    {{-- 新しいタグで開く target="_blank" --}}
+                                    {{-- 2024/01/29 --}}
+<a class="nav-link" target="_blank" href='{{ $topurl }}'>R5年確定申告一覧表（顧問先）</a>
+                                {{-- <input type="button" target="_blank" onclick="location.href='{{ $topurl }}'" value="入金管理表(Excel)へ"> --}}
+                                </h4>
                                 @break;
                             @case ('00_4')
                                 <!-- タイトル -->
