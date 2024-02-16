@@ -104,7 +104,7 @@ class TopController extends Controller
                         //individual_class 法人(1):個人事業主(2)
                         ->where('individual_class','=', 1)
                         ->where('closing_month','>=', $submonth2 )
-                        ->whereNull('deleted_at');
+                        ->whereNull('deleted_at');  // 2024/02/16 ADD
             $count2     = $customers2->count();
 
             $customers2 = Customer::where('organization_id','>=',$organization_id)
@@ -126,7 +126,7 @@ class TopController extends Controller
                         //individual_class 法人(1):個人事業主(2)
                         ->where('individual_class','=', 1)
                         ->where('closing_month','=', $submonth2 )
-                        ->whereNull('deleted_at');
+                        ->whereNull('deleted_at');  // 2024/02/16 ADD
             $count2     = $customers2->count();
 
             $customers2 = Customer::where('organization_id','>=',$organization_id)
@@ -149,7 +149,7 @@ class TopController extends Controller
                         //individual_class 法人(1):個人事業主(2)
                         ->where('individual_class','=', 1)
                         ->where('closing_month','>=', $submonth1 )
-                        ->whereNull('deleted_at');
+                        ->whereNull('deleted_at');  // 2024/02/16 ADD
             $count3     = $customers3->count();
 
             $customers3 = Customer::where('organization_id','>=',$organization_id)
@@ -170,7 +170,7 @@ class TopController extends Controller
                         //individual_class 法人(1):個人事業主(2)
                         ->where('individual_class','=', 1)
                         ->where('closing_month','=', $submonth1 )
-                        ->whereNull('deleted_at');
+                        ->whereNull('deleted_at');  // 2024/02/16 ADD
             $count3     = $customers3->count();
 
             $customers3 = Customer::where('organization_id','>=',$organization_id)
