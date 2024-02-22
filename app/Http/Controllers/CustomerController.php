@@ -671,60 +671,45 @@ class CustomerController extends Controller
         $organization  = $this->auth_user_organization();
         $organization_id = $organization->id;
 
-        // 日付が入力された
-        if($keyword || $keyword2) {
-            if($organization_id == 0) {
-                $customers = Customer::where('organization_id','>=',$organization_id)
-                // ($keyword)の絞り込み
-                ->where('business_name', 'like', "%$keyword%")
-                ->where('represent_name', 'like', "%$keyword2%")    //2022/09/29
-                // 削除されていない
-                ->whereNull('deleted_at')
-                // `active_cancel` 1:契約 2:SPOT 3:解約',
-                ->orderBy('active_cancel', 'asc')
-                // 事業者コード
-                // ->orderBy('business_code', 'asc')
-                // sortable()を追加
-                ->sortable()
-                ->paginate(300);
-            } else {
+        // 2024/02/22 represent_name = [NULL](レコード上)対応
+        //（NULL型）の場合：TRUE
+        // 両方が入力された
+        if ((is_null($keyword) == false ) && (is_null($keyword2) == false ) ) {
+            Log::info('customer serch 1');
                 $customers = Customer::where('organization_id','=',$organization_id)
-                // ($keyword)の絞り込み
-                ->where('business_name', 'like', "%$keyword%")
-                ->where('represent_name', 'like', "%$keyword2%")    //2022/09/29
-                // 削除されていない
-                ->whereNull('deleted_at')
-                // `active_cancel` 1:契約 2:SPOT 3:解約',
-                ->orderBy('active_cancel', 'asc')
-                // 事業者コード
-                // ->orderBy('business_code', 'asc')
-                // sortable()を追加
-                ->sortable()
-                ->paginate(300);
-            }
+                    ->where('business_name', 'like', "%$keyword%")
+                    ->where('represent_name', 'like', "%$keyword2%")
+                    ->whereNull('deleted_at')
+                    ->orderBy('active_cancel', 'asc')
+                    ->sortable()
+                    ->paginate(300);
         } else {
-            if($organization_id == 0) {
-                $customers = Customer::where('organization_id','>=',$organization_id)
-                // 削除されていない
-                ->whereNull('deleted_at')
-                // `active_cancel` 1:契約 2:SPOT 3:解約',
-                ->orderBy('active_cancel', 'asc')
-                // 事業者コード
-                // ->orderBy('business_code', 'asc')
-                // sortable()を追加
-                ->sortable()
-                ->paginate(300);
-            } else {
+            // 顧客名が入力された
+            if ((is_null($keyword) == false ) && (is_null($keyword2) == true ) ) {
+                Log::info('customer serch 2');
                 $customers = Customer::where('organization_id','=',$organization_id)
-                // 削除されていない
-                ->whereNull('deleted_at')
-                // `active_cancel` 1:契約 2:SPOT 3:解約',
-                ->orderBy('active_cancel', 'asc')
-                // 事業者コード
-                // ->orderBy('business_code', 'asc')
-                // sortable()を追加
-                ->sortable()
-                ->paginate(300);
+                    ->where('business_name', 'like', "%$keyword%")
+                    ->whereNull('deleted_at')
+                    ->orderBy('active_cancel', 'asc')
+                    ->sortable()
+                    ->paginate(300);
+            // 代表者名が入力された
+            } elseif ((is_null($keyword) == true ) && (is_null($keyword2) == false ) ) {
+                Log::info('customer serch 3');
+                $customers = Customer::where('organization_id','=',$organization_id)
+                    ->where('represent_name', 'like', "%$keyword2%")
+                    ->whereNull('deleted_at')
+                    ->orderBy('active_cancel', 'asc')
+                    ->sortable()
+                    ->paginate(300);
+            // 両方が未入力
+            } else {
+                Log::info('customer serch 4');
+                $customers = Customer::where('organization_id','=',$organization_id)
+                    ->whereNull('deleted_at')
+                    ->orderBy('active_cancel', 'asc')
+                    ->sortable()
+                    ->paginate(300);
             }
         };
 
