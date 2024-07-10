@@ -60,7 +60,6 @@ class Kernel extends ConsoleKernel
         // $schedule->command('command:File90Delete')         // userdata配下の120日経過したファイルを削除(2022/08/30)
         //          ->weeklyOn(0, '05:10');                // 毎週日曜日(0)AM5:10に実行する
 
-
         $schedule->command('backup:run')
                  ->weeklyOn(0, '06:10');                // 毎週日曜日(0)AM6:00に実行する
 
