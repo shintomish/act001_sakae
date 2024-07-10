@@ -56,9 +56,10 @@ class Kernel extends ConsoleKernel
                  ->dailyAt('05:00');                    // 毎日AM5:00に実行する
 
         // $schedule->call(new File90Delete($schedule))    // userdata配下の90日経過したファイルを削除
-        $schedule->command('command:File90Delete')         // userdata配下の90日経過したファイルを削除
-                 ->weeklyOn(0, '05:10');                // 毎週日曜日(0)AM5:10に実行する
-                //  ->dailyAt('15:35');                 // 毎日AM4:20に実行する
+        // 2024/07/10 コメントにする。要望
+        // $schedule->command('command:File90Delete')         // userdata配下の120日経過したファイルを削除(2022/08/30)
+        //          ->weeklyOn(0, '05:10');                // 毎週日曜日(0)AM5:10に実行する
+
 
         $schedule->command('backup:run')
                  ->weeklyOn(0, '06:10');                // 毎週日曜日(0)AM6:00に実行する
