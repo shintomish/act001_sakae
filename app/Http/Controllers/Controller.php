@@ -106,6 +106,21 @@ class Controller extends BaseController
             Log::info('auth_customer_findrec END');
             return $ret_val;
         }
+        // 2024/09/02 アクア先頭対応
+        // user 221 伊勢地 megu.tezu@gmail.com
+        // user 172 白　兆章 mail0@hakuwriter.com (複数法人)
+        // 102 153 168
+        if($u_id == 172) {
+            $ret_val = Customer::whereNull('deleted_at')
+                            // `active_cancel` 1:契約 2:SPOT 3:解約',
+                            ->where('active_cancel','!=', 3)
+                            ->whereIn( 'customers.id', [102, 153, 168] ) // 102 153 168
+                            ->orderBy('customers.memo_5', 'asc')    //memo_5
+                            ->get();
+            Log::info('auth_customer_findrec END $u_id = ' . print_r($u_id ,true));
+            Log::info('auth_customer_findrec END');
+            return $ret_val;
+        }
 
         // 2023/10/25 解約は表示しない対応
         // $controlusers = ControlUser::where('user_id',$u_id)
