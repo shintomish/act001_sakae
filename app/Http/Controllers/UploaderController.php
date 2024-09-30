@@ -8,6 +8,9 @@ use App\Models\UploadUser;
 
 // use Illuminate\Http\Request;
 
+// 2024/09/30
+// use Illuminate\Support\Str;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -17,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 $request = Request::createFromGlobals();
 use Flow\Config as FlowConfig;
 use Flow\Request as FlowRequest;
-use League\CommonMark\Extension\CommonMark\Renderer\Block\ThematicBreakRenderer;
+// use League\CommonMark\Extension\CommonMark\Renderer\Block\ThematicBreakRenderer;
 
 // use Storage;
 // use Illuminate\Http\UploadedFile;
@@ -170,7 +173,28 @@ class UploaderController extends Controller
         }
 
         $uploadFile = $request->getFile();
-     
+        // Log::debug('client postUpload $uploadFile[name] = ' . print_r($uploadFile['name'] ,true));
+        // $length_mb_strlen  = mb_strlen($uploadFile['name']);
+
+        //---- 2024/09/30 Failed to open stream: File name too long 対応
+        $length_strlen  = strlen($uploadFile['name']);
+        $maxtatallength = 255;
+        if ($length_strlen > $maxtatallength)
+        {
+            $errormsg = 'ファイル名が長過ぎます。アップロード可能なファイル名長は '. $maxtatallength. ' 文字までです。';
+            Log::info('client postUpload  failesize to big ');
+            Log::debug('client postUpload $length_strlen error = ' . print_r($length_strlen ,true));
+
+            // Statusを変える
+            $status = false;
+            $this->json_put_status($status,$customer_id);
+            //400 Bad Request	一般的なクライアントエラー
+            return \Response::json(['error'=>$errormsg,'status'=>'BG'],400);
+
+        }
+        Log::debug('client postUpload $length_strlen = ' . print_r($length_strlen ,true));
+        //---- 
+
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             if ($file->checkChunk()) {
                 header("HTTP/1.1 200 Ok");
