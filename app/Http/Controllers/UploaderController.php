@@ -184,7 +184,8 @@ class UploaderController extends Controller
             $errormsg = 'ファイル名が長過ぎます。アップロード可能なファイル名長は '. $maxtatallength. ' 文字までです。';
             Log::info('client postUpload  failesize to big ');
             Log::debug('client postUpload $length_strlen error = ' . print_r($length_strlen ,true));
-
+            Log::debug('client postUpload $uploadFile[name] = ' . print_r($uploadFile['name'] ,true));
+            
             // Statusを変える
             $status = false;
             $this->json_put_status($status,$customer_id);
