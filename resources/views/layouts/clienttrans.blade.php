@@ -214,22 +214,37 @@
                         </h6>
                         {{-- 2023/08/17 上追加 --}}
 
+                        {{-- 2024/11/07 以下コメント --}}
                         {{-- 2023/11/06 以下追加 --}}
-                        @if($indiv_class == 1 )
-                            <ul class="nav flex-column mb-2">
-                                <li class="nav-item">
-                                    <a class="nav-link" target="_blank" href="{{route('topclinewzip2023')}}">
-                                        <i class="fas fa-download"></i>
+                        {{-- @if($indiv_class == 1 ) --}}
+                            {{-- <ul class="nav flex-column mb-2"> --}}
+                                {{-- <li class="nav-item"> --}}
+                                    {{-- <a class="nav-link" target="_blank" href="{{route('topclinewzip2023')}}"> --}}
+                                        {{-- <i class="fas fa-download"></i> --}}
                                         {{-- <span style="color:red">
                                             2023年_年末調整資料（法人様向け資料）
                                         </span> --}}
-                                        2023年_年末調整資料（法人様向け資料）
+                                        {{-- 2023年_年末調整資料（法人様向け資料） --}}
+                                    {{-- </a> --}}
+                                {{-- </li> --}}
+                            {{-- </ul> --}}
+                        {{-- @endif --}}
+                        {{-- 2023/11/06 上追加 --}}
+                        {{-- 2024/11/07 上コメント --}}
+                        
+                        {{-- 2024/11/07 以下追加 --}}
+                        @if($indiv_class == 1 )
+                            <ul class="nav flex-column mb-2">
+                                <li class="nav-item">
+                                    <a class="nav-link" target="_blank" href="{{route('topclinewzip2024')}}">
+                                        <i class="fas fa-download"></i>
+                                        令和6年_年末調整フォーム
                                     </a>
                                 </li>
                             </ul>
                         @endif
-                        {{-- 2023/11/06 上追加 --}}
-                        
+                        {{-- 2024/11/07 上追加 --}}
+
                         {{-- 2023/08/17 以下追加 --}}
                         <ul class="nav flex-column mb-2">
                             <li class="nav-item">
