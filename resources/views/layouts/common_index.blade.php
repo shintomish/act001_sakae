@@ -302,9 +302,9 @@
                                 <form  class="form-inline my-2 my-lg-0 ml-2" action="{{route('notaccounth_custom')}}" method="GET">
                                 @break;
                             @case ('06')
-                                <!-- タイトル -->
-                                <h3>顧問料金</h3>
-                                <form  class="form-inline my-2 my-lg-0 ml-2" action="{{route('advisorsfee_custom')}}" method="GET">
+                                <!-- タイトル 2024/11/07 Comment-->
+                                {{-- <h3>顧問料金</h3> --}}
+                                {{-- <form  class="form-inline my-2 my-lg-0 ml-2" action="{{route('advisorsfee_custom')}}" method="GET"> --}}
                                 @break;
                             @case ('07')
                                 <!-- タイトル -->
