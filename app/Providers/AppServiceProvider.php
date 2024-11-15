@@ -72,7 +72,7 @@ class AppServiceProvider extends ServiceProvider
         view()->share('loop_closing_month', $loop_closing_month);
 
        // `start_notification` int(11) DEFAULT 1 COMMENT '開始届 1:未提出 2:提出済み',
-       $loop_start_notification = array(
+        $loop_start_notification = array(
             '00' => array ( 'no'=> 0,  'name'=>'選択してください', ),
             '01' => array ( 'no'=> 1,  'name'=>'未提出', ),
             '02' => array ( 'no'=> 2,  'name'=>'提出済み', ),
@@ -316,12 +316,13 @@ class AppServiceProvider extends ServiceProvider
         );
         view()->share('loop_consumption_tax_flg', $loop_consumption_tax_flg);
 
-        // `年,
+        // `年, 2024/11/15 2025年対応
         $loop_year_flg = array(
             '00' => array ( 'no'=> 0,   'name'=>'選択してください', ),
             '01' => array ( 'no'=> 2022,  'name'=>'2022年', ),
             '02' => array ( 'no'=> 2023,  'name'=>'2023年', ),
             '03' => array ( 'no'=> 2024,  'name'=>'2024年', ),
+            '04' => array ( 'no'=> 2025,  'name'=>'2025年', ),
         );
         view()->share('loop_year_flg', $loop_year_flg);
 
