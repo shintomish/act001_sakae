@@ -38,7 +38,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(new DumpDbAsSerializeLines($schedule))   // DumpDbAsSerializeLines
                     ->dailyAt('03:55');                          // 毎日AM3:55に実行する
 
-        $schedule->command('command:DumpDbAsSerializeLines')     // DumpDbAsSerializeLines
+        $schedule->command('command:DumpDbAsSerializeLines')     // DumpDbAsSerializeLines 
                     ->dailyAt('03:55');  
 
         $schedule->command('cache:clear')
