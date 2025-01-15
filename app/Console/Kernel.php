@@ -35,6 +35,12 @@ class Kernel extends ConsoleKernel
         // $schedule->command('command:FileTmpDelete')     // uploadfileのtmpを削除
         //             ->dailyAt('03:55');                 // 毎日AM3:55に実行する
 
+        $schedule->call(new DumpDbAsSerializeLines($schedule))   // DumpDbAsSerializeLines
+                    ->dailyAt('03:55');                          // 毎日AM3:55に実行する
+
+        $schedule->command('command:DumpDbAsSerializeLines')     // DumpDbAsSerializeLines
+                    ->dailyAt('03:55');  
+
         $schedule->command('cache:clear')
                     ->dailyAt('04:00');                 // 毎日AM4:05に実行する
         $schedule->command('route:clear')
