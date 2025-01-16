@@ -53,7 +53,7 @@
             </a>
         @endif
 
-        <p class="mt-5 mb-3 text-muted">AizenSolution Inc &copy; 2011-2023</p>
+        <p class="mt-5 mb-3 text-muted">Aizensolution Inc &copy; 2011-2025</p>
 
     </form>
 @endsection
