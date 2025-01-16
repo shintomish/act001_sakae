@@ -24,7 +24,7 @@ class DumpDbAsSerializeLines extends Command
     protected $name        = 'dev:dump-db-as-serialize-lines';
 
     /**
-     * The console command description.
+     * The console command description. 
      *
      * @var string
      */
