@@ -1,9 +1,8 @@
 <?php
- 
-namespace App\Console\Commands\ForDevelop;
- 
-use App\Console\BaseCommand;
 
+namespace App\Console\Commands;
+// use App\Console\BaseCommand;
+use Illuminate\Console\Command;
 // use DateTime;
 // use Carbon\Carbon;
 // use DB;
@@ -13,14 +12,14 @@ use Doctrine\DBAL\Schema\Column;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
-class DumpDbAsSerializeLines extends BaseCommand
+class DumpDbAsSerializeLines extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'command:DumpDbAsSerializeLines'; // コマンドの名前を設定 
+    protected $signature = 'command:DumpDbAsSerializeLines'; // コマンドの名前を設定
 
     protected $name        = 'dev:dump-db-as-serialize-lines';
 

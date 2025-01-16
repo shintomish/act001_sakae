@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Console\Commands\ForDevelop;
+namespace App\Console\Commands;
 
-use App\Console\BaseCommand;
+// use App\Console\BaseCommand;
+use Illuminate\Console\Command;
 // use DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
-class RestoreDbFromSerializeLines extends BaseCommand
+class RestoreDbFromSerializeLines extends Command
 {
     /**
-     * The name and signature of the console command. 
+     * The name and signature of the console command.
      *
      * @var string
      */
@@ -99,7 +100,7 @@ class RestoreDbFromSerializeLines extends BaseCommand
             DB::query()->from($tableName)->insert($recordStacks);
             // 終了通知
             $this->info('finish: '.$tableName);
-            
+
             Log::info('schedule RestoreDbFromSerializeLines main END ');
             // 開いたファイルへの接続はファイルポインタが参照不能になった時点で PHP が自動で閉じてくれる
         }
