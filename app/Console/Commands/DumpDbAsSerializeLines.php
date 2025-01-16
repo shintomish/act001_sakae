@@ -21,7 +21,7 @@ class DumpDbAsSerializeLines extends Command
      */
     protected $signature = 'command:DumpDbAsSerializeLines'; // コマンドの名前を設定
 
-    protected $name        = 'dev:dump-db-as-serialize-lines';
+    protected $name      = 'dev:dump-db-as-serialize-lines';
 
     /**
      * The console command description. 
