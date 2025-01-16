@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class RestoreDbFromSerializeLines extends Command
 {
-    /**
+    /** 
      * The name and signature of the console command.
      *
      * @var string
