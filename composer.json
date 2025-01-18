@@ -17,6 +17,7 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "laravel/ui": "3.*",
+        "spatie/laravel-backup": "*",
         "wildbit/swiftmailer-postmark": "^3.4"
     },
     "require-dev": {

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-class invoicehistoryController extends Controller
+class InvoiceHistoryController extends Controller
 {
     /**
      * Create a new controller instance.
