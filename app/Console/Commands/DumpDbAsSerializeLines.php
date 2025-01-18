@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Doctrine\DBAL\Schema\Column;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-
+// public function connect(array $params): Doctrine\DBAL\Driver\Connection;
 class DumpDbAsSerializeLines extends Command
 {
     /**
@@ -30,11 +30,15 @@ class DumpDbAsSerializeLines extends Command
      */
     protected $description = 'テーブル名.txt の名前でシリアライズされた各レコードの結果を出力。dev:restore-db-from-serialize-lines と対';
 
-    public function handle(): void
+    
+    public function handle(array $params): void
     {
         Log::info('schedule DumpDbAsSerializeLines START ');
-
-        // Doctrine のテーブル接続ツールを使用
+        // $username ='a';
+        // $password = 'null';
+        // $driverOptions[] = 'null';
+        // $params = arry($username,$password,$driverOptions);
+        
         $dbal = Model::resolveConnection()->getDoctrineSchemaManager();
         // テーブル名を取得
         foreach ($dbal->listTableNames() as $tableName) {
