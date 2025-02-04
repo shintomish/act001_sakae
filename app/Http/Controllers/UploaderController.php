@@ -190,7 +190,7 @@ class UploaderController extends Controller
             $status = false;
             $this->json_put_status($status,$customer_id);
             //400 Bad Request	一般的なクライアントエラー
-            return \Response::json(['error'=>$errormsg,'status'=>'BG'],400);
+            return \Response::json(['error'=>$errormsg,'status'=>'BGstrlen'],400);
 
         }
         Log::debug('client postUpload $length_strlen = ' . print_r($length_strlen ,true));

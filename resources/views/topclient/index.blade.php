@@ -581,7 +581,7 @@
                 margin-bottom: 10px;
             }
             /* Uploader: Drag & Drop */
-            .flow-error { font-size:14px;display: none; }
+            .flow-error { font-size:28px;display: none; }
             .flow-error >div{ display: none; }
             /* .flow-drop {padding:30px 15px; font-size:13px; text-align:center; color:#666; background-color:#fafafa; border:2px dashed #ccc; border-radius:4px; margin-top:40px; z-index:9999; display:none;} */
             /* drop display:none-->textセンター表示 display:flex--->text左表示 */
@@ -715,14 +715,17 @@
             $('.flow-list').css({width:'0'});
             $('.flow-drop').css({color:'#505050'}); /* 元に戻す */
 
-            // 2023/08/20 以下追加 リストファイル名を消す
+            // 2023/08/20 以下追加 リストファイル名を消す 
             // $('.flow-file-'+file.uniqueIdentifier).hide();
 
-            message = file.name + " のアップロードが正常に終了しました。";
+            // message = file.name + " のアップロードが正常に終了しました。";
+            message = "「アップロード成功」 " + file.name;
+            // message = "「アップロード失敗」 「送信データ確認ページで確認してください。」  " + file.name;
 
             // 2023/08/20 1秒->5秒表示
+            // 2025/02/04 5秒->10秒表示
             // alert('success',message,1000);
-            alert('success',message,5000);
+            alert('success',message,10000);
 
             // 2023/08/20 以下追加 flow-progressを再表示
             $('.flow-progress').show();
@@ -740,20 +743,42 @@
         var response = JSON.parse(message || "null");
         // console.log(response);
         if(response == null) {
-            message = file.name + ' のアップロードが出来ませんでした。';
+            // 2025/02/04
+            // message = file.name + ' のアップロードが出来ませんでした。';
+            message = "「アップロード失敗」 「送信データ確認ページで確認してください。」  " + file.name;
+
             // 2023/08/17
             // alert('danger',message,1000);    // 表示1sec
-            alert('danger',message,5000);    // 表示5sec
+
+            // 2025/02/04
+            // alert('danger',message,5000);    // 表示5sec
+            alert('danger',message,10000);      // 表示10sec
         } else {
             if(response.status == "BG") {
-                // 2023/08/17
-                // alert('danger',response.error,1000);    // 表示1sec
-                alert('danger',response.error,5000);    // 表示5sec
+                // 2025/02/04 追加
+                message = "ファイルサイズが大きすぎます。アップロード可能なサイズは 30MBまでです。";
+
+                // 2025/02/04
+                // alert('danger',message,5000);    // 表示5sec
+                alert('danger',message,10000);      // 表示10sec
             } else {
-                message = file.name + ' のアップロードが出来ませんでした。';
-                // 2023/08/17
-                // alert('danger',response.error,1000);    // 表示1sec
-                alert('danger',response.error,5000);    // 表示5sec
+                // 2025/02/04 追加
+                if(response.status == "BGstrlen") {
+                    message = "ファイル名が長過ぎます。アップロード可能なファイル名長は 255文字までです。";
+                    alert('danger',message,10000);      // 表示10sec
+
+                } else {
+                    // 2025/02/04
+                    // message = file.name + ' のアップロードが出来ませんでした。';
+                    message = "「アップロード失敗」 「送信データ確認ページで確認してください。」  " + file.name;
+
+                    // 2023/08/17
+                    // alert('danger',response.error,1000);    // 表示1sec
+
+                    // 2025/02/04
+                    // alert('danger',message,5000);    // 表示5sec
+                    alert('danger',message,10000);      // 表示10sec
+                }
             }
         }
     });
