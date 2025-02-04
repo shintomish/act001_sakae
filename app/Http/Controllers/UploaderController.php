@@ -189,7 +189,7 @@ class UploaderController extends Controller
             // Statusを変える
             $status = false;
             $this->json_put_status($status,$customer_id);
-            //400 Bad Request	一般的なクライアントエラー
+            //400 Bad Request	一般的なクライアントエラー 2025/02/04 BG->BGstrlen
             return \Response::json(['error'=>$errormsg,'status'=>'BGstrlen'],400);
 
         }
