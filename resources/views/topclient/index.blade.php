@@ -180,10 +180,12 @@
                             opacity: 1;
                             }
                         }
+                        /* 2025/02/05 */
                         .alert-success {
                             white-space: pre-line;
                         }
 
+                        /* 2025/02/05 */
                         .alert-danger {
                             white-space: pre-line;
                         }
