@@ -180,6 +180,13 @@
                             opacity: 1;
                             }
                         }
+                        .alert-success {
+                            white-space: pre-line;
+                        }
+
+                        .alert-danger {
+                            white-space: pre-line;
+                        }
                     </style>
                     {{-- 2022/12/30 --}}
                     <script type="text/javascript">
@@ -718,14 +725,13 @@
             // 2023/08/20 以下追加 リストファイル名を消す 
             // $('.flow-file-'+file.uniqueIdentifier).hide();
 
-            // message = file.name + " のアップロードが正常に終了しました。";
-            message = "「アップロード成功」 " + file.name;
-            // message = "「アップロード失敗」 「送信データ確認ページで確認してください。」  " + file.name;
+            message = file.name + " のアップロードが正常に終了しました。";
+            message = "「アップロード成功」" + "\r\n";
+            message = message + file.name;
 
             // 2023/08/20 1秒->5秒表示
             // 2025/02/04 5秒->10秒表示
-            // alert('success',message,1000);
-            alert('success',message,10000);
+            alert('success', message, 10000);
 
             // 2023/08/20 以下追加 flow-progressを再表示
             $('.flow-progress').show();
@@ -745,8 +751,9 @@
         if(response == null) {
             // 2025/02/04
             // message = file.name + ' のアップロードが出来ませんでした。';
-            message = "「アップロード失敗」 「送信データ確認ページで確認してください。」  " + file.name;
-
+            message = "「アップロード失敗」" + "\r\n";
+            message = message + "送信データ確認ページで確認してください。」  " + "\r\n";
+            message = message + file.name;
             // 2023/08/17
             // alert('danger',message,1000);    // 表示1sec
 
@@ -756,7 +763,9 @@
         } else {
             if(response.status == "BG") {
                 // 2025/02/04 追加
-                message = "ファイルサイズが大きすぎます。アップロード可能なサイズは 30MBまでです。";
+                message = "「アップロード失敗」" + "\r\n";
+                message = message + "ファイルサイズが大きすぎます。アップロード可能なサイズは 30MBまでです。" + "\r\n";
+                message = message + file.name;
 
                 // 2025/02/04
                 // alert('danger',message,5000);    // 表示5sec
@@ -764,13 +773,18 @@
             } else {
                 // 2025/02/04 追加
                 if(response.status == "BGstrlen") {
-                    message = "ファイル名が長過ぎます。アップロード可能なファイル名長は 255文字までです。";
+                    message = "「アップロード失敗」" + "\r\n";
+                    message = message + "ファイル名が長過ぎます。アップロード可能なファイル名長は 255文字までです。" + "\r\n";
+                    message = message + file.name;
+
                     alert('danger',message,10000);      // 表示10sec
 
                 } else {
                     // 2025/02/04
                     // message = file.name + ' のアップロードが出来ませんでした。';
-                    message = "「アップロード失敗」 「送信データ確認ページで確認してください。」  " + file.name;
+                    message = "「アップロード失敗」" + "\r\n";
+                    message = message + "送信データ確認ページで確認してください。」  " + "\r\n";
+                    message = message + file.name;
 
                     // 2023/08/17
                     // alert('danger',response.error,1000);    // 表示1sec
