@@ -677,7 +677,7 @@
         headers: { 'X-CSRF-TOKEN': '{{csrf_token()}}'},
         testChunks:false
     });
-      // Flow.js isn't supported, fall back on a different method
+    // Flow.js isn't supported, fall back on a different method
     if (!r.support) {
         $('.flow-error').show();
         return ;
@@ -730,7 +730,7 @@
         }
     });
 
-//  2025/02/06 File Upload Limit
+    // 2025/02/06 File Upload Limit
     function clearFileList() {
         $('.flow-list').empty(); // ファイルリストを空にする
     }
