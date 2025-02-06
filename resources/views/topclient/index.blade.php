@@ -39,7 +39,7 @@
     @endif
     <div class="row">
 
-        <!-- 検索エリア -->
+        <!-- 検索エリア warning-->
         <form  class="my-2 my-lg-0 ml-2" action="{{route('topclientserch')}}" method="GET">
             {{-- <form  class="my-2 my-lg-0 ml-2" action="{{route('transserch_custom')}}" method="GET"> --}}
             @csrf
@@ -668,6 +668,7 @@
     (function () {
     var customer_id = $("#customer_id" + " option:selected").val();
     var isImage = true;
+    var maxFiles = 5;   // 2025/02/06 File Upload Limit 最大ファイル数
     var r = new Flow({
         simultaneousUploads : 5,
         // target: '/uploads',
@@ -685,16 +686,37 @@
     $('.flow-drop').show();
     r.assignDrop($('.flow-drop')[0]);
     r.assignBrowse($('.flow-browse')[0]);
+
+    r.on('filesSubmitted', function (files) {
+        //  2025/02/06 File Upload Limit
+        if (files.length > maxFiles) {
+            var msg = "一度に選択する数は5アイテムまでです。" + "\r\n";
+            msg = msg + "( " + files.length + " )アイテム選択されました。";
+            alert('danger', msg, 5000);
+            clearFileList(); // ファイルリストをクリア
+            return;
+        }
+        r.upload();
+    });
+
     // Handle file add event
     r.on('fileAdded', function(file){
-        isImage = true;
+        //  2025/02/06 File Upload Limit
+        if (r.files.length > maxFiles) {
+            var msg = "一度に選択する数は5アイテムまでです。" + "\r\n";
+            msg = msg  + "( " + r.files.length + " )アイテム選択されました。";
+            alert('danger', msg, 5000);
+            $('.flow-progress').show();
+            r.files.pop();      // 最新のファイルを削除
+            clearFileList();    // ファイルリストをクリア
+            return;
+        }
 
+        isImage = true;
         if( isImage ) {
             // Show progress bar
             $('.flow-progress, .flow-list').show();
-
             $('.flow-drop').css({color:'#220477'}); /* 青にする */
-
             // Add the file to the list
             $('.flow-list').append(
                 '<li class="flow-file list-group-item flow-file-'+file.uniqueIdentifier+'">' +
@@ -706,13 +728,12 @@
             $self.find('.flow-file-name').text(file.name);
             $self.find('.flow-file-size').text(readablizeBytes(file.size));
         }
+    });
 
-    });
-    r.on('filesSubmitted', function(file) {
-        if( isImage ) {
-            r.upload();
-        }
-    });
+//  2025/02/06 File Upload Limit
+    function clearFileList() {
+        $('.flow-list').empty(); // ファイルリストを空にする
+    }
 
     r.on('fileSuccess', function(file,message){
         setTimeout(function(){
@@ -822,6 +843,7 @@
             });
         }
     })();
+
     function readablizeBytes(bytes) {
         var s = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
         var e = Math.floor(Math.log(bytes) / Math.log(1024));
