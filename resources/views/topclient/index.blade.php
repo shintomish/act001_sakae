@@ -689,28 +689,28 @@
 
     r.on('filesSubmitted', function (files) {
         //  2025/02/06 File Upload Limit
-        if (files.length > maxFiles) {
-            var msg = "一度に選択する数は5アイテムまでです。" + "\r\n";
-            msg = msg + "( " + files.length + " )アイテム選択されました。";
-            alert('danger', msg, 5000);
-            clearFileList(); // ファイルリストをクリア
-            return;
-        }
+        // if (files.length > maxFiles) {
+        //     var msg = "一度に選択する数は5アイテムまでです。" + "\r\n";
+        //     msg = msg + "( " + files.length + " )アイテム選択されました。";
+        //     alert('danger', msg, 5000);
+        //     clearFileList(); // ファイルリストをクリア
+        //     return;
+        // }
         r.upload();
     });
 
     // Handle file add event
     r.on('fileAdded', function(file){
         //  2025/02/06 File Upload Limit
-        if (r.files.length > maxFiles) {
-            var msg = "一度に選択する数は5アイテムまでです。" + "\r\n";
-            msg = msg  + "( " + r.files.length + " )アイテム選択されました。";
-            alert('danger', msg, 5000);
-            $('.flow-progress').show();
-            r.files.pop();      // 最新のファイルを削除
-            clearFileList();    // ファイルリストをクリア
-            return;
-        }
+        // if (r.files.length > maxFiles) {
+        //     var msg = "一度に選択する数は5アイテムまでです。" + "\r\n";
+        //     msg = msg  + "( " + r.files.length + " )アイテム選択されました。";
+        //     alert('danger', msg, 5000);
+        //     $('.flow-progress').show();
+        //     r.files.pop();      // 最新のファイルを削除
+        //     clearFileList();    // ファイルリストをクリア
+        //     return;
+        // }
 
         isImage = true;
         if( isImage ) {
