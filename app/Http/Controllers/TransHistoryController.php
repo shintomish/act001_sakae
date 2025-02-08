@@ -126,34 +126,57 @@ class TransHistoryController extends Controller
         $user  = $this->auth_user_info();
         $u_id = $user->id;
         $organization_id =  $user->organization_id;
-        // 日付が入力された
-        if($keyword) {
-            $imageuploads = Imageupload::where('user_id',$u_id)
-            // 削除されていない
-            ->whereNull('deleted_at')
-            // ($keyword)日付の絞り込み
-            ->whereDate('created_at',$keyword)
-            // ($keyword)顧客の絞り込み
-            ->where('customer_id',$customer_id)
-            // sortable()を追加
-            ->sortable()
-            ->orderByRaw('created_at DESC')
-            ->paginate(10);
-        } else {
-            $imageuploads = Imageupload::where('user_id',$u_id)
-            // 削除されていない
-            ->whereNull('deleted_at')
-            // ($keyword)顧客の絞り込み
-            ->where('customer_id',$customer_id)
-            // sortable()を追加
-            ->sortable()
-            ->orderByRaw('created_at DESC')
-            ->paginate(10);
-        };
 
+        // 2025/02/08 $u_id == 10 対応
+        if($u_id == 10) {
+            // 日付が入力された
+            if($keyword) {
+                $imageuploads = Imageupload::where('customer_id',$customer_id)
+                // 削除されていない
+                ->whereNull('deleted_at')
+                // ($keyword)日付の絞り込み
+                ->whereDate('created_at',$keyword)
+                // sortable()を追加
+                ->sortable()
+                ->orderByRaw('created_at DESC')
+                ->paginate(10);
+            } else {
+                $imageuploads = Imageupload::where('customer_id',$customer_id)
+                // 削除されていない
+                ->whereNull('deleted_at')
+                // sortable()を追加
+                ->sortable()
+                ->orderByRaw('created_at DESC')
+                ->paginate(10);
+            };
+        } else {
+            // 日付が入力された
+            if($keyword) {
+                $imageuploads = Imageupload::where('user_id',$u_id)
+                // 削除されていない
+                ->whereNull('deleted_at')
+                // ($keyword)日付の絞り込み
+                ->whereDate('created_at',$keyword)
+                // ($keyword)顧客の絞り込み
+                ->where('customer_id',$customer_id)
+                // sortable()を追加
+                ->sortable()
+                ->orderByRaw('created_at DESC')
+                ->paginate(10);
+            } else {
+                $imageuploads = Imageupload::where('user_id',$u_id)
+                // 削除されていない
+                ->whereNull('deleted_at')
+                // ($keyword)顧客の絞り込み
+                ->where('customer_id',$customer_id)
+                // sortable()を追加
+                ->sortable()
+                ->orderByRaw('created_at DESC')
+                ->paginate(10);
+            };
+        }
         // Customer(複数レコード)情報を取得する
         $customer_findrec = $this->auth_customer_findrec();
-
 
         // Customer(all)情報を取得する
         if($organization_id == 0) {
