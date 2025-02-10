@@ -55,6 +55,7 @@ return [
             'charset' => 'utf8mb4',
             // 'collation' => 'utf8mb4_unicode_ci',
             'collation' => 'utf8mb4_general_ci',
+            // 'timezone'  => '+09:00',  // 2025/02/10 
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,
