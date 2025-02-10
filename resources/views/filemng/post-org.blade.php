@@ -277,7 +277,7 @@ if($ip_ruleset != 'OFF'){
         }
     } else
     if($ip_ruleset == 'OR'){
-        if($whitelisted == true || $blacklisted == false){
+         if($whitelisted == true || $blacklisted == false){
             $proceed = true;
         }
     }
@@ -516,7 +516,7 @@ if (isset($_POST['ajax']) && !FM_READONLY) {
         $folder = $customers->foldername;
         $path = FM_ROOT_PATH.'/'. $folder;
 
-        function event_callback ($message) {
+         function event_callback ($message) {
             global $callback;
             echo json_encode($message);
         }
@@ -722,7 +722,7 @@ if (isset($_GET['copy'], $_GET['finish']) && !FM_READONLY) {
             $fn_parts = pathinfo($from);
             $extension_suffix = '';
             if(!is_dir($from)){
-                $extension_suffix = '.'.$fn_parts['extension'];
+               $extension_suffix = '.'.$fn_parts['extension'];
             }
             //Create new name for duplicate
             $fn_duplicate = $fn_parts['dirname'].'/'.$fn_parts['filename'].'-'.date('YmdHis').$extension_suffix;
@@ -730,19 +730,19 @@ if (isset($_GET['copy'], $_GET['finish']) && !FM_READONLY) {
             $max_loop = 1000;
             // Check if a file with the duplicate name already exists, if so, make new name (edge case...)
             while(file_exists($fn_duplicate) & $loop_count < $max_loop){
-                $fn_parts = pathinfo($fn_duplicate);
-                $fn_duplicate = $fn_parts['dirname'].'/'.$fn_parts['filename'].'-copy'.$extension_suffix;
-                $loop_count++;
+               $fn_parts = pathinfo($fn_duplicate);
+               $fn_duplicate = $fn_parts['dirname'].'/'.$fn_parts['filename'].'-copy'.$extension_suffix;
+               $loop_count++;
             }
             if (fm_rcopy($from, $fn_duplicate, False)) {
                 fm_set_msg(sprintf('Copyied from <b>%s</b> to <b>%s</b>', fm_enc($copy), fm_enc($fn_duplicate)));
             } else {
                 fm_set_msg(sprintf('Error while copying from <b>%s</b> to <b>%s</b>', fm_enc($copy), fm_enc($fn_duplicate)), 'error');
             }
-        }
-        else{
-            fm_set_msg(lng('Paths must be not equal'), 'alert');
-        }
+       }
+       else{
+           fm_set_msg(lng('Paths must be not equal'), 'alert');
+       }
     }
     fm_redirect(FM_SELF_URL . '?p=' . urlencode(FM_PATH));
 }
@@ -1177,7 +1177,7 @@ if (isset($_POST['chmod']) && !FM_READONLY && !FM_IS_WIN) {
 
 /*************************** /ACTIONS ***************************/
 //'アップロードユーザーのフォルダーへ'
-//
+// 
 $folder = $customers->foldername;
 $customername = $customers->business_name;
 // 20220827 フォルダー名表示→顧客名に
@@ -1260,7 +1260,7 @@ if (isset($_GET['upload']) && !FM_READONLY) {
 
 
         <div class="card mb-2 fm-upload-wrapper <?php echo fm_get_theme(); ?>">
-        <div class="card-header">
+           <div class="card-header">
                 <ul class="nav nav-tabs card-header-tabs">
                     <li class="nav-item">
                         <a class="nav-link active" href="#fileUploader" data-target="#fileUploader"><i class="fa fa-arrow-circle-o-up"></i> <?php echo lng('UploadingFiles') ?></a>
@@ -1520,8 +1520,8 @@ if (isset($_GET['settings']) && !FM_READONLY) {
                         <label for="js-3-1" class="col-sm-3 col-form-label"><?php echo lng('Theme') ?></label>
                         <div class="col-sm-5">
                             <select class="form-control" id="js-3-0" name="js-theme-3" style="width:100px;">
-                        <option value='light' <?php if($theme == "light"){echo "selected";} ?>><?php echo lng('light') ?></option>
-                        <option value='dark' <?php if($theme == "dark"){echo "selected";} ?>><?php echo lng('dark') ?></option>
+                         <option value='light' <?php if($theme == "light"){echo "selected";} ?>><?php echo lng('light') ?></option>
+                         <option value='dark' <?php if($theme == "dark"){echo "selected";} ?>><?php echo lng('dark') ?></option>
                             </select>
                         </div>
                     </div>
@@ -1732,7 +1732,7 @@ if (isset($_GET['view'])) {
                         <b><a href="?p=<?php echo urlencode(trim(FM_PATH)) ?>&amp;edit=<?php echo urlencode($file) ?>" class="edit-file"><i class="fa fa-pencil-square"></i> <?php echo lng('Edit') ?>
                             </a></b> &nbsp;
                         <b><a href="?p=<?php echo urlencode(trim(FM_PATH)) ?>&amp;edit=<?php echo urlencode($file) ?>&env=ace"
-                            class="edit-file"><i class="fa fa-pencil-square-o"></i> <?php echo lng('AdvancedEditor') ?>
+                              class="edit-file"><i class="fa fa-pencil-square-o"></i> <?php echo lng('AdvancedEditor') ?>
                             </a></b> &nbsp;
                     <?php } ?>
                     <b><a href="?p=<?php echo urlencode(FM_PATH) ?>"><i class="fa fa-chevron-circle-left go-back"></i> <?php echo lng('Back') ?></a></b>
@@ -2116,42 +2116,12 @@ $tableTheme = (FM_THEME == "dark") ? "text-white bg-dark table-dark" : "bg-white
                 $ii++;
             }
             $ik = 6070;
-            // ----- 2025/02/09 Timstamp Desc -----
-            $file_list = [];
-            // ファイル情報を収集
             foreach ($files as $f) {
-                $file_path = $path . '/' . $f;
-                if (file_exists($file_path)) {
-                    $file_list[] = [
-                        'name' => $f,
-                        'is_link' => is_link($file_path),
-                        'modif_raw' => filemtime($file_path),
-                        'size_raw' => fm_get_size($file_path),
-                    ];
-                }
-            }
-            // filemtime で降順にソート
-            usort($file_list, function($a, $b) {
-                return $b['modif_raw'] - $a['modif_raw'];
-            });
-            // ソートされたファイル情報で表示
-            foreach ($file_list as $file_info) {
-                $f = $file_info['name'];
-                $is_link = $file_info['is_link'];
+                $is_link = is_link($path . '/' . $f);
                 $img = $is_link ? 'fa fa-file-text-o' : fm_get_file_icon_class($path . '/' . $f);
-                $modif_raw = $file_info['modif_raw'];
+                $modif_raw = filemtime($path . '/' . $f);
                 $modif = date(FM_DATETIME_FORMAT, $modif_raw);
-                $filesize_raw = $file_info['size_raw'];
-
-            // foreach ($files as $f) {
-            //     $is_link = is_link($path . '/' . $f);
-            //     $img = $is_link ? 'fa fa-file-text-o' : fm_get_file_icon_class($path . '/' . $f);
-            //     $modif_raw = filemtime($path . '/' . $f);
-            //     $modif = date(FM_DATETIME_FORMAT, $modif_raw);
-            //     $filesize_raw = fm_get_size($path . '/' . $f);
-
-            // ----- 2025/02/09 Timstamp Desc End -----
-
+                $filesize_raw = fm_get_size($path . '/' . $f);
                 $filesize = fm_get_filesize($filesize_raw);
                 $filelink = '?p=' . urlencode(FM_PATH) . '&amp;view=' . urlencode($f);
                 $all_files_size += $filesize_raw;
@@ -2205,7 +2175,8 @@ $tableTheme = (FM_THEME == "dark") ? "text-white bg-dark table-dark" : "bg-white
                             {{-- <a title="<?php echo lng('Delete') ?>" href="?p=<?php echo urlencode(FM_PATH) ?>&amp;del=<?php echo urlencode($f) ?>" onclick="return confirm('<?php echo lng('Delete').' '.lng('File').'?'; ?>\n \n ( <?php echo urlencode($f) ?> )');"> <i class="fa fa-trash-o"></i></a> --}}
 <a title="<?php echo lng('Delete') ?>" href="?p=<?php echo urlencode(FM_PATH) ?>&amp;del=<?php echo urlencode($f) ?>" onclick="return confirm('<?php echo lng('Delete').' '.lng('File').'?'; ?>\n \n ( <?php echo ($f) ?> )');"> <i class="fa fa-trash-o"></i></a>
                             {{-- <a title="<?php echo lng('Rename') ?>" href="#" onclick="rename('<?php echo fm_enc(addslashes(FM_PATH)) ?>', '<?php echo fm_enc(addslashes($f)) ?>');return false;"><i class="fa fa-pencil-square-o"></i></a> --}}
-                            {{-- <a title="<?php echo lng('CopyTo') ?>..." --}}{{-- href="?p=<?php echo urlencode(FM_PATH) ?>&amp;copy=<?php echo urlencode(trim(FM_PATH . '/' . $f, '/')) ?>"><i class="fa fa-files-o"></i></a> --}}
+                            {{-- <a title="<?php echo lng('CopyTo') ?>..." --}}
+                               {{-- href="?p=<?php echo urlencode(FM_PATH) ?>&amp;copy=<?php echo urlencode(trim(FM_PATH . '/' . $f, '/')) ?>"><i class="fa fa-files-o"></i></a> --}}
                         {{-- <?php endif; ?> --}}
                         <!--a title="<?php echo lng('DirectLink') ?>" href="<?php echo fm_enc(FM_ROOT_URL . (FM_PATH != '' ? '/' . FM_PATH : '') . '/' . $f) ?>" target="_blank"><i class="fa fa-link"></i></a-->
                         <a title="<?php echo lng('Download') ?>" href="?p=<?php echo urlencode(FM_PATH) ?>&amp;dl=<?php echo urlencode($f) ?>"><i class="fa fa-download"></i></a>
@@ -2678,7 +2649,7 @@ function fm_get_filesize($size)
 function fm_get_directorysize($directory) {
     global $calc_folder;
     if ($calc_folder==true) { //  Slower output
-        $size = 0;  $count= 0;  $dirCount= 0;
+      $size = 0;  $count= 0;  $dirCount= 0;
     foreach(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory)) as $file)
     if ($file->isFile())
         {   $size+=$file->getSize();
@@ -3120,7 +3091,7 @@ function fm_get_file_mimes($extension)
 
     //Unknown mime-types should be 'application/octet-stream'
     if(empty($fileTypes[$extension])) {
-        $fileTypes[$extension] = ['application/octet-stream'];
+      $fileTypes[$extension] = ['application/octet-stream'];
     }
 
     return $fileTypes[$extension];
@@ -3132,26 +3103,26 @@ function fm_get_file_mimes($extension)
  * @param string $filter
  * @return json
  */
-function scan($dir, $filter = '') {
+ function scan($dir, $filter = '') {
     $path = FM_ROOT_PATH.'/'.$dir;
-    if($dir) {
-        $ite = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path));
-        $rii = new RegexIterator($ite, "/(" . $filter . ")/i");
+     if($dir) {
+         $ite = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path));
+         $rii = new RegexIterator($ite, "/(" . $filter . ")/i");
 
-        $files = array();
-        foreach ($rii as $file) {
-            if (!$file->isDir()) {
-                $fileName = $file->getFilename();
-                $location = str_replace(FM_ROOT_PATH, '', $file->getPath());
-                $files[] = array(
-                    "name" => $fileName,
-                    "type" => "file",
-                    "path" => $location,
-                );
-            }
-        }
-        return $files;
-    }
+         $files = array();
+         foreach ($rii as $file) {
+             if (!$file->isDir()) {
+                 $fileName = $file->getFilename();
+                 $location = str_replace(FM_ROOT_PATH, '', $file->getPath());
+                 $files[] = array(
+                     "name" => $fileName,
+                     "type" => "file",
+                     "path" => $location,
+                 );
+             }
+         }
+         return $files;
+     }
 }
 
 /*
@@ -3445,9 +3416,9 @@ class FM_Zipper_Tar
 /**
  * Save Configuration
  */
-class FM_Config
+ class FM_Config
 {
-    var $data;
+     var $data;
 
     function __construct()
     {
@@ -3743,7 +3714,7 @@ $isStickyNavBar = $sticky_navbar ? 'navbar-fixed' : 'navbar-normal';
         body.navbar-fixed { margin-top:55px; }
         a:hover, a:visited, a:focus { text-decoration:none !important; }
         * { -webkit-border-radius:0 !important;-moz-border-radius:0 !important;border-radius:0 !important; }
-        .filename, td, th { white-space:normal } /* 2025/02/09 white-space:nowrap */
+        .filename, td, th { white-space:nowrap  }
         .navbar-brand { font-weight:bold; }
         .nav-item.avatar a { cursor:pointer;text-transform:capitalize; }
         .nav-item.avatar a > i { font-size:15px; }
@@ -3777,7 +3748,7 @@ $isStickyNavBar = $sticky_navbar ? 'navbar-fixed' : 'navbar-normal';
         .compact-table { border:0;width:auto  }
         .compact-table td, .compact-table th { width:100px;border:0;text-align:center  }
         .compact-table tr:hover td { background-color:#fff  }
-        .filename { max-width:620px;overflow:hidden;text-overflow:ellipsis  }   /* 2025/02/09 max-width:420px */
+        .filename { max-width:420px;overflow:hidden;text-overflow:ellipsis  }
         .break-word { word-wrap:break-word;margin-left:30px  }
         .break-word.float-left a { color:#7d7d7d  }
         .break-word + .float-right { padding-right:30px;position:relative  }
@@ -3908,9 +3879,9 @@ $isStickyNavBar = $sticky_navbar ? 'navbar-fixed' : 'navbar-normal';
 
     <!-- Modal -->
     <!--div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content <?php echo fm_get_theme(); ?>">
-        <div class="modal-header">
+          <div class="modal-header">
             <h5 class="modal-title col-10" id="searchModalLabel">
                 <div class="input-group input-group">
                     <input type="text" class="form-control" placeholder="<?php echo lng('Search') ?> a files" aria-label="<?php echo lng('Search') ?>" aria-describedby="search-addon3" id="advanced-search" autofocus required>
@@ -3920,19 +3891,19 @@ $isStickyNavBar = $sticky_navbar ? 'navbar-fixed' : 'navbar-normal';
                 </div>
             </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+              <span aria-hidden="true">&times;</span>
             </button>
-        </div>
-        <div class="modal-body">
+          </div>
+          <div class="modal-body">
             <form action="" method="post">
                 <div class="lds-facebook"><div></div><div></div><div></div></div>
                 <ul id="search-wrapper">
                     <p class="m-2"><?php echo lng('Search file in folder and subfolders...') ?></p>
                 </ul>
             </form>
+          </div>
         </div>
-        </div>
-    </div>
+      </div>
     </div --->
     <!--script type="text/html" id="js-tpl-modal">
         <div class="modal fade" id="js-ModalCenter-<%this.id%>" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
