@@ -54,6 +54,7 @@ return [
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
+            'timezone'  => '+09:00',    // 2025/02/10 ADD
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,
