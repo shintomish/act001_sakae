@@ -6,6 +6,8 @@ use DateTime;
 use App\Models\ImageUpload;
 use App\Models\UploadUser;
 
+// 2025/03/18 add
+use Illuminate\Http\Request;
 // use Illuminate\Http\Request;
 
 // 2024/09/30
@@ -15,7 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
-use Symfony\Component\HttpFoundation\Request;
+// use Symfony\Component\HttpFoundation\Request;    // 2025/03/18 commennt
 
 $request = Request::createFromGlobals();
 use Flow\Config as FlowConfig;
@@ -151,6 +153,13 @@ class UploaderController extends Controller
         }
         $config->setTempDir(storage_path() . $tmp);
         $config->setDeleteChunksOnSave(false);
+
+        // 2025/03/18 Start 
+        $file = $request->file('file');
+        $filename00 = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $extension = $file->getClientOriginalExtension();
+        // 2025/03/18 End 
+
         $file = new \Flow\File($config);
 
         $request = new FlowRequest();
@@ -239,9 +248,28 @@ class UploaderController extends Controller
             }
         }
 
-        $fileName = $uploadFile['name'];         // FileName
+        // $fileName = $uploadFile['name'];      // FileName 2025/03/18 comment
+
         $fileSize = $request->getTotalSize();    // FileSize
         $filedir = '/app/userdata/' . $compacts['foldername'] . '/';
+
+        // 2025/03/18 add Start
+        // 重複がないファイル名を探す
+        $counter = 1;
+        $uniqueFilename = $filename00 . '.' . $extension;
+        // Log::debug('client postUpload $uniqueFilename = ' . print_r($uniqueFilename ,true));
+        // Log::debug('client postUpload $storage_path = ' . print_r(storage_path() . $filedir . $uniqueFilename ,true));
+        while (file_exists(storage_path() . $filedir . $uniqueFilename)) {
+            $uniqueFilename = $filename00 . '_' . $counter . '.' . $extension;
+            Log::debug('client postUpload file_exists $uniqueFilename = ' . print_r($uniqueFilename ,true));
+            $counter++;
+        }
+        $fileName = $uniqueFilename;
+        // Log::debug('client postUpload $fileName = ' . print_r($fileName ,true));
+        // if (file_exists($fullpatname)) {
+        //     $fileName = $filename00 . '_' . $counter . '.' . $extension;
+        // }
+        // 2025/03/18 End 
 
         if(!file_exists( storage_path() . $filedir)){
             mkdir( storage_path() . $filedir, $mode = 0777, true);
