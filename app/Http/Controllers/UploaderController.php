@@ -100,7 +100,7 @@ class UploaderController extends Controller
         if (file_exists($jsonUrl)) {
             $json = file_get_contents($jsonUrl);
             $json = mb_convert_encoding($json, 'UTF8', 'ASCII,JIS,UTF-8,EUC-JP,SJIS-WIN');
-            
+
             // 2023/09/20
             $obj = [];
 
@@ -148,17 +148,33 @@ class UploaderController extends Controller
         // tmpフォルダをCustomeridごとに変更
         $tmp = '/tmp'. '/' . $customer_id;
 
-        if(!file_exists( storage_path() . $tmp)){
-            mkdir( storage_path() . $tmp, $mode = 0777, true);
+        // 2025/05/21 Start
+        // ✅ 解決策3：try-catchで安全に mkdir 実行
+        // 競合が頻繁に起きる場合は、エラーハンドリングを行っておくとさらに安全です。
+        // if(!file_exists( storage_path() . $tmp)){
+        //     mkdir( storage_path() . $tmp, $mode = 0777, true);
+        // }
+        $path = storage_path() . $tmp;
+        if (!is_dir($path)) {
+            try {
+                mkdir($path, 0777, true);
+            } catch (\Exception $e) {
+                if (!is_dir($path)) {
+                    throw $e; // まだ存在しないなら例外再スロー
+                }
+                // 既に誰かが作った場合は無視
+            }
         }
+        // 2025/05/21 END
+
         $config->setTempDir(storage_path() . $tmp);
         $config->setDeleteChunksOnSave(false);
 
-        // 2025/03/18 Start 
+        // 2025/03/18 Start
         $file = $request->file('file');
         $filename00 = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $extension = $file->getClientOriginalExtension();
-        // 2025/03/18 End 
+        // 2025/03/18 End
 
         $file = new \Flow\File($config);
 
@@ -194,7 +210,7 @@ class UploaderController extends Controller
             Log::info('client postUpload  failesize to big ');
             Log::debug('client postUpload $length_strlen error = ' . print_r($length_strlen ,true));
             Log::debug('client postUpload $uploadFile[name] = ' . print_r($uploadFile['name'] ,true));
-            
+
             // Statusを変える
             $status = false;
             $this->json_put_status($status,$customer_id);
@@ -203,7 +219,7 @@ class UploaderController extends Controller
 
         }
         Log::debug('client postUpload $length_strlen = ' . print_r($length_strlen ,true));
-        //---- 
+        //----
 
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             if ($file->checkChunk()) {
@@ -269,11 +285,26 @@ class UploaderController extends Controller
         // if (file_exists($fullpatname)) {
         //     $fileName = $filename00 . '_' . $counter . '.' . $extension;
         // }
-        // 2025/03/18 End 
+        // 2025/03/18 End
 
-        if(!file_exists( storage_path() . $filedir)){
-            mkdir( storage_path() . $filedir, $mode = 0777, true);
+        // 2025/05/21 Start
+        // ✅ 解決策3：try-catchで安全に mkdir 実行
+        // 競合が頻繁に起きる場合は、エラーハンドリングを行っておくとさらに安全です。
+        // if(!file_exists( storage_path() . $filedir)){
+        //     mkdir( storage_path() . $filedir, $mode = 0777, true);
+        // }
+        $path = storage_path() . $filedir;
+        if (!is_dir($path)) {
+            try {
+                mkdir($path, 0777, true);
+            } catch (\Exception $e) {
+                if (!is_dir($path)) {
+                    throw $e; // まだ存在しないなら例外再スロー
+                }
+                // 既に誰かが作った場合は無視
+            }
         }
+        // 2025/05/21 END
 
         //2023/09/14 Middleware\ActlogMiddleware::classをコメント
         // $tmp_name = $uploadFile['tmp_name'];     // tmp_name
@@ -324,9 +355,9 @@ class UploaderController extends Controller
                     ->whereNull('deleted_at')
                     ->first();
                     if($uploadusers->prime_flg <= 3) {
-                        $prime_flg = 3; 
+                        $prime_flg = 3;
                     } else {
-                        $prime_flg = $uploadusers->prime_flg; 
+                        $prime_flg = $uploadusers->prime_flg;
                     }
                     // 2024/01/13 END
                     $uploadusers = DB::table('uploadusers')
@@ -455,7 +486,7 @@ class UploaderController extends Controller
         if (file_exists($jsonUrl)) {
             $json = file_get_contents($jsonUrl);
             $json = mb_convert_encoding($json, 'UTF8', 'ASCII,JIS,UTF-8,EUC-JP,SJIS-WIN');
-            
+
             // 2023/09/20
             $obj = [];
 
