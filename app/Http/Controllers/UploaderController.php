@@ -399,8 +399,6 @@ class UploaderController extends Controller
 
                 foreach ($duplicates as $dup) {
                     logger("重複: customer_id={$dup->customer_id}, 件数={$dup->cnt}");
-                    // Log::debug('client postUpload 重複: customer_id = ' . print_r($dup->customer_id ,true));
-                    // Log::debug('client postUpload 重複: dup->cnt    = ' . print_r($dup->cnt ,true));
                 }
                 // ✅ 2. 削除対象レコードの確認（SELECT * で最新1件以外を表示）
                 // MIN(id) → MIN(id) に変えれば「最古の1件を残す」動きになります。
@@ -432,6 +430,7 @@ class UploaderController extends Controller
                     logger("削除対象: id={$row->id}, customer_id={$row->customer_id}, created_at={$row->created_at}");
                 }
                 // ✅ 3. 実際に削除実行（DB::statement() で DELETE）
+                // MIN(id) → MIN(id) に変えれば「最古の1件を残す」動きになります。
                 DB::statement("
                     DELETE FROM uploadusers
                     WHERE id NOT IN (
