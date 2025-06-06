@@ -454,7 +454,7 @@ class UploaderController extends Controller
                     AND deleted_at IS NULL
                 ");
                 Log::info('beginTransaction - client postUpload saveFile end(重複レコードの確認)');
-            
+
             }
             catch(\QueryException $e) {
                 Log::error('exception : ' . $e->getMessage());
