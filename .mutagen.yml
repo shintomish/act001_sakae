@@ -1,0 +1,14 @@
+sync:
+  defaults:
+    mode: "two-way-resolved"
+    ignore:
+      vcs: true
+      paths:
+        - "node_modules"
+        - "vendor"
+        - "storage/logs"
+        - "storage/framework/cache"
+  act100:
+    alpha: "/mnt/c/001_php/act001"
+    beta: "~/act001"
+

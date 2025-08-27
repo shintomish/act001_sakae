@@ -1,0 +1,47 @@
+# version: '3.8'
+
+services:
+  laravel.test:
+    volumes:
+      - ./:/var/www/html
+
+  cron:
+    build:
+      context: ./vendor/laravel/sail/runtimes/8.2
+      args:
+        WWWGROUP: '${WWWGROUP}'
+        WWWUSER: '${WWWUSER}'
+    depends_on:
+      - laravel.test
+    volumes:
+      - ./:/var/www/html
+      - ./storage:/var/www/html/storage
+      - ./bootstrap/cache:/var/www/html/bootstrap/cache
+    user: "${WWWUSER}:${WWWGROUP}"   # ← これを追加！
+    entrypoint: |
+      bash -c 'while true; do
+        cd /var/www/html
+        php artisan schedule:run >> /var/www/html/storage/logs/scheduler-$(date +\%F).log 2>&1
+        sleep 60
+      done'
+    networks:
+      - sail
+
+  mysql:
+    ports:
+      - "3309:3306"
+
+volumes:
+  mutagen-sync:
+    external: true
+
+# networks:
+#   # sail:
+#   #   external: true
+#   #   name: act001_sail
+#   sail:
+#     driver: bridge
+networks:
+  sail:
+    driver: bridge
+
