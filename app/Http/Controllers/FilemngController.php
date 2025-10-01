@@ -248,17 +248,84 @@ class FilemngController extends Controller
         // folderpath配下のファイル一覽対象File取得
         // $files = \File::files($path);
 
-        //Zipファイル名指定
-        $zipFileName = $business_name .'_download.zip';
+//---------------------
+// 2025/10/01 tmp unlink
+//[2025-09-29 13:57:01] Actver:.ERROR: unlink(/var/www/html/actver/storage/tmp/後藤　弘樹_download.zip): 
+// No such file or directory {"userId":4,"exception":"[object] (ErrorException(code: 0): 
+// unlink(/var/www/html/actver/storage/tmp/後藤　弘樹_download.zip): 
+// No such file or directory 
+// at /var/www/html/actver/vendor/symfony/http-foundation/BinaryFileResponse.php:358)
+//         //Zipファイル名指定
+//         $zipFileName = $business_name .'_download.zip';
+//         //Zipファイル一時保存ディレクトリ取得
+//         // ダウンロードさせたいファイルのフルパス
+//         $fullpath = storage_path() . '/tmp/' . $zipFileName;
+//         //Zipクラスロード
+//         $zip = new \ZipArchive();
+//         //Zipファイルオープン
+//         $result = $zip->open($fullpath, \ZipArchive::CREATE);
+//         if ($result !== true) {
+//             return false;
+//         }
+//         //処理制限時間を外す
+//         set_time_limit(0);
+//         //パス取得
+//         $fpath_array_beta = array_diff(scandir($path), ['.', '..']);
+//         // zip追加する本命のパスを格納する配列
+//         $fpath_array = array();
+//         // ディレクトリ判別
+//         foreach ($fpath_array_beta as $key => $value) {
+//             if(is_dir("$path/$value")){
+//                 // パス指定
+//                 $path_sub = "$path/$value";
+//                 // サブフォルダ内のファイル名取得
+//                 $array_beta = array_diff(scandir($path_sub), ['.', '..']);
+//                 // パスとして取得(2元配列に追加)
+//                 foreach ($array_beta as $key2 => $value2) {
+//                     array_push($fpath_array,"$path2/$value/$value2");
+//                 }
+//             }else{
+//                 // ファイルの場合はそのまま追加
+//                 array_push($fpath_array,"$path2/$value");
+//             }
+//         }
+//         //Zip追加処理
+//         foreach ($fpath_array as $filepath) {
+//             $fname    = pathinfo( $filepath, PATHINFO_FILENAME  );
+//             $exten    = pathinfo( $filepath, PATHINFO_EXTENSION );
+//             $filename = $fname .'.'. $exten;
+//             // 2022/12/13 iconv — ある文字エンコーディングの文字列を、別の文字エンコーディングに変換する
+//             $str    = iconv('UTF-8', 'UTF-8//IGNORE', $filename);
+// Log::info('filemng alldwonload after $str = ' . print_r($str, true));
+//             // $zip->addFile($filepath, mb_convert_encoding($filename, 'CP932', 'UTF-8'));
+//             $zip->addFile($filepath, $str);
+//         }
+//         $zip->close();
+//         Log::info('filemng alldwonload END');
+//         $rtn = File::exists($fullpath);
+//         if( $rtn == true ){
+//             Log::info('filemng alldwonload $rtn == true END');
+//             // 作成されたzipファイルをダウンロードしてディレクトリから削除
+//             return response()->download($fullpath, basename($fullpath), [])->deleteFileAfterSend(true);
+//         } else {
+//             // 選択された顧客IDからCustomer情報(フォルダー名)を取得する
+//             $customers  = $this->auth_user_foldername($customer_id);
+//             // 2023/08/18
+//             $uploadusers = DB::table('uploadusers')
+//                 ->where('customer_id','=',$customer_id)
+//                 ->whereNull('deleted_at')
+//                 ->first();
+//             $compacts = compact( 'customers','admin_flg','uploadusers' );
+//             Log::info('filemng alldwonload $rtn == false  END');
+//             return view('filemng.post', $compacts );
+//         }
 
-        //Zipファイル一時保存ディレクトリ取得
-        // ダウンロードさせたいファイルのフルパス
-        $fullpath = storage_path() . '/tmp/' . $zipFileName;
+        // サーバー側で使う一時的なZIPファイル名（ASCIIのみ、ユニークにする）
+        $tmpZipFile = uniqid('download_') . '.zip';
+        $fullpath   = storage_path('tmp/' . $tmpZipFile);
 
         //Zipクラスロード
         $zip = new \ZipArchive();
-
-        //Zipファイルオープン
         $result = $zip->open($fullpath, \ZipArchive::CREATE);
         if ($result !== true) {
             return false;
@@ -271,65 +338,64 @@ class FilemngController extends Controller
         $fpath_array_beta = array_diff(scandir($path), ['.', '..']);
 
         // zip追加する本命のパスを格納する配列
-        $fpath_array = array();
+        $fpath_array = [];
 
         // ディレクトリ判別
-        foreach ($fpath_array_beta as $key => $value) {
-            if(is_dir("$path/$value")){
-                // パス指定
+        foreach ($fpath_array_beta as $value) {
+            if (is_dir("$path/$value")) {
+                // サブフォルダ内
                 $path_sub = "$path/$value";
-                // サブフォルダ内のファイル名取得
                 $array_beta = array_diff(scandir($path_sub), ['.', '..']);
-                // パスとして取得(2元配列に追加)
-                foreach ($array_beta as $key2 => $value2) {
-                    array_push($fpath_array,"$path2/$value/$value2");
+                foreach ($array_beta as $value2) {
+                    $fpath_array[] = "$path/$value/$value2";
                 }
-            }else{
-                // ファイルの場合はそのまま追加
-                array_push($fpath_array,"$path2/$value");
+            } else {
+                // ファイルの場合
+                $fpath_array[] = "$path/$value";
             }
         }
 
         //Zip追加処理
         foreach ($fpath_array as $filepath) {
-            $fname    = pathinfo( $filepath, PATHINFO_FILENAME  );
-            $exten    = pathinfo( $filepath, PATHINFO_EXTENSION );
-            $filename = $fname .'.'. $exten;
+            $filename = basename($filepath);
 
-            // 2022/12/13 iconv — ある文字エンコーディングの文字列を、別の文字エンコーディングに変換する
-            $str    = iconv('UTF-8', 'UTF-8//IGNORE', $filename);
-Log::info('filemng alldwonload after $str = ' . print_r($str, true));
+            // Windows用にCP932へ変換（文字化け防止）
+            $filename_cp932 = mb_convert_encoding($filename, 'CP932', 'UTF-8');
 
-            // $zip->addFile($filepath, mb_convert_encoding($filename, 'CP932', 'UTF-8'));
-            $zip->addFile($filepath, $str);
+            // ZIP内にファイル追加
+            $zip->addFile($filepath, $filename_cp932);
         }
         $zip->close();
 
         Log::info('filemng alldwonload END');
 
-        $rtn = File::exists($fullpath);
-        if( $rtn == true ){
+        // ZIPが存在するか確認
+        if (File::exists($fullpath)) {
 
             Log::info('filemng alldwonload $rtn == true END');
-            // 作成されたzipファイルをダウンロードしてディレクトリから削除
-            return response()->download($fullpath, basename($fullpath), [])->deleteFileAfterSend(true);
+
+            // ダウンロードさせる時の名前（ユーザーに見せる用、日本語OK）
+            $downloadName = $business_name . '_download.zip';
+
+            return response()->download($fullpath, $downloadName, [])
+                            ->deleteFileAfterSend(true);
+
         } else {
             // 選択された顧客IDからCustomer情報(フォルダー名)を取得する
             $customers  = $this->auth_user_foldername($customer_id);
-                
-            // 2023/08/18
+
             $uploadusers = DB::table('uploadusers')
-                ->where('customer_id','=',$customer_id)
+                ->where('customer_id', '=', $customer_id)
                 ->whereNull('deleted_at')
                 ->first();
 
-            $compacts = compact( 'customers','admin_flg','uploadusers' );
+            $compacts = compact('customers', 'admin_flg', 'uploadusers');
 
             Log::info('filemng alldwonload $rtn == false  END');
 
-            return view('filemng.post', $compacts );
+            return view('filemng.post', $compacts);
         }
-
+//---------------------
     }
     /**
      * Store a newly created resource in storage.
