@@ -338,7 +338,7 @@ class InvoiceHistoryController extends Controller
         return response()->json([ compact('status','counts') ]);
 
     }
-    
+
     public function more(Request $request)
     {
         // 2023/09/26 うまくいかないので未使用
