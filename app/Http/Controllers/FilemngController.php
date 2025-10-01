@@ -362,6 +362,8 @@ class FilemngController extends Controller
             // Windows用にCP932へ変換（文字化け防止）
             $filename_cp932 = mb_convert_encoding($filename, 'CP932', 'UTF-8');
 
+Log::info('filemng alldwonload after $filename = ' . print_r($filename, true));
+
             // ZIP内にファイル追加
             $zip->addFile($filepath, $filename_cp932);
         }
