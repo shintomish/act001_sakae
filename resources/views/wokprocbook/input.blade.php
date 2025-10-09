@@ -295,7 +295,7 @@
                         <td><p> </p></td>
                         <td><p> </p></td>
                         <td><p> </p></td>
-                        {{-- <td><p> </p></td> --}}
+                        <td><p> </p></td>
                     </tr>
                 @endif
                 <script type="text/javascript">

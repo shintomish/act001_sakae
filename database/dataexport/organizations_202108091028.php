@@ -1,0 +1,72 @@
+<?php
+$organizations = array(
+	array(
+		"id" => 0,
+		"name" => "株式会社 アイゼン・ソリューション",
+		"kana" => "かぶしきがいしゃ あいぜん そりゅーしょん",
+		"first_code" => "332",
+		"last_code" => "0017",
+		"prefecture" => "埼玉県",
+		"city" => "川口市",
+		"address" => "栄町3-12-11",
+		"other" => "コスモ川口栄町2F",
+		"phone" => "048-271-9355",
+		"email" => "y-shintomi@aizen-sol.co.jp",
+		"comment" => "システム管理用",
+		"created_at" => "2021-08-03 22:49:57",
+		"updated_at" => "2021-08-08 13:24:01",
+		"deleted_at" => null
+	),
+	array(
+		"id" => 1,
+		"name" => "アルケーエコ株式会社",
+		"kana" => "あるけーえこかぶしきがいしゃ",
+		"first_code" => "110",
+		"last_code" => "0015",
+		"prefecture" => "東京都",
+		"city" => "台東区",
+		"address" => "東上野3-14-7",
+		"other" => "龍田ビル5階",
+		"phone" => "03-5826-4368",
+		"email" => "n.yabu@arkhe-eco.com",
+		"comment" => "使用ユーザー",
+		"created_at" => "2021-08-03 22:49:57",
+		"updated_at" => "2021-08-08 15:08:06",
+		"deleted_at" => null
+	),
+	array(
+		"id" => 3,
+		"name" => "株式会社 BBB",
+		"kana" => "かぶしきがいしゃ あいぜん そりゅーしょん３",
+		"first_code" => "332",
+		"last_code" => "0017",
+		"prefecture" => "埼玉県",
+		"city" => "川口市",
+		"address" => "栄町3-12-11",
+		"other" => "コスモ川口栄町2F",
+		"phone" => "048-271-9355",
+		"email" => "info@aizen-sol.co.jp",
+		"comment" => "これはテスト1",
+		"created_at" => "2021-08-03 22:49:57",
+		"updated_at" => "2021-08-07 22:57:05",
+		"deleted_at" => null
+	),
+	array(
+		"id" => 4,
+		"name" => "株式会社　ＨＩＪＫ",
+		"kana" => "かぶしきがいしゃ　えいちあいじぇーけー",
+		"first_code" => "332",
+		"last_code" => "0099",
+		"prefecture" => "埼玉県",
+		"city" => "川口市",
+		"address" => "青木",
+		"other" => null,
+		"phone" => "048-111-2222",
+		"email" => "sintomi.111@gmail.com",
+		"comment" => "新規追加",
+		"created_at" => "2021-08-08 18:03:58",
+		"updated_at" => "2021-08-08 18:04:22",
+		"deleted_at" => null
+	)
+);
+?>

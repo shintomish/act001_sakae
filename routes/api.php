@@ -14,6 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+    // 2021/12/10
+    // Route::group(['middleware' => ['api', 'cors']], function(){
+    //     Route::options('articles', function() {
+    //         return response()->json();
+    //     });
+    //     Route::resource('articles', 'Api\ArticlesController');
+    // });

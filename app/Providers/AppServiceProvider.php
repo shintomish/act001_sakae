@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator; //追記
-use Illuminate\Support\Facades\Schema; // ⭐️ 追加
+// use Illuminate\Support\Facades\Schema; // ⭐️ 追加
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -316,13 +316,13 @@ class AppServiceProvider extends ServiceProvider
         );
         view()->share('loop_consumption_tax_flg', $loop_consumption_tax_flg);
 
-        // `年, 2024/11/15 2025年対応
+        // `年,
         $loop_year_flg = array(
             '00' => array ( 'no'=> 0,   'name'=>'選択してください', ),
             '01' => array ( 'no'=> 2022,  'name'=>'2022年', ),
             '02' => array ( 'no'=> 2023,  'name'=>'2023年', ),
             '03' => array ( 'no'=> 2024,  'name'=>'2024年', ),
-            '04' => array ( 'no'=> 2025,  'name'=>'2025年', ),
+            '04' => array ( 'no'=> 2025,  'name'=>'2025年', ),      // 2024/12/29
         );
         view()->share('loop_year_flg', $loop_year_flg);
 
