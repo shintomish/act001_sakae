@@ -20,9 +20,9 @@ class DetectAttackMiddleware
 
     public function handle($request, Closure $next)
     {
-        Log::info('[DetectAttack] fullUrl:' . $request->fullUrl());
-        Log::info('[DetectAttack] rawContent:' . substr($request->getContent(), 0, 200));
-        Log::info('[DetectAttack] all:' . substr(json_encode($request->all()), 0, 200));
+        // Log::info('[DetectAttack] fullUrl:' . $request->fullUrl());
+        // Log::info('[DetectAttack] rawContent:' . substr($request->getContent(), 0, 200));
+        // Log::info('[DetectAttack] all:' . substr(json_encode($request->all()), 0, 200));
 
         $input = $request->getContent() . ' ' . $request->fullUrl() . ' ' . json_encode($request->all());
         $detected = false;
