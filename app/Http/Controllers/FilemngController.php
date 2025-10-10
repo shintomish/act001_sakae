@@ -208,198 +208,121 @@ class FilemngController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    // strage/tmp/zip Temporaly
+
+    // 2025/10/25
+    // ZIP化ロジックを改良し、
+    // ✅ 再帰的に全階層のファイルを取得
+    // ✅ 同名ファイルの上書きを防止（相対パス保持）
+    // ✅ ファイル名の文字化け対策（CP932変換＋フォールバック）
+    // ✅ 追加失敗をログ出力
+    // ✅ タイムアウト防止（set_time_limit(0))
     public function alldwonload()
     {
         Log::info('filemng alldwonload START');
-        // ログインユーザーのユーザー情報Userを取得する
+
+        // ログインユーザー情報取得
         $users = $this->auth_user_info();
         $admin_flg = $users->admin_flg;
 
-        // Jsonより取得
-        $jsonfile = storage_path() . "/app/userdata/customer_info_". $users->id. ".json";
-        $jsonUrl = $jsonfile; //JSONファイルの場所とファイル名を記述
+        // 顧客IDの取得（JSONファイルから）
+        $jsonfile = storage_path("app/userdata/customer_info_{$users->id}.json");
         $customer_id = 0;
-        if (file_exists($jsonUrl)) {
-            $json = file_get_contents($jsonUrl);
+        if (file_exists($jsonfile)) {
+            $json = file_get_contents($jsonfile);
             $json = mb_convert_encoding($json, 'UTF8', 'ASCII,JIS,UTF-8,EUC-JP,SJIS-WIN');
             $obj = json_decode($json, true);
-            $obj = $obj["res"]["info"];
-            foreach($obj as $key => $val) {
-                $customer_id = $val["status"];
+            if (!empty($obj["res"]["info"])) {
+                foreach ($obj["res"]["info"] as $val) {
+                    $customer_id = $val["status"];
+                }
             }
-            // Log::info('client postUpload  jsonUrl OK');
-        } else {
-            // echo "データがありません";
-            // Log::info('client postUpload  jsonUrl NG');
-
         }
 
-        // 選択された顧客IDからCustomer情報(フォルダー名)を取得する
-        // $customers  = $this->auth_user_foldername($u_id);
-        $customers  = $this->auth_user_foldername($customer_id);
+        // 顧客フォルダー情報取得
+        $customers = $this->auth_user_foldername($customer_id);
         $foldername = $customers->foldername;
         $business_name = $customers->business_name;
-        $folderpath = 'app/userdata/' . $foldername;
 
-        // folderfullpath
-        $path   = storage_path($folderpath);
-        $path2  = storage_path($folderpath);
-        // folderpath配下のファイル一覽対象File取得
-        // $files = \File::files($path);
+        // 実際のファイルパス
+        $folderpath = storage_path("app/userdata/{$foldername}");
 
-
-//---------------------
-// 2025/10/01 tmp unlink
-//[2025-09-29 13:57:01] Actver:.ERROR: unlink(/var/www/html/actver/storage/tmp/後藤　弘樹_download.zip): 
-// No such file or directory {"userId":4,"exception":"[object] (ErrorException(code: 0): 
-// unlink(/var/www/html/actver/storage/tmp/後藤　弘樹_download.zip): 
-// No such file or directory 
-// at /var/www/html/actver/vendor/symfony/http-foundation/BinaryFileResponse.php:358)
-//         //Zipファイル名指定
-//         $zipFileName = $business_name .'_download.zip';
-//         //Zipファイル一時保存ディレクトリ取得
-//         // ダウンロードさせたいファイルのフルパス
-//         $fullpath = storage_path() . '/tmp/' . $zipFileName;
-//         //Zipクラスロード
-//         $zip = new \ZipArchive();
-//         //Zipファイルオープン
-//         $result = $zip->open($fullpath, \ZipArchive::CREATE);
-//         if ($result !== true) {
-//             return false;
-//         }
-//         //処理制限時間を外す
-//         set_time_limit(0);
-//         //パス取得
-//         $fpath_array_beta = array_diff(scandir($path), ['.', '..']);
-//         // zip追加する本命のパスを格納する配列
-//         $fpath_array = array();
-//         // ディレクトリ判別
-//         foreach ($fpath_array_beta as $key => $value) {
-//             if(is_dir("$path/$value")){
-//                 // パス指定
-//                 $path_sub = "$path/$value";
-//                 // サブフォルダ内のファイル名取得
-//                 $array_beta = array_diff(scandir($path_sub), ['.', '..']);
-//                 // パスとして取得(2元配列に追加)
-//                 foreach ($array_beta as $key2 => $value2) {
-//                     array_push($fpath_array,"$path2/$value/$value2");
-//                 }
-//             }else{
-//                 // ファイルの場合はそのまま追加
-//                 array_push($fpath_array,"$path2/$value");
-//             }
-//         }
-//         //Zip追加処理
-//         foreach ($fpath_array as $filepath) {
-//             $fname    = pathinfo( $filepath, PATHINFO_FILENAME  );
-//             $exten    = pathinfo( $filepath, PATHINFO_EXTENSION );
-//             $filename = $fname .'.'. $exten;
-//             // 2022/12/13 iconv — ある文字エンコーディングの文字列を、別の文字エンコーディングに変換する
-//             $str    = iconv('UTF-8', 'UTF-8//IGNORE', $filename);
-// Log::info('filemng alldwonload after $str = ' . print_r($str, true));
-//             // $zip->addFile($filepath, mb_convert_encoding($filename, 'CP932', 'UTF-8'));
-//             $zip->addFile($filepath, $str);
-//         }
-//         $zip->close();
-//         Log::info('filemng alldwonload END');
-//         $rtn = File::exists($fullpath);
-//         if( $rtn == true ){
-//             Log::info('filemng alldwonload $rtn == true END');
-//             // 作成されたzipファイルをダウンロードしてディレクトリから削除
-//             return response()->download($fullpath, basename($fullpath), [])->deleteFileAfterSend(true);
-//         } else {
-//             // 選択された顧客IDからCustomer情報(フォルダー名)を取得する
-//             $customers  = $this->auth_user_foldername($customer_id);
-//             // 2023/08/18
-//             $uploadusers = DB::table('uploadusers')
-//                 ->where('customer_id','=',$customer_id)
-//                 ->whereNull('deleted_at')
-//                 ->first();
-//             $compacts = compact( 'customers','admin_flg','uploadusers' );
-//             Log::info('filemng alldwonload $rtn == false  END');
-//             return view('filemng.post', $compacts );
-//         }
-
-        // サーバー側で使う一時的なZIPファイル名（ASCIIのみ、ユニークにする）
+        // 一時ZIPファイル（英数字のみで一意な名前）
         $tmpZipFile = uniqid('download_') . '.zip';
-        $fullpath   = storage_path('tmp/' . $tmpZipFile);
+        $zipFullPath = storage_path("tmp/{$tmpZipFile}");
 
-        //Zipクラスロード
+        // ZipArchiveを初期化
         $zip = new \ZipArchive();
-        $result = $zip->open($fullpath, \ZipArchive::CREATE);
+        $result = $zip->open($zipFullPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
         if ($result !== true) {
+            Log::error("ZIPオープン失敗: result={$result}");
             return false;
         }
 
-        //処理制限時間を外す
+        // タイムアウト無効化（大量ファイル対策）
         set_time_limit(0);
 
-        //パス取得
-        $fpath_array_beta = array_diff(scandir($path), ['.', '..']);
-
-        // zip追加する本命のパスを格納する配列
-        $fpath_array = [];
-
-        // ディレクトリ判別
-        foreach ($fpath_array_beta as $value) {
-            if (is_dir("$path/$value")) {
-                // サブフォルダ内
-                $path_sub = "$path/$value";
-                $array_beta = array_diff(scandir($path_sub), ['.', '..']);
-                foreach ($array_beta as $value2) {
-                    $fpath_array[] = "$path/$value/$value2";
+        /**
+         * 再帰的に全ファイルを取得する関数
+         */
+        $getAllFiles = function ($dir) use (&$getAllFiles) {
+            $files = [];
+            foreach (array_diff(scandir($dir), ['.', '..']) as $item) {
+                $path = "$dir/$item";
+                if (is_dir($path)) {
+                    $files = array_merge($files, $getAllFiles($path));
+                } else {
+                    $files[] = $path;
                 }
-            } else {
-                // ファイルの場合
-                $fpath_array[] = "$path/$value";
+            }
+            return $files;
+        };
+
+        // 全ファイル取得（多階層対応）
+        $filePaths = $getAllFiles($folderpath);
+        Log::info('ZIP対象ファイル数: ' . count($filePaths));
+
+        foreach ($filePaths as $filepath) {
+            // ZIP内での相対パスを保持
+            $relativePath = str_replace($folderpath . '/', '', $filepath);
+
+            // ファイル名文字コード変換（Windows対応）
+            $encodedPath = @mb_convert_encoding($relativePath, 'CP932', 'UTF-8');
+            if ($encodedPath === false) {
+                Log::warning("CP932変換失敗: {$relativePath}");
+                $encodedPath = $relativePath; // フォールバック
+            }
+
+            // ZIPへ追加
+            if (!$zip->addFile($filepath, $encodedPath)) {
+                Log::warning("ZIP追加失敗: {$filepath}");
             }
         }
 
-        //Zip追加処理
-        foreach ($fpath_array as $filepath) {
-            $filename = basename($filepath);
-
-            // Windows用にCP932へ変換（文字化け防止）
-            $filename_cp932 = mb_convert_encoding($filename, 'CP932', 'UTF-8');
-
-Log::info('filemng alldwonload after $filename = ' . print_r($filename, true));
-
-            // ZIP内にファイル追加
-            $zip->addFile($filepath, $filename_cp932);
-        }
         $zip->close();
+        Log::info("ZIP作成完了: {$zipFullPath}");
 
-        Log::info('filemng alldwonload END');
-
-        // ZIPが存在するか確認
-        if (File::exists($fullpath)) {
-
-            Log::info('filemng alldwonload $rtn == true END');
-
-            // ダウンロードさせる時の名前（ユーザーに見せる用、日本語OK）
+        // ZIPファイル存在確認
+        if (File::exists($zipFullPath)) {
             $downloadName = $business_name . '_download.zip';
+            Log::info('filemng alldwonload 完了・ダウンロード開始');
 
-            return response()->download($fullpath, $downloadName, [])
+            // ダウンロード＋送信後削除
+            return response()->download($zipFullPath, $downloadName, [])
                             ->deleteFileAfterSend(true);
-
         } else {
-            // 選択された顧客IDからCustomer情報(フォルダー名)を取得する
-            $customers  = $this->auth_user_foldername($customer_id);
+            Log::error('ZIPファイルが存在しません: ' . $zipFullPath);
 
+            // 失敗時のフォールバック表示
             $uploadusers = DB::table('uploadusers')
                 ->where('customer_id', '=', $customer_id)
                 ->whereNull('deleted_at')
                 ->first();
 
             $compacts = compact('customers', 'admin_flg', 'uploadusers');
-
-            Log::info('filemng alldwonload $rtn == false  END');
-
             return view('filemng.post', $compacts);
         }
-//---------------------
     }
+
     /**
      * Store a newly created resource in storage.
      *
