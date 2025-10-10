@@ -247,5 +247,15 @@ Route::get('annualupdate/update', 'App\Http\Controllers\AnnualupdateController@u
 //-----------------------------------------------------------------------------------------------
 //Route::post('support/post', 'App\Http\Controllers\SupportController@post')->name('support');
 
+//-----------------------------------------------------------------------------------------------
+//- 攻撃ペイロード対応 Log4Shell攻撃解析 2025/10/10
+//-----------------------------------------------------------------------------------------------
+// use Illuminate\Http\Request;
+
+//     if (app()->environment(['local', 'staging']) || config('app.debug')) {
+//         Route::get('/test', function (Request $request) {
+//             return 'OK';
+//         })->name('test');
+//     }
 
 ?>

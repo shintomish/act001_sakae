@@ -25,6 +25,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\ActlogMiddleware::class,   // 2023/09/07 操作履歴(Logut以外)
+        \App\Http\Middleware\DetectAttackMiddleware::class,     // 2025/10/10 Log4Shell攻撃解析
     ];
 
     /**
