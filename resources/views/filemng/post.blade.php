@@ -845,30 +845,40 @@ if (isset($_GET['ren'], $_GET['to']) && !FM_READONLY) {
 }
 
 // Download
+// 2025/10/12
 if (isset($_GET['dl'])) {
+
     $dl = $_GET['dl'];
     $dl = fm_clean_path($dl);
     $dl = str_replace('/', '', $dl);
-    // 2021/10/03 File not found 対応
-    // $path = FM_ROOT_PATH;
-    // if (FM_PATH != '') {
-    //     $path .= '/' . FM_PATH;
-    // }
-    // 苦労した!!!
-    $folder = $customers->foldername;
-    $path = FM_ROOT_PATH.'/'. $folder;
-    // var_dump($path . '/' . $dl);
-    // dd(is_file($path . '/' . $dl));
+    $dl = trim($dl); // ★ 追加：先頭・末尾のスペースを除去
 
-    if ($dl != '' && is_file($path . '/' . $dl)) {
-        fm_download_file($path . '/' . $dl, $dl, 1024);
+    $folder = $customers->foldername;
+    $path = FM_ROOT_PATH . '/' . $folder;
+
+    //\Log::info('fm_download_file path: ' . $path);
+    //\Log::info('fm_download_file dl: ' . $dl);
+
+    // 空白ファイル対応: 同一ファイル名のスペース差異を吸収
+    $files = scandir($path);
+    foreach ($files as $file) {
+        if (trim($file) === $dl) {
+            $dl = $file;
+            break;
+        }
+    }
+
+    $fullPath = $path . '/' . $dl;
+    //\Log::info('fm_download_file fullPath: ' . $fullPath);
+    \Log::info('fm_download_file exists?: ' . (is_file($fullPath) ? 'YES' : 'NO'));
+
+    if (is_file($fullPath)) {
+        fm_download_file($fullPath, $dl, 1024);
         exit;
     } else {
         fm_set_msg(lng('File not found'), 'error');
         fm_redirect(FM_SELF_URL . '?p=' . urlencode(FM_PATH));
     }
-} else {
-
 }
 
 // Upload
@@ -2297,12 +2307,187 @@ function fm_is_file_allowed($filename)
     return $allowed;
 }
 
+function fm_download_file1012($fileLocation, $fileName, $chunkSize  = 1024)
+{
+    if (connection_status() != 0)
+        return (false);
+    $extension = pathinfo($fileName, PATHINFO_EXTENSION);
+
+    $contentType = fm_get_file_mimes($extension);
+    header("Cache-Control: public");
+    header("Content-Transfer-Encoding: binary\n");
+    header('Content-Type: $contentType');
+
+    $contentDisposition = 'attachment';
+
+
+    if (strstr($_SERVER['HTTP_USER_AGENT'], "MSIE")) {
+        $fileName = preg_replace('/\./', '%2e', $fileName, substr_count($fileName, '.') - 1);
+        header("Content-Disposition: $contentDisposition;filename=\"$fileName\"");
+    } else {
+        header("Content-Disposition: $contentDisposition;filename=\"$fileName\"");
+    }
+
+    header("Accept-Ranges: bytes");
+    $range = 0;
+    $size = filesize($fileLocation);
+
+    if (isset($_SERVER['HTTP_RANGE'])) {
+        list($a, $range) = explode("=", $_SERVER['HTTP_RANGE']);
+        str_replace($range, "-", $range);
+        $size2 = $size - 1;
+        $new_length = $size - $range;
+        header("HTTP/1.1 206 Partial Content");
+        header("Content-Length: $new_length");
+        header("Content-Range: bytes $range$size2/$size");
+    } else {
+        $size2 = $size - 1;
+        header("Content-Range: bytes 0-$size2/$size");
+        header("Content-Length: " . $size);
+    }
+
+    if ($size == 0) {
+        die('Zero byte file! Aborting download');
+    }
+    @ini_set('magic_quotes_runtime', 0);
+    $fp = fopen("$fileLocation", "rb");
+
+    fseek($fp, $range);
+
+    while (!feof($fp) and (connection_status() == 0)) {
+        set_time_limit(0);
+        print(@fread($fp, 1024*$chunkSize));
+        flush();
+        ob_flush();
+        // sleep(1);
+    }
+    fclose($fp);
+
+    return ((connection_status() == 0) and !connection_aborted());
+}
+//---------------------
+
+// 2025/10/12
+function fm_download_file($fileLocation, $fileName, $chunkSize = 1024)
+{
+    //\Log::info('fm_download_file fileLocation: ' . $fileLocation);
+
+    if (connection_status() != 0) {
+        return false;
+    }
+
+    $extension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+    $contentType = fm_get_file_mimes($extension);
+
+    // PDFの場合は「ブラウザ表示」を完全に防ぐ
+    if ($extension === 'pdf') {
+        $contentType = 'application/force-download';
+        \Log::info('fm_download_file extension: ' . $extension);
+    }
+
+    // ヘッダ設定（キャッシュ防止＋強制ダウンロード）
+    header("Pragma: public");
+    header("Expires: 0");
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    header("Cache-Control: private", false);
+    header("Content-Type: $contentType");
+    header("Content-Transfer-Encoding: binary");
+    //header("Content-Disposition: attachment; filename=\"" . basename($fileName) . "\"");
+
+    // ファイル名はそのままでダウンロード（URLデコード＋UTF-8対応）
+    $decodedName = basename(urldecode($fileName));
+    $encodedName = rawurlencode($decodedName);
+    header("Content-Disposition: attachment; filename=\"$encodedName\"; filename*=UTF-8''$encodedName");
+
+    header("Accept-Ranges: bytes");
+
+    $size = filesize($fileLocation);
+    if ($size == 0) {
+        //die('Zero byte file! Aborting download');
+    }
+
+    $range = 0;
+    if (isset($_SERVER['HTTP_RANGE'])) {
+        list($a, $range) = explode("=", $_SERVER['HTTP_RANGE']);
+        $range = intval(str_replace("-", "", $range));
+
+        $size2 = $size - 1;
+        $new_length = $size - $range;
+
+        header("HTTP/1.1 206 Partial Content");
+        header("Content-Length: $new_length");
+        header("Content-Range: bytes $range-$size2/$size");
+    } else {
+        $size2 = $size - 1;
+        header("Content-Range: bytes 0-$size2/$size");
+        header("Content-Length: $size");
+    }
+
+    // 出力バッファをクリアしてから送信（重要）
+    if (ob_get_level()) {
+        ob_end_clean();
+    }
+
+    $fp = fopen($fileLocation, "rb");
+    fseek($fp, $range);
+
+    while (!feof($fp) && connection_status() == 0) {
+        set_time_limit(0);
+        echo fread($fp, 1024 * $chunkSize);
+        flush();
+        ob_flush();
+    }
+
+    fclose($fp);
+
+    \Log::info('fm_download_file fileName: ' . $fileName);
+
+    return (connection_status() == 0 && !connection_aborted());
+}
+
 /**
  * Delete  file or folder (recursively)
  * @param string $path
  * @return bool
  */
 function fm_rdelete($path)
+{
+    if (!file_exists($path)) {
+        return false; // ファイルまたはディレクトリが存在しない
+    }
+
+    // シンボリックリンクの場合
+    if (is_link($path)) {
+        return unlink($path); // シンボリックリンクを削除
+    }
+
+    // ディレクトリの場合
+    if (is_dir($path)) {
+        $objects = scandir($path);
+        $ok = true;
+        if (is_array($objects)) {
+            foreach ($objects as $file) {
+                if ($file != '.' && $file != '..') {
+                    $fullPath = $path . '/' . $file;
+                    if (!fm_rdelete($fullPath)) {
+                        $ok = false;
+                    }
+                }
+            }
+        }
+        // ディレクトリ内のファイルを削除した後、ディレクトリを削除
+        return $ok ? rmdir($path) : false;
+    }
+
+    // ファイルの場合
+    if (is_file($path)) {
+        return unlink($path); // ファイルを削除
+    }
+
+    return false; // パスがいずれのタイプにも一致しない
+}
+
+function fm_rdelete1012($path)
 {
     if (is_link($path)) {
         return unlink($path);
@@ -2312,7 +2497,7 @@ function fm_rdelete($path)
         if (is_array($objects)) {
             foreach ($objects as $file) {
                 if ($file != '.' && $file != '..') {
-                    if (!fm_rdelete($path . '/' . $file)) {
+                    if (!fm_rdelete1012($path . '/' . $file)) {
                         $ok = false;
                     }
                 }
@@ -3068,7 +3253,69 @@ function fm_get_onlineViewer_exts()
     return array('doc', 'docx', 'xls', 'xlsx', 'pdf', 'ppt', 'pptx', 'ai', 'psd', 'dxf', 'xps', 'rar', 'odt', 'ods');
 }
 
+/**
+ * 2025/10/12
+ * @return array
+ */
 function fm_get_file_mimes($extension)
+{
+    $fileTypes['swf'] = 'application/x-shockwave-flash';
+    $fileTypes['pdf'] = 'application/pdf';
+    $fileTypes['exe'] = 'application/octet-stream';
+    $fileTypes['zip'] = 'application/zip';
+    $fileTypes['doc'] = 'application/msword';
+    $fileTypes['docx'] = 'application/msword';              //add
+    $fileTypes['xlsx'] = 'application/vnd.ms-excel';
+    $fileTypes['xls'] = 'application/vnd.ms-excel';         //add
+    $fileTypes['pptx'] = 'application/vnd.ms-powerpoint';
+    $fileTypes['ppt'] = 'application/vnd.ms-powerpoint';    //add
+    $fileTypes['gif'] = 'image/gif';
+    $fileTypes['png'] = 'image/png';
+    $fileTypes['ico'] = 'image/icon';                        //add
+    $fileTypes['jpeg'] = 'image/jpg';
+    $fileTypes['jpg'] = 'image/jpg';
+    $fileTypes['webp'] = 'image/webp';
+    $fileTypes['avif'] = 'image/avif';
+    $fileTypes['rar'] = 'application/rar';
+
+    $fileTypes['ra'] = 'audio/x-pn-realaudio';
+    $fileTypes['ram'] = 'audio/x-pn-realaudio';
+    $fileTypes['ogg'] = 'audio/x-pn-realaudio';
+
+    $fileTypes['wav'] = 'video/x-msvideo';
+    $fileTypes['wmv'] = 'video/x-msvideo';
+    $fileTypes['avi'] = 'video/x-msvideo';
+    $fileTypes['asf'] = 'video/x-msvideo';
+    $fileTypes['divx'] = 'video/x-msvideo';
+
+    $fileTypes['mp3'] = 'audio/mpeg';
+    $fileTypes['mp4'] = 'audio/mpeg';
+    $fileTypes['mpeg'] = 'video/mpeg';
+    $fileTypes['mpg'] = 'video/mpeg';
+    $fileTypes['mpe'] = 'video/mpeg';
+    $fileTypes['mov'] = 'video/quicktime';
+    $fileTypes['swf'] = 'video/quicktime';
+    $fileTypes['3gp'] = 'video/quicktime';
+    $fileTypes['m4a'] = 'video/quicktime';
+    $fileTypes['aac'] = 'video/quicktime';
+    $fileTypes['m3u'] = 'video/quicktime';
+
+    $fileTypes['php'] = 'application/x-php';  // 修正: 配列を返さない
+    $fileTypes['html'] = 'text/html';         // 修正: 配列を返さない
+    $fileTypes['txt'] = 'text/plain';         // 修正: 配列を返さない
+
+    $fileTypes['config'] = 'text/plain';  // 修正: 配列を返さない
+    $fileTypes['json'] = 'text/plain';    // 修正: 配列を返さない
+
+    // 拡張子が見つからない場合は 'application/octet-stream' を返す
+    if(empty($fileTypes[$extension])) {
+        $fileTypes[$extension] = 'application/octet-stream';
+    }
+
+    return $fileTypes[$extension];
+}
+
+function fm_get_file_mimes1012($extension)
 {
     $fileTypes['swf'] = 'application/x-shockwave-flash';
     $fileTypes['pdf'] = 'application/pdf';
@@ -3161,65 +3408,6 @@ If streaming - videos will show as videos, images as images
 instead of download prompt
 https://stackoverflow.com/a/13821992/1164642
 */
-
-function fm_download_file($fileLocation, $fileName, $chunkSize  = 1024)
-{
-    if (connection_status() != 0)
-        return (false);
-    $extension = pathinfo($fileName, PATHINFO_EXTENSION);
-
-    $contentType = fm_get_file_mimes($extension);
-    header("Cache-Control: public");
-    header("Content-Transfer-Encoding: binary\n");
-    header('Content-Type: $contentType');
-
-    $contentDisposition = 'attachment';
-
-
-    if (strstr($_SERVER['HTTP_USER_AGENT'], "MSIE")) {
-        $fileName = preg_replace('/\./', '%2e', $fileName, substr_count($fileName, '.') - 1);
-        header("Content-Disposition: $contentDisposition;filename=\"$fileName\"");
-    } else {
-        header("Content-Disposition: $contentDisposition;filename=\"$fileName\"");
-    }
-
-    header("Accept-Ranges: bytes");
-    $range = 0;
-    $size = filesize($fileLocation);
-
-    if (isset($_SERVER['HTTP_RANGE'])) {
-        list($a, $range) = explode("=", $_SERVER['HTTP_RANGE']);
-        str_replace($range, "-", $range);
-        $size2 = $size - 1;
-        $new_length = $size - $range;
-        header("HTTP/1.1 206 Partial Content");
-        header("Content-Length: $new_length");
-        header("Content-Range: bytes $range$size2/$size");
-    } else {
-        $size2 = $size - 1;
-        header("Content-Range: bytes 0-$size2/$size");
-        header("Content-Length: " . $size);
-    }
-
-    if ($size == 0) {
-        die('Zero byte file! Aborting download');
-    }
-    @ini_set('magic_quotes_runtime', 0);
-    $fp = fopen("$fileLocation", "rb");
-
-    fseek($fp, $range);
-
-    while (!feof($fp) and (connection_status() == 0)) {
-        set_time_limit(0);
-        print(@fread($fp, 1024*$chunkSize));
-        flush();
-        ob_flush();
-        // sleep(1);
-    }
-    fclose($fp);
-
-    return ((connection_status() == 0) and !connection_aborted());
-}
 
 function fm_get_theme() {
     $result = '';

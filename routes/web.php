@@ -258,4 +258,11 @@ Route::get('annualupdate/update', 'App\Http\Controllers\AnnualupdateController@u
 //         })->name('test');
 //     }
 
+// use function App\Helpers\preview_rename_all_files_in_userdata;
+
+// Route::get('/preview-fix-filenames', function () {
+//     preview_rename_all_files_in_userdata();
+//     return 'dry-run 完了。結果はログまたはコンソールを確認してください。';
+// });
+
 ?>

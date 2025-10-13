@@ -171,10 +171,24 @@ class UploaderController extends Controller
         $config->setDeleteChunksOnSave(false);
 
         // 2025/03/18 Start
-        $file = $request->file('file');
-        $filename00 = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-        $extension = $file->getClientOriginalExtension();
+        // $file = $request->file('file');
+        // $filename00 = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        // $extension = $file->getClientOriginalExtension();
         // 2025/03/18 End
+
+        // 2025/10/12 （空白クリーン対応）空白除去処理 Start
+        $file = $request->file('file');
+
+        // 元のファイル名を取得してクリーン化
+        $originalName = $file->getClientOriginalName();
+        $cleanName = trim($originalName);
+        $cleanName = preg_replace('/\s+/', ' ', $cleanName);
+        $cleanName = preg_replace('/　+/', '　', $cleanName);
+        $cleanName = preg_replace('/[\\\\\\/\\:\\*\\?\\"<>\\|]/', '_', $cleanName); // 禁止文字置換
+
+        $filename00 = pathinfo($cleanName, PATHINFO_FILENAME);
+        $extension = pathinfo($cleanName, PATHINFO_EXTENSION);
+        // 2025/10/12 （空白クリーン対応）空白除去処理 End
 
         $file = new \Flow\File($config);
 
@@ -281,6 +295,7 @@ class UploaderController extends Controller
             $counter++;
         }
         $fileName = $uniqueFilename;
+
         // Log::debug('client postUpload $fileName = ' . print_r($fileName ,true));
         // if (file_exists($fullpatname)) {
         //     $fileName = $filename00 . '_' . $counter . '.' . $extension;

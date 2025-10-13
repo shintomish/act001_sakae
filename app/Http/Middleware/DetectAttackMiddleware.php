@@ -36,7 +36,7 @@ class DetectAttackMiddleware
 
         if ($detected) {
 
-            \Log::info('TrustProxies handle called: ' . $request->fullUrl());
+            Log::info('TrustProxies handle called: ' . $request->fullUrl());
 
             // メール通知
             try {
@@ -48,7 +48,9 @@ class DetectAttackMiddleware
             }
 
             // ここにブロック処理を追加！
-            Log::warning('🚨 Blocked attack from ' . $request->ip() . ' URL: ' . $request->fullUrl());
+            // Log::warning('🚨 Blocked attack from ' . $request->ip() . ' URL: ' . $request->fullUrl());
+            Log::warning('🚨 [DetectAttack] Blocked attack from ' . $request->ip() . ' URL hash: ' . hash('sha256', $request->fullUrl()));
+
             abort(403, 'Access forbidden');
         }
 
