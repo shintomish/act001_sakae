@@ -542,6 +542,7 @@ class FilemngController extends Controller
             Log::warning("filemng alldelete: customer_id not found for user_id={$user->id}");
             return back()->with('error', '顧客情報が見つかりません。');
         }
+        Log::info('alldelete 対象顧客: customer_id  = ' . print_r($customer_id, true));
 
         // 顧客フォルダ取得
         $customer = $this->auth_user_foldername($customer_id);
