@@ -477,6 +477,7 @@ class FilemngController extends Controller
         // 全ファイル取得（多階層対応）
         $filePaths = $getAllFiles($folderpath);
         Log::info('ZIP対象ファイル数: ' . count($filePaths));
+        Log::info('ZIP対象顧客: customer_id  = ' . print_r($customer_id, true));
 
         $icnt = 1;
         foreach ($filePaths as $filepath) {
