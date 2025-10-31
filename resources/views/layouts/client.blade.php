@@ -234,9 +234,11 @@
                         @if($indiv_class == 1 )
                             <ul class="nav flex-column mb-2">
                                 <li class="nav-item">
-                                    <a class="nav-link" target="_blank" href="{{route('topclinewzip2024')}}">
+                                    <a class="nav-link" target="_blank" href="{{route('topclinewzip2025')}}">
                                         <i class="fas fa-download"></i>
-                                        令和6年_年末調整フォーム
+                                        {{-- 2025/10/31 --}}
+                                        {{-- 令和6年_年末調整フォーム --}}
+                                        令和7年_年末調整フォーム
                                     </a>
                                 </li>
                             </ul>

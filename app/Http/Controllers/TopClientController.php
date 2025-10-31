@@ -611,6 +611,30 @@ class TopClientController extends Controller
             ->header('Content-Disposition', 'inline; filename="' . $file_name . '"');
     }
 
+
+    /**
+     * Display the specified resource.
+     * 2025/10/31 '令和7年_年末調整フォーム.zip' 配置
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show_2025()
+    {
+        Log::info('topclient show_2025 START');
+
+        $disk = 'local';  // or 's3'
+        $storage = Storage::disk($disk);
+        $file_name = '令和7年_年末調整フォーム.zip';
+        $pdf_path = 'public/pdf/' . $file_name;
+        $file = $storage->get($pdf_path);
+
+        Log::info('topclient show_2025 END');
+
+        return response($file, 200)
+            ->header('Content-Type', 'application/zip')
+            ->header('Content-Disposition', 'inline; filename="' . $file_name . '"');
+    }
+
     /**
      * Display the specified resource.
      *
