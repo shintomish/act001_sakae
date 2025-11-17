@@ -233,18 +233,22 @@ class TopController extends Controller
         $report_flg          = $request->input('report_flg');
         //2022/05/20
         $consumption_tax     = $request->input('consumption_tax');
+        //2025/11/15
+        $tax_filing_period   = $request->input('tax_filing_period');
 
         // Log::debug('bill_flg          : ' . $bill_flg);
         // Log::debug('adept_flg         : ' . $adept_flg);
         // Log::debug('confirmation_flg  : ' . $confirmation_flg);
         // Log::debug('report_flg        : ' . $report_flg);
         // Log::debug('consumption_tax   : ' . $consumption_tax);
+        // Log::debug('tax_filing_period   : ' . $tax_filing_period);
 
                     //  bill_flg              : 会計フラグ
                     //  adept_flg             : 達人フラグ
                     //  confirmation_flg      : 税理士確認フラグ
                     //  report_flg            : 申告フラグ
                     //  consumption_tax       : 消費税フラグ
+                    //  consumption_tax_filing_period       : 消費税申告期間フラグ
 
         $counts = array();
         $update = [];
@@ -254,6 +258,8 @@ class TopController extends Controller
         if( $request->exists('report_flg')         ) $update['report_flg']        = $request->input('report_flg');
         //2022/05/20
         if( $request->exists('consumption_tax')    ) $update['consumption_tax']   = $request->input('consumption_tax');
+        //2025/11/15
+        if( $request->exists('tax_filing_period')  ) $update['consumption_tax_filing_period']   = $request->input('tax_filing_period');
 
         $update['updated_at'] = date('Y-m-d H:i:s');
         // Log::debug('update_api update : ' . print_r($update,true));
