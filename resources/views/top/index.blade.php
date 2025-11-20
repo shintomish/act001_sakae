@@ -337,6 +337,10 @@
                                                     , consumption_tax   // 消費税フラグ
                                                     , null              // 消費税申告期間フラグ
                                                 );
+                            change_custom_Color(      this_id            // 対象コントロール
+                                                    , wok_id            // customerテーブルのID
+                                                    , consumption_tax   // 消費税フラグ
+                                                );
                         });
                         //2025/11/15
                         //---------------------------------------------------------------
@@ -405,11 +409,14 @@
                                 };
                     </script>
                     <script>
-                        function changeColor(consumption_tax_{{$customer->id}}){
-                            if( consumption_tax_{{$customer->id}}.value == 2 ){
-                                consumption_tax_{{$customer->id}}.style.color = 'red';
+                        function change_custom_info(     this_id
+                                                        , wok_id
+                                                        , consumption_tax
+                                                                ){
+                            if( this_id.value == 2 ){
+                                this_id.style.color = 'red';
                             }else{
-                                consumption_tax_{{$customer->id}}.style.color = '';
+                                this_id.style.color = '';
                             }
                         }
                     </script>

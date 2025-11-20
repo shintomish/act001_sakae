@@ -94,96 +94,116 @@ class TopController extends Controller
         //     }
         // }
 
+        //------ 2025/11/20 コメント
         //2023/01/11 organization_id == 0の判定削除
         // 今月の申告
-        if($submonth2 == 12) {
-            $customers2 = Customer::where('organization_id','>=',$organization_id)
-                        // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
-                        ->where('active_cancel','!=', 3)
-                        //2023/01/11 Add
-                        //individual_class 法人(1):個人事業主(2)
-                        ->where('individual_class','=', 1)
-                        ->where('closing_month','>=', $submonth2 )
-                        ->whereNull('deleted_at');  // 2024/02/16 ADD
-            $count2     = $customers2->count();
+        // if($submonth2 == 12) {
+        //     $customers2 = Customer::where('organization_id','>=',$organization_id)
+        //                 // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
+        //                 ->where('active_cancel','!=', 3)
+        //                 //2023/01/11 Add
+        //                 //individual_class 法人(1):個人事業主(2)
+        //                 ->where('individual_class','=', 1)
+        //                 ->where('closing_month','>=', $submonth2 )
+        //                 ->whereNull('deleted_at');  // 2024/02/16 ADD
+        //     $count2     = $customers2->count();
 
-            $customers2 = Customer::where('organization_id','>=',$organization_id)
-                        // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
-                        ->where('active_cancel','!=', 3)
-                        //2023/01/11 Add
-                        //individual_class 法人(1):個人事業主(2)
-                        ->where('individual_class','=', 1)
-                        ->where('closing_month','>=', $submonth2 )
-                        ->whereNull('deleted_at')
-                        ->sortable()
-                        ->paginate(200, ['*'], 'customers2');
+        //     $customers2 = Customer::where('organization_id','>=',$organization_id)
+        //                 // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
+        //                 ->where('active_cancel','!=', 3)
+        //                 //2023/01/11 Add
+        //                 //individual_class 法人(1):個人事業主(2)
+        //                 ->where('individual_class','=', 1)
+        //                 ->where('closing_month','>=', $submonth2 )
+        //                 ->whereNull('deleted_at')
+        //                 ->sortable()
+        //                 ->paginate(200, ['*'], 'customers2');
 
-        } else {
-            $customers2 = Customer::where('organization_id','>=',$organization_id)
-                        // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
-                        ->where('active_cancel','!=', 3)
-                        //2023/01/11 Add
-                        //individual_class 法人(1):個人事業主(2)
-                        ->where('individual_class','=', 1)
-                        ->where('closing_month','=', $submonth2 )
-                        ->whereNull('deleted_at');  // 2024/02/16 ADD
-            $count2     = $customers2->count();
+        // } else {
+        //     $customers2 = Customer::where('organization_id','>=',$organization_id)
+        //                 // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
+        //                 ->where('active_cancel','!=', 3)
+        //                 //2023/01/11 Add
+        //                 //individual_class 法人(1):個人事業主(2)
+        //                 ->where('individual_class','=', 1)
+        //                 ->where('closing_month','=', $submonth2 )
+        //                 ->whereNull('deleted_at');  // 2024/02/16 ADD
+        //     $count2     = $customers2->count();
 
-            $customers2 = Customer::where('organization_id','>=',$organization_id)
-                        // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
-                        ->where('active_cancel','!=', 3)
-                        //2023/01/11 Add
-                        //individual_class 法人(1):個人事業主(2)
-                        ->where('individual_class','=', 1)
-                        ->where('closing_month','=', $submonth2 )
-                        ->whereNull('deleted_at')
-                        ->sortable()
-                        ->paginate(200, ['*'], 'customers2');
-        }
-        // 来月の申告
-        if($submonth1 == 12) {
-            $customers3 = Customer::where('organization_id','>=',$organization_id)
-                        // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
-                        ->where('active_cancel','!=', 3)
-                        //2023/01/11 Add
-                        //individual_class 法人(1):個人事業主(2)
-                        ->where('individual_class','=', 1)
-                        ->where('closing_month','>=', $submonth1 )
-                        ->whereNull('deleted_at');  // 2024/02/16 ADD
-            $count3     = $customers3->count();
+        //     $customers2 = Customer::where('organization_id','>=',$organization_id)
+        //                 // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
+        //                 ->where('active_cancel','!=', 3)
+        //                 //2023/01/11 Add
+        //                 //individual_class 法人(1):個人事業主(2)
+        //                 ->where('individual_class','=', 1)
+        //                 ->where('closing_month','=', $submonth2 )
+        //                 ->whereNull('deleted_at')
+        //                 ->sortable()
+        //                 ->paginate(200, ['*'], 'customers2');
+        // }
+        // // 来月の申告
+        // if($submonth1 == 12) {
+        //     $customers3 = Customer::where('organization_id','>=',$organization_id)
+        //                 // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
+        //                 ->where('active_cancel','!=', 3)
+        //                 //2023/01/11 Add
+        //                 //individual_class 法人(1):個人事業主(2)
+        //                 ->where('individual_class','=', 1)
+        //                 ->where('closing_month','>=', $submonth1 )
+        //                 ->whereNull('deleted_at');  // 2024/02/16 ADD
+        //     $count3     = $customers3->count();
 
-            $customers3 = Customer::where('organization_id','>=',$organization_id)
-                        // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
-                        ->where('active_cancel','!=', 3)
-                        //2023/01/11 Add
-                        //individual_class 法人(1):個人事業主(2)
-                        ->where('individual_class','=', 1)
-                        ->where('closing_month','>=', $submonth1 )
-                        ->whereNull('deleted_at')
-                        ->sortable()
-                        ->paginate(200, ['*'], 'customers3');
-        } else {
-            $customers3 = Customer::where('organization_id','>=',$organization_id)
-                        // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
-                        ->where('active_cancel','!=', 3)
-                        //2023/01/11 Add
-                        //individual_class 法人(1):個人事業主(2)
-                        ->where('individual_class','=', 1)
-                        ->where('closing_month','=', $submonth1 )
-                        ->whereNull('deleted_at');  // 2024/02/16 ADD
-            $count3     = $customers3->count();
+        //     $customers3 = Customer::where('organization_id','>=',$organization_id)
+        //                 // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
+        //                 ->where('active_cancel','!=', 3)
+        //                 //2023/01/11 Add
+        //                 //individual_class 法人(1):個人事業主(2)
+        //                 ->where('individual_class','=', 1)
+        //                 ->where('closing_month','>=', $submonth1 )
+        //                 ->whereNull('deleted_at')
+        //                 ->sortable()
+        //                 ->paginate(200, ['*'], 'customers3');
+        // } else {
+        //     $customers3 = Customer::where('organization_id','>=',$organization_id)
+        //                 // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
+        //                 ->where('active_cancel','!=', 3)
+        //                 //2023/01/11 Add
+        //                 //individual_class 法人(1):個人事業主(2)
+        //                 ->where('individual_class','=', 1)
+        //                 ->where('closing_month','=', $submonth1 )
+        //                 ->whereNull('deleted_at');  // 2024/02/16 ADD
+        //     $count3     = $customers3->count();
 
-            $customers3 = Customer::where('organization_id','>=',$organization_id)
-                        // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
-                        ->where('active_cancel','!=', 3)
-                        //2023/01/11 Add
-                        //individual_class 法人(1):個人事業主(2)
-                        ->where('individual_class','=', 1)
-                        ->where('closing_month','=', $submonth1 )
-                        ->whereNull('deleted_at')
-                        ->sortable()
-                        ->paginate(200, ['*'], 'customers3');
-        }
+        //     $customers3 = Customer::where('organization_id','>=',$organization_id)
+        //                 // `active_cancel` int DEFAULT '1' COMMENT 'アクティブ/解約 1:契約 2:SPOT 3:解約',
+        //                 ->where('active_cancel','!=', 3)
+        //                 //2023/01/11 Add
+        //                 //individual_class 法人(1):個人事業主(2)
+        //                 ->where('individual_class','=', 1)
+        //                 ->where('closing_month','=', $submonth1 )
+        //                 ->whereNull('deleted_at')
+        //                 ->sortable()
+        //                 ->paginate(200, ['*'], 'customers3');
+        // }
+        //------ 2025/11/20 コメント
+        //------ 2025/11/20 Add
+        //今月の申告データ取得（now）
+        $customers2 = $this->getThisMonthTaxRet($nowmonth, $organization_id)->get();
+        $count2     = $customers2->count();
+        
+        $customers2 = $this->getThisMonthTaxRet($nowmonth, $organization_id)
+                            ->sortable()
+                            ->paginate(200, ['*'], 'customers2');
+
+        //来月の申告データ取得（next）
+        $customers3 = $this->getNextMonthTaxRet($nowmonth, $organization_id)->get();
+        $count3     = $customers3->count();
+
+        $customers3 = $this->getNextMonthTaxRet($nowmonth, $organization_id)
+                            ->sortable()
+                            ->paginate(200, ['*'], 'customers3');
+        //------ 2025/11/20 Add End
+
         //2023/01/11
         // 今月の申請・設立 使用していないのでコメント
         // 今年の年を取得
@@ -212,6 +232,102 @@ class TopController extends Controller
 
         Log::info('office top index END $user->name = ' . print_r($user->name ,true));
         return view( 'top.index', $compacts);
+    }
+    /**
+     * 今月の申告データ取得（now）
+     * consumption_tax_filing_period 消費税申告の期間 1:１年 2:３か月ごと 3:毎月 2と3を表示
+     * 2:３か月ごと：決算月＋５か月、決算月＋８か月、決算月＋１１か月　の時に表示
+     * 3:毎月 2と3を表示
+     * I:$nowmonth I:organization_id
+     */
+    public function getThisMonthTaxRet(int $nowmonth, $organization_id)
+    {
+        Log::info('getThisMonthTaxRet START');
+
+        $ret_val = Customer::where('organization_id','>=',$organization_id)
+                ->where('active_cancel','!=', 3)
+                ->where('individual_class', 1)
+                ->whereNull('deleted_at')
+                ->where(function ($q) use ($nowmonth) {
+
+                    // 毎月
+                    $q->where('consumption_tax_filing_period', 3)
+
+                    // 3ヶ月毎：closing_month + (5, 8, 11)
+                    ->orWhere(function($q2) use ($nowmonth) {
+                        $q2->where('consumption_tax_filing_period', 2)
+                            ->where(function($q3) use ($nowmonth) {
+                                $q3->whereRaw("
+                                    (
+                                        ((closing_month + 5 - 1) % 12 + 1) = ?
+                                        OR ((closing_month + 8 - 1) % 12 + 1) = ?
+                                        OR ((closing_month + 11 - 1) % 12 + 1) = ?
+                                    )
+                                ", [$nowmonth, $nowmonth, $nowmonth]);
+                            });
+                    });
+                });
+
+        Log::info('getThisMonthTaxRet END');
+        return $ret_val;
+    }
+    /**
+     * 来月の申告データ取得（next）
+     * consumption_tax_filing_period 消費税申告の期間 1:１年 2:３か月ごと 3:毎月 2と3を表示
+     * 2:3か月ごと：決算月＋６か月、決算月＋９か月、決算月＋１２か月　の時に表示
+     * 3:毎月 2と3を表示
+     * I:$nowmonth I:organization_id
+     */
+    public function getNextMonthTaxRet(int $nowmonth, $organization_id)
+    {
+        $nextmonth = ($nowmonth % 12) + 1;  // ★来月だけ判定に使う！
+
+        // Log::info('getNextMonthTaxRet nextmonth : ' . print_r($nextmonth,true));
+
+        Log::info('getNextMonthTaxRet START');
+
+        $ret_val = Customer::where('organization_id','>=',$organization_id)
+                ->where('active_cancel','!=', 3)
+                ->where('individual_class', 1)
+                ->whereNull('deleted_at')
+                ->where(function ($q) use ($nextmonth) {
+
+                    // 毎月
+                    $q->where('consumption_tax_filing_period', 3)
+
+                    // 3ヶ月毎：closing_month + (6, 9, 12)
+                    ->orWhere(function($q2) use ($nextmonth) {
+                        $q2->where('consumption_tax_filing_period', 2)
+                            ->where(function($q3) use ($nextmonth) {
+                                $q3->whereRaw("
+                                    (
+                                        ((closing_month + 6 - 1) % 12 + 1) = ?
+                                        OR ((closing_month + 9 - 1) % 12 + 1) = ?
+                                        OR ((closing_month + 12 - 1) % 12 + 1) = ?
+                                    )
+                                ", [$nextmonth, $nextmonth, $nextmonth]);
+                            });
+                    });
+                });
+// DB::listen(function($q){
+//     Log::info($q->sql, $q->bindings);
+// });
+        Log::info('getNextMonthTaxRet END');
+        return $ret_val;
+    }
+
+    /**
+     * 汎用：〇ヶ月後の表示月チェック関数
+     */
+    private function isDisplayMonth($closing_month, $nowmonth, array $adds)
+    {
+        foreach ($adds as $add) {
+            $m = (($closing_month + $add - 1) % 12) + 1; // 1〜12へ補正
+            if ($m == $nowmonth) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
