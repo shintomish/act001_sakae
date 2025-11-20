@@ -337,6 +337,7 @@
                                                     , consumption_tax   // 消費税フラグ
                                                     , null              // 消費税申告期間フラグ
                                                 );
+                            changeColor(this);
                             change_custom_Color(      this_id            // 対象コントロール
                                                     , wok_id            // customerテーブルのID
                                                     , consumption_tax   // 消費税フラグ
@@ -409,16 +410,29 @@
                                 };
                     </script>
                     <script>
-                        function change_custom_info(     this_id
-                                                        , wok_id
-                                                        , consumption_tax
-                                                                ){
-                            if( this_id.value == 2 ){
-                                this_id.style.color = 'red';
-                            }else{
-                                this_id.style.color = '';
+                        function changeColor(select) {
+                            // まず全 option の色をリセット
+                            for (let i = 0; i < select.options.length; i++) {
+                                select.options[i].style.color = '';
                             }
-                        }
+
+                            // 選択中の値だけ判定
+                            if (select.value == "2") {
+                                select.options[select.selectedIndex].style.color = 'red';
+                            }
+                        };
+                        function change_custom_Color(this_id, wok_id, consumption_tax) {
+                            var el = document.getElementById(this_id);
+
+                            // 色リセット
+                            el.style.color = '';
+                            el.style.backgroundColor = '';
+
+                            if (consumption_tax == 2) {
+                                // select 自体の背景色を変える（optionには影響しない）
+                                el.style.backgroundColor = '#ffe5e5'; // 薄い赤（お好みで変更可）
+                            }
+                        };
                     </script>
 {{-- {{-- //2025/11/16 -- 移動}} --}}
 
