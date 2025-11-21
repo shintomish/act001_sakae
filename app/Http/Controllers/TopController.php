@@ -234,8 +234,10 @@ class TopController extends Controller
         return view( 'top.index', $compacts);
     }
     /**
+     * 2025/11/20
      * 今月の申告データ取得（now）
      * consumption_tax_filing_period 消費税申告の期間 1:１年 2:３か月ごと 3:毎月 2と3を表示
+     * consumption_tax_filing_period  = 1の場合は、closing_month[決算月] = 今月を基準として２か月前が決算月の会社も表示する
      * 2:３か月ごと：決算月＋５か月、決算月＋８か月、決算月＋１１か月　の時に表示
      * 3:毎月 2と3を表示
      * I:$nowmonth I:organization_id
@@ -244,80 +246,97 @@ class TopController extends Controller
     {
         Log::info('getThisMonthTaxRet START');
 
+        // 2ヶ月前の月
+        $twoMonthsAgo = (($nowmonth + 9) % 12) + 1;
+
         $ret_val = Customer::where('organization_id','>=',$organization_id)
                 ->where('active_cancel','!=', 3)
                 ->where('individual_class', 1)
                 ->whereNull('deleted_at')
-                ->where(function ($q) use ($nowmonth) {
+                ->where(function ($q) use ($nowmonth, $twoMonthsAgo) {
 
-                    // 毎月
+                    // ★毎月（3）
                     $q->where('consumption_tax_filing_period', 3)
 
-                    // 3ヶ月毎：closing_month + (5, 8, 11)
+                    // ★年1回（1） → 2ヶ月前が決算月なら表示
+                    ->orWhere(function($q1) use ($twoMonthsAgo) {
+                        $q1->where('consumption_tax_filing_period', 1)
+                        ->where('closing_month', $twoMonthsAgo);
+                    })
+
+                    // ★3ヶ月毎（2）
                     ->orWhere(function($q2) use ($nowmonth) {
                         $q2->where('consumption_tax_filing_period', 2)
-                            ->where(function($q3) use ($nowmonth) {
-                                $q3->whereRaw("
-                                    (
-                                        ((closing_month + 5 - 1) % 12 + 1) = ?
-                                        OR ((closing_month + 8 - 1) % 12 + 1) = ?
-                                        OR ((closing_month + 11 - 1) % 12 + 1) = ?
-                                    )
-                                ", [$nowmonth, $nowmonth, $nowmonth]);
-                            });
+                            ->whereRaw("
+                                (
+                                    ((closing_month + 5  - 1) % 12 + 1) = ?
+                                    OR ((closing_month + 8  - 1) % 12 + 1) = ?
+                                    OR ((closing_month + 11 - 1) % 12 + 1) = ?
+                                )
+                            ", [$nowmonth, $nowmonth, $nowmonth]);
                     });
                 });
 
         Log::info('getThisMonthTaxRet END');
         return $ret_val;
     }
+
     /**
+     * 2025/11/20
      * 来月の申告データ取得（next）
      * consumption_tax_filing_period 消費税申告の期間 1:１年 2:３か月ごと 3:毎月 2と3を表示
+     * consumption_tax_filing_period  = 1の場合は、closing_month[決算月] = 今月を基準として１か月前が決算月の会社も表示する
      * 2:3か月ごと：決算月＋６か月、決算月＋９か月、決算月＋１２か月　の時に表示
      * 3:毎月 2と3を表示
      * I:$nowmonth I:organization_id
      */
     public function getNextMonthTaxRet(int $nowmonth, $organization_id)
     {
-        $nextmonth = ($nowmonth % 12) + 1;  // ★来月だけ判定に使う！
-
-        // Log::info('getNextMonthTaxRet nextmonth : ' . print_r($nextmonth,true));
+        $nextmonth = ($nowmonth % 12) + 1;
 
         Log::info('getNextMonthTaxRet START');
 
         $ret_val = Customer::where('organization_id','>=',$organization_id)
-                ->where('active_cancel','!=', 3)
-                ->where('individual_class', 1)
-                ->whereNull('deleted_at')
-                ->where(function ($q) use ($nextmonth) {
+            ->where('active_cancel','!=', 3)
+            ->where('individual_class', 1)
+            ->whereNull('deleted_at')
+            ->where(function ($q) use ($nextmonth, $nowmonth) {
 
-                    // 毎月
-                    $q->where('consumption_tax_filing_period', 3)
+                // ★ 毎月
+                $q->where('consumption_tax_filing_period', 3)
 
-                    // 3ヶ月毎：closing_month + (6, 9, 12)
-                    ->orWhere(function($q2) use ($nextmonth) {
-                        $q2->where('consumption_tax_filing_period', 2)
-                            ->where(function($q3) use ($nextmonth) {
-                                $q3->whereRaw("
-                                    (
-                                        ((closing_month + 6 - 1) % 12 + 1) = ?
-                                        OR ((closing_month + 9 - 1) % 12 + 1) = ?
-                                        OR ((closing_month + 12 - 1) % 12 + 1) = ?
-                                    )
-                                ", [$nextmonth, $nextmonth, $nextmonth]);
-                            });
-                    });
-                });
-// DB::listen(function($q){
-//     Log::info($q->sql, $q->bindings);
-// });
+                // ★ 3ヶ月毎：closing_month + (6, 9, 12)
+                ->orWhere(function($q2) use ($nextmonth) {
+                    $q2->where('consumption_tax_filing_period', 2)
+                        ->where(function($q3) use ($nextmonth) {
+                            $q3->whereRaw("
+                                (
+                                    ((closing_month + 6  - 1) % 12 + 1) = ?
+                                    OR ((closing_month + 9  - 1) % 12 + 1) = ?
+                                    OR ((closing_month + 12 - 1) % 12 + 1) = ?
+                                )
+                            ", [$nextmonth, $nextmonth, $nextmonth]);
+                        });
+                })
+
+            // ★ 年1回：来月ではなく「今月の1ヶ月前のみ」で判定
+            ->orWhere(function($q4) use ($nowmonth) {
+
+                $prev = (($nowmonth + 10) % 12) + 1; // 1ヶ月前（計算方法そのまま）
+
+                $q4->where('consumption_tax_filing_period', 1)
+                ->where('closing_month', $prev); // ★ 1ヶ月前のみ
+            });
+
+            });
+
         Log::info('getNextMonthTaxRet END');
         return $ret_val;
     }
 
     /**
-     * 汎用：〇ヶ月後の表示月チェック関数
+     * 2025/11/20
+     * 汎用：〇ヶ月後の表示月チェック関数 未使用
      */
     private function isDisplayMonth($closing_month, $nowmonth, array $adds)
     {
