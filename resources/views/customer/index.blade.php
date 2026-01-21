@@ -59,26 +59,31 @@
     @endif
 
     <!-- 検索エリア -->
-    <form  class="form-inline" enctype="multipart/form-data" id="csvUpload" action="{{route('csvimprt.store')}}" method="POST">
+    <form enctype="multipart/form-data" id="csvUpload" action="{{ route('csvimprt.store') }}" method="POST">
         @csrf
-        {{-- @method('get') --}}
-        <div style="display:inline-flex">
-            <div class="row">
-                {{-- <div class="col-sm-2"> --}}
-                    {{-- <a class="btn btn-success btn-sm btn-block" href="{{route('wokprocbook.create')}}">新規登録</a> --}}
-                {{-- </div> --}}
 
+        <div class="d-flex align-items-center flex-wrap mb-3" style="gap:15px;">
 
-                <div class="col-sm-30">
-                    <a class="btn btn-success btn-sm btn-block mb-2" href="{{route('customer.create')}}">新規登録</a>
+            {{-- 新規登録 --}}
+            <a class="btn btn-success btn-sm" href="{{ route('customer.create') }}">
+                新規登録
+            </a>
 
-                    <div class="custom-file">
-                        <input type="file" name="csv_file" class="custom-file-input" id="csv_file">
-                        <label class="custom-file-label" for="csv_file" data-browse="参照"></label>
-                <button type="submit" class="btn btn-secondary btn-sm btn-block">CSV登録</button>
-                    </div>
-                </div>
-            </div>
+            {{-- CSVダウンロード --}}
+            <a class="btn btn-outline-primary btn-sm" href="{{ route('customer.csv') }}">
+                CSVダウンロード
+            </a>
+
+            {{-- ファイル選択（シンプル版） --}}
+            <input type="file" name="csv_file"
+                class="form-control form-control-sm"
+                style="width:260px;">
+
+            {{-- CSV登録 --}}
+            <button type="submit" class="btn btn-secondary btn-sm">
+                CSV登録
+            </button>
+
         </div>
     </form>
 

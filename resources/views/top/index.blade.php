@@ -76,6 +76,19 @@
         .fixed02{
             z-index: 1;
         }
+        /* 申告未完了：社名を赤字＋ゆっくり点滅 */
+        .blink-danger {
+            color: red !important;
+            font-weight: bold;
+            animation: blinkFade 2s infinite;
+        }
+
+        @keyframes blinkFade {
+            0%   { opacity: 1; }
+            50%  { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
     </style>
 
     <div class="row">
@@ -84,8 +97,6 @@
                 <span class="text-success">今月の申告 ( {{ $count2 }} 社)</span>
                 {{-- <span class="badge badge-secondary badge-pill">3</span> --}}
             </h4>
-            {{-- <table class="table table-striped table-borderd"> --}}
-            {{-- <table class="table table-striped table-borderd table_sticky"> --}}
         {{-- table-responsive text-nowrap add scope=row 2022/11/09--}}
         <table class="table table-responsive text-nowrap table-striped table-borderd table_sticky">
                 <form method="GET" action="{{ route('top.index') }}">
@@ -112,7 +123,11 @@
                         <tr>
                             {{-- <td>{{ $customer->business_name }}</td> --}}
                             <td>
-                            <a href="{{ route('customer.edit',$customer->id)}}">{{ $customer->business_name }}</a>
+                                {{-- 点滅追加 --}}
+                                <a href="{{ route('customer.edit',$customer->id)}}"
+                                class="{{ $customer->report_flg == 1 ? 'blink-danger' : '' }}">
+                                    {{ $customer->business_name }}
+                                </a>
                             </td>
                             <td>
                                 {{-- //法人・個人 App/Providers/AppServiceProviderのboot--}}
@@ -318,6 +333,16 @@
                                                     , null              // 消費税フラグ
                                                     , null              // 消費税申告期間フラグ
                                                 );
+                            // ★ 社名の点滅切替
+                            // ▼ 社名リンク取得
+                            var nameLink = $(this).closest('tr').find('td:first a');
+                            
+                            // ▼ report_flg == 1 のとき赤色点滅
+                            if (report_flg == 1) {
+                                nameLink.addClass('blink-danger');
+                            } else {
+                                nameLink.removeClass('blink-danger');
+                            }
                         });
                         //2022/05/20
                         //---------------------------------------------------------------
@@ -451,8 +476,6 @@
                 <span class="text-success">来月の申告 ( {{ $count3 }} 社)</span>
                 {{-- <span class="badge badge-secondary badge-pill">3</span> --}}
             </h4>
-            {{-- <table class="table table-striped table-borderd"> --}}
-            {{-- <table class="table table-striped table-borderd table_sticky"> --}}
         {{-- table-responsive text-nowrap add scope=row 2022/11/09--}}
         <table class="table table-responsive text-nowrap table-striped table-borderd table_sticky">
                 <thead>
@@ -460,10 +483,10 @@
 	                    <th scope="row" class ="fixed01">社名</th>
 	                    <th scope="row" class ="fixed01">法人</th>
 	                    <th scope="row" class ="fixed01">決算</th>
+                        <th scope="row" class="fixed01">消費税申告の期間</th> {{-- ★追加 --}}
 	                    <th scope="row" class ="fixed01">最終会計処理日</th>
                     </tr>
                 </thead>
-
                 <tbody>
                     @if($customers3->count())
                         @foreach($customers3 as $customer)
@@ -474,19 +497,28 @@
                             </td>
                             <td>
                                 {{-- //法人・個人 App/Providers/AppServiceProviderのboot--}}
-                            @foreach ($loop_individual_class as $loop_individual_class2)
-                                @if ($loop_individual_class2['no']==$customer->individual_class)
-                                    {{ $loop_individual_class2['name'] }}
-                                @endif
-                            @endforeach
-                        </td>
-                        <td>
-                            @foreach ($loop_closing_month as $loop_closing_month2)
-                                @if ($loop_closing_month2['no']==$customer->closing_month)
-                                    {{$loop_closing_month2['name']}}
-                                @endif
-                            @endforeach
-                        </td>
+                                @foreach ($loop_individual_class as $loop_individual_class2)
+                                    @if ($loop_individual_class2['no']==$customer->individual_class)
+                                        {{ $loop_individual_class2['name'] }}
+                                    @endif
+                                @endforeach
+                            </td>
+                            <td>
+                                @foreach ($loop_closing_month as $loop_closing_month2)
+                                    @if ($loop_closing_month2['no']==$customer->closing_month)
+                                        {{$loop_closing_month2['name']}}
+                                    @endif
+                                @endforeach
+                            </td>
+                            {{-- 2026/01/21 追加 --}}
+                            {{-- ★ 消費税申告の期間 --}}
+                            <td>
+                                @foreach ($loop_consumption_tax_filing_period as $tax_filing_period2)
+                                    @if ($tax_filing_period2['no'] == $customer->consumption_tax_filing_period)
+                                        {{ $tax_filing_period2['name'] }}
+                                    @endif
+                                @endforeach
+                            </td>
                             @php
                             $str = "-";
                                 if (isset($customer->final_accounting_at)) {

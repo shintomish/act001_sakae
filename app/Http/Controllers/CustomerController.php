@@ -15,8 +15,8 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-
-
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Support\Facades\Schema;
 
 class CustomerController extends Controller
 {
@@ -729,6 +729,58 @@ class CustomerController extends Controller
         // return view('customer.index', ['customers' => $customers]);
         return view('customer.index', $compacts);
     }
+    /**
+     * 顧客管理一覧表 CSV ダウンロード 2026/01/21
+     */
+    public function exportCsv()
+    {
+        $filename = 'customers_' . date('Ymd_His') . '.csv';
+
+        // ✅ カラム順＋COMMENT取得
+        $columns = DB::table('information_schema.COLUMNS')
+            ->select('COLUMN_NAME', 'COLUMN_COMMENT')
+            ->where('TABLE_SCHEMA', DB::raw('DATABASE()'))
+            ->where('TABLE_NAME', 'customers')
+            ->orderBy('ORDINAL_POSITION')
+            ->get();
+
+        $columnNames = $columns->pluck('COLUMN_NAME')->toArray();
+        $columnComments = $columns->pluck('COLUMN_COMMENT')->toArray();
+
+        // ✅ データ取得
+        $customers = DB::table('customers')
+            ->whereNull('deleted_at')
+            ->orderBy('id')
+            ->get($columnNames);
+
+        $response = new StreamedResponse(function () use ($customers, $columnNames, $columnComments) {
+            $handle = fopen('php://output', 'w');
+
+            // ✅ Excel文字化け防止（UTF-8 BOM）
+            fputs($handle, "\xEF\xBB\xBF");
+
+            // ✅ ヘッダ：COMMENT
+            fputcsv($handle, $columnComments);
+
+            // ✅ データ行：すべて文字列として出力
+            foreach ($customers as $row) {
+                $line = [];
+                foreach ($columnNames as $col) {
+                    // Excelで数値扱いされないよう必ず文字列化
+                    $line[] = isset($row->$col) ? (string)$row->$col : '';
+                }
+                fputcsv($handle, $line);
+            }
+
+            fclose($handle);
+        });
+
+        $response->headers->set('Content-Type', 'text/csv; charset=UTF-8');
+        $response->headers->set('Content-Disposition', "attachment; filename={$filename}");
+
+        return $response;
+    }
+
 
     /**
      *

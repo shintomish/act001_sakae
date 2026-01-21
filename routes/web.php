@@ -121,6 +121,7 @@ Route::resource('user', 'App\Http\Controllers\UserController');
 Route::get('customerserch',     'App\Http\Controllers\CustomerController@serch' )->name('customerserch');
 Route::get('customer/index',    'App\Http\Controllers\CustomerController@index' )->name('customer');
 Route::post('customer/index',   'App\Http\Controllers\CsvImportController@store')->name('csvimprt.store');
+Route::get('customer/csv',      'App\Http\Controllers\CustomerController@exportCsv')->name('customer.csv');
 Route::resource('customer',     'App\Http\Controllers\CustomerController');
 
 //-----------------------------------------------------------------------------------------------
@@ -129,6 +130,7 @@ Route::resource('customer',     'App\Http\Controllers\CustomerController');
 Route::get('ctluserserch',    'App\Http\Controllers\ControlUserController@serch')->name('ctluserserch');
 Route::get('ctluser/index',   'App\Http\Controllers\ControlUserController@index')->name('ctluserindex');
 Route::resource('ctluser',    'App\Http\Controllers\ControlUserController');
+
 
 //-----------------------------------------------------------------------------------------------
 //- 事務所 UploadUser アップロードユーザー 01
