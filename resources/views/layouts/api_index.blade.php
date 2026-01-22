@@ -316,7 +316,9 @@
                                 <h4>
                                     {{-- 新しいタグで開く target="_blank" --}}
                                     {{-- 2024/01/29 --}}
-<a class="nav-link" target="_blank" href='{{ $topurl }}'>R5年確定申告一覧表（顧問先）</a>
+{{-- <a class="nav-link" target="_blank" href='{{ $topurl }}'>R5年確定申告一覧表（顧問先）</a> --}}
+                                    {{-- 2026/01/22 --}}
+<a class="nav-link" target="_blank" href='{{ $topurl }}'>R7年確定申告一覧表（顧問先）</a>
                                 {{-- <input type="button" target="_blank" onclick="location.href='{{ $topurl }}'" value="入金管理表(Excel)へ"> --}}
                                 </h4>
                                 @break;
