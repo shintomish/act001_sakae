@@ -478,6 +478,44 @@ class TopController extends Controller
         return response()->json([ compact('status','counts') ]);
     }
 
+    /**
+     * [webapi] 今月の申告：〇→ー 一括リセット
+     * 対象フラグ: bill_flg / adept_flg / confirmation_flg / report_flg を 1(ー) にリセット
+     */
+    public function reset_api(Request $request)
+    {
+        Log::info('top reset_api START');
+
+        $ids = $request->input('ids', []);
+        // 整数配列に変換
+        $ids = array_map('intval', (array)$ids);
+        $ids = array_filter($ids, fn($v) => $v > 0);
+
+        if (empty($ids)) {
+            return response()->json([['status' => ['error_code' => 400, 'message' => 'No ids given']]]);
+        }
+
+        DB::beginTransaction();
+        try {
+            Customer::whereIn('id', $ids)->update([
+                'bill_flg'         => 1,
+                'adept_flg'        => 1,
+                'confirmation_flg' => 1,
+                'report_flg'       => 1,
+                'updated_at'       => date('Y-m-d H:i:s'),
+            ]);
+            DB::commit();
+            $status = ['error_code' => 0, 'message' => 'Reset completed'];
+        } catch (\Exception $e) {
+            DB::rollback();
+            Log::error('top reset_api exception : ' . $e->getMessage());
+            $status = ['error_code' => 501, 'message' => $e->getMessage()];
+        }
+
+        Log::info('top reset_api END');
+        return response()->json([compact('status')]);
+    }
+
     public function post(Request $data)
     {
         // Log::info('top post START');

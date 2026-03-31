@@ -95,10 +95,10 @@
         <div class="col-md-10 order-md-2 mb-4">
             <h4 class="d-flex justify-content-between align-items-center mb-3">
                 <span class="text-success">今月の申告 ( {{ $count2 }} 社)</span>
-                {{-- <span class="badge badge-secondary badge-pill">3</span> --}}
+                <button type="button" id="btn-reset-thismonth" class="btn btn-warning btn-sm">一括リセット（〇→ー）</button>
             </h4>
         {{-- table-responsive text-nowrap add scope=row 2022/11/09--}}
-        <table class="table table-responsive text-nowrap table-striped table-borderd table_sticky">
+        <table id="table-thismonth" class="table table-responsive text-nowrap table-striped table-borderd table_sticky">
                 <form method="GET" action="{{ route('top.index') }}">
                     @csrf
                     @method('get')
@@ -460,6 +460,41 @@
                         };
                     </script>
 {{-- {{-- //2025/11/16 -- 移動}} --}}
+                    <script type="text/javascript">
+                        //---------------------------------------------------------------
+                        //-- 一括リセット（〇→ー）ボタン
+                        //---------------------------------------------------------------
+                        $('#btn-reset-thismonth').click(function () {
+                            if (!confirm('今月の申告の〇をすべてーにリセットしますか？')) return;
+
+                            // 顧客IDを収集（bill_flg_ セレクトは今月テーブルのみに存在）
+                            var ids = [];
+                            $('select[name^="bill_flg_"]').each(function () {
+                                ids.push($(this).attr('name').replace('bill_flg_', ''));
+                            });
+
+                            if (ids.length === 0) return;
+
+                            var reqData = new FormData();
+                            $.each(ids, function (i, id) { reqData.append('ids[]', id); });
+
+                            AjaxAPI.callAjax(
+                                "{{ route('top.reset_api') }}",
+                                reqData,
+                                function (res) {
+                                    // UI を ー(1) に更新
+                                    $.each(ids, function (i, id) {
+                                        $('#bill_flg_'         + id).val(1);
+                                        $('#adept_flg_'        + id).val(1);
+                                        $('#confirmation_flg_' + id).val(1);
+                                        $('#report_flg_'       + id).val(1);
+                                    });
+                                    // 社名の点滅をすべて解除
+                                    $('a.blink-danger').removeClass('blink-danger');
+                                }
+                            );
+                        });
+                    </script>
 
                 </tbody>
                 </form>
