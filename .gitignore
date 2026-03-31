@@ -37,3 +37,7 @@ Thumbs.db
 *.gz
 
 /build/
+
+# ローカル環境固有ファイル
+docker-compose.yml
+settings.local.json
