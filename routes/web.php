@@ -154,6 +154,7 @@ Route::get('filemngdown',    'App\Http\Controllers\FilemngController@alldwonload
 Route::get('filemngdell',    'App\Http\Controllers\FilemngController@alldelete')->name('filemngdell');
 Route::post('filemngpost',   'App\Http\Controllers\FilemngController@post')->name('filemngpost');
 Route::post('filemngupdate',   'App\Http\Controllers\FilemngController@update_api')->name('filemngupdate');
+Route::post('filemngdownsel',  'App\Http\Controllers\FilemngController@downloadSelected')->name('filemngdownsel');
 Route::resource('filemng',   'App\Http\Controllers\FilemngController');
 
 //-----------------------------------------------------------------------------------------------

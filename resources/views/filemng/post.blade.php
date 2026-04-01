@@ -881,6 +881,43 @@ if (isset($_GET['dl'])) {
     }
 }
 
+// Inline view (プレビュー用)
+if (isset($_GET['inline'])) {
+    $inline_file = isset($_GET['inline']) ? $_GET['inline'] : '';
+    $inline_file = fm_clean_path($inline_file, false);
+    $inline_file = str_replace('/', '', $inline_file);
+    $inline_file = trim($inline_file);
+
+    $folder = $customers->foldername;
+    $inline_path = FM_ROOT_PATH . '/' . $folder;
+
+    // ファイル名の空白差異を吸収
+    $dir_files = scandir($inline_path);
+    foreach ($dir_files as $df) {
+        if (trim($df) === $inline_file) {
+            $inline_file = $df;
+            break;
+        }
+    }
+
+    $inline_fullpath = $inline_path . '/' . $inline_file;
+    if (is_file($inline_fullpath)) {
+        $inline_mime = fm_get_mime_type($inline_fullpath);
+        while (ob_get_level() > 0) {
+            ob_end_clean();
+        }
+        header('Content-Type: ' . $inline_mime);
+        header('Content-Disposition: inline; filename*=UTF-8\'\'' . rawurlencode($inline_file));
+        header('Content-Length: ' . filesize($inline_fullpath));
+        header('Cache-Control: private, max-age=300');
+        readfile($inline_fullpath);
+        exit;
+    } else {
+        fm_set_msg(lng('File not found'), 'error');
+        fm_redirect(FM_SELF_URL . '?p=' . urlencode(FM_PATH));
+    }
+}
+
 // Upload
 if (!empty($_FILES) && !FM_READONLY) {
     $override_file_name = false;
@@ -1993,7 +2030,7 @@ $num_folders = count($folders);
 $all_files_size = 0;
 $tableTheme = (FM_THEME == "dark") ? "text-white bg-dark table-dark" : "bg-white";
 ?>
-<form action="{{ route('filemngupdate')}}" method="post" class="pt-3">
+<form action="{{ route('filemngupdate') }}?p=" method="post" class="pt-3">
     <input type="hidden" name="p" value="<?php echo fm_enc(FM_PATH) ?>">
     <input type="hidden" name="group" value="1">
     <div class="table-responsive">
@@ -2031,14 +2068,6 @@ $tableTheme = (FM_THEME == "dark") ? "text-white bg-dark table-dark" : "bg-white
         <table class="table table-bordered table-hover table-sm <?php echo $tableTheme; ?>" id="main-table">
             <thead class="thead-white">
             <tr>
-                <?php if (!FM_READONLY): ?>
-                    <th style="width:3%" class="custom-checkbox-header">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="js-select-all-items" onclick="checkbox_toggle()">
-                            <label class="custom-control-label" for="js-select-all-items"></label>
-                        </div>
-                    </th>
-                <?php endif; ?>
                 <th><?php echo lng('Name') ?></th>
                 <th><?php echo lng('Size') ?></th>
                 <th><?php echo lng('Modified') ?></th>
@@ -2054,8 +2083,7 @@ $tableTheme = (FM_THEME == "dark") ? "text-white bg-dark table-dark" : "bg-white
             // link to parent folder
             if ($parent !== false) {
                 ?>
-                <tr><?php if (!FM_READONLY): ?>
-                    <td class="nosort"></td><?php endif; ?>
+                <tr>
                     <td class="border-0"><a href="?p=<?php echo urlencode($parent) ?>"><i class="fa fa-chevron-circle-left go-back"></i> ..</a></td>
                     <td class="border-0"></td>
                     <td class="border-0"></td>
@@ -2091,13 +2119,6 @@ $tableTheme = (FM_THEME == "dark") ? "text-white bg-dark table-dark" : "bg-white
                 }
                 ?>
                 <tr>
-                    <?php if (!FM_READONLY): ?>
-                        <td class="custom-checkbox-td">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="<?php echo $ii ?>" name="file[]" value="<?php echo fm_enc($f) ?>">
-                            <label class="custom-control-label" for="<?php echo $ii ?>"></label>
-                        </div>
-                        </td><?php endif; ?>
                     <td>
                         <div class="filename"><a href="?p=<?php echo urlencode(trim(FM_PATH . '/' . $f, '/')) ?>"><i class="<?php echo $img ?>"></i> <?php echo fm_convert_win(fm_enc($f)) ?>
                             </a><?php echo($is_link ? ' &rarr; <i>' . readlink($path . '/' . $f) . '</i>' : '') ?></div>
@@ -2113,12 +2134,20 @@ $tableTheme = (FM_THEME == "dark") ? "text-white bg-dark table-dark" : "bg-white
                         </td> --}}
                         {{-- <td><?php echo $owner['name'] . ':' . $group['name'] ?></td> --}}
                     <?php endif; ?>
-                    <td class="inline-actions"><?php if (!FM_READONLY): ?>
-                            <a title="<?php echo lng('Delete')?>" href="?p=<?php echo urlencode(FM_PATH) ?>&amp;del=<?php echo urlencode($f) ?>" onclick="return confirm('<?php echo lng('Delete').' '.lng('Folder').'?'; ?>\n \n ( <?php echo urlencode($f) ?> )');"> <i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                    <td class="inline-actions" style="white-space:nowrap;"><?php if (!FM_READONLY): ?>
+                        <span style="display:inline-block;width:24px;text-align:center;vertical-align:middle;">
+                            <a title="<?php echo lng('Delete')?>" href="?p=<?php echo urlencode(FM_PATH) ?>&amp;del=<?php echo urlencode($f) ?>" onclick="return confirm('<?php echo lng('Delete').' '.lng('Folder').'?'; ?>\n \n ( <?php echo urlencode($f) ?> )');"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                        </span>
+                        <span style="display:inline-block;width:24px;text-align:center;vertical-align:middle;">
                             <a title="<?php echo lng('Rename')?>" href="#" onclick="rename('<?php echo fm_enc(addslashes(FM_PATH)) ?>', '<?php echo fm_enc(addslashes($f)) ?>');return false;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                        </span>
+                        <span style="display:inline-block;width:24px;text-align:center;vertical-align:middle;">
                             <a title="<?php echo lng('CopyTo')?>..." href="?p=&amp;copy=<?php echo urlencode(trim(FM_PATH . '/' . $f, '/')) ?>"><i class="fa fa-files-o" aria-hidden="true"></i></a>
+                        </span>
+                        <span style="display:inline-block;width:24px;text-align:center;vertical-align:middle;">
+                            <input type="checkbox" id="<?php echo $ii ?>" name="file[]" value="<?php echo fm_enc($f) ?>" style="width:14px;height:14px;cursor:pointer;margin:0;vertical-align:middle;">
+                        </span>
                         <?php endif; ?>
-                        <!--a title="<?php echo lng('DirectLink')?>" href="<?php echo fm_enc(FM_ROOT_URL . (FM_PATH != '' ? '/' . FM_PATH : '') . '/' . $f . '/') ?>" target="_blank"><i class="fa fa-link" aria-hidden="true"></i></a-->
                     </td>
                 </tr>
                 <?php
@@ -2175,13 +2204,6 @@ $tableTheme = (FM_THEME == "dark") ? "text-white bg-dark table-dark" : "bg-white
                 }
                 ?>
                 <tr>
-                    <?php if (!FM_READONLY): ?>
-                        <td class="custom-checkbox-td">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="<?php echo $ik ?>" name="file[]" value="<?php echo fm_enc($f) ?>">
-                            <label class="custom-control-label" for="<?php echo $ik ?>"></label>
-                        </div>
-                        </td><?php endif; ?>
                     <td>
                         <div class="filename">
                         <?php
@@ -2206,19 +2228,47 @@ $tableTheme = (FM_THEME == "dark") ? "text-white bg-dark table-dark" : "bg-white
                         </td>
                         {{-- <td><?php echo fm_enc($owner['name'] . ':' . $group['name']) ?></td> --}}
                     <?php endif; ?>
-                    <td class="inline-actions">
+                    <td class="inline-actions" style="white-space:nowrap;">
                         @csrf   <!-- koko -->
-                        <!-- Preview以下コメント-->
-                        <!--a title="<?php echo lng('Preview') ?>" href="<?php echo $filelink.'&quickView=1'; ?>" data-toggle="lightbox" data-gallery="tiny-gallery" data-title="<?php echo fm_convert_win(fm_enc($f)) ?>" data-max-width="100%" data-width="100%"><i class="fa fa-eye"></i></a -->
-                        {{-- 2022/09/14 Deleteを表示 --}}
-                        {{-- <?php if (!FM_READONLY): ?> --}}
-                            {{-- <a title="<?php echo lng('Delete') ?>" href="?p=<?php echo urlencode(FM_PATH) ?>&amp;del=<?php echo urlencode($f) ?>" onclick="return confirm('<?php echo lng('Delete').' '.lng('File').'?'; ?>\n \n ( <?php echo urlencode($f) ?> )');"> <i class="fa fa-trash-o"></i></a> --}}
-<a title="<?php echo lng('Delete') ?>" href="?p=<?php echo urlencode(FM_PATH) ?>&amp;del=<?php echo urlencode($f) ?>" onclick="return confirm('<?php echo lng('Delete').' '.lng('File').'?'; ?>\n \n ( <?php echo ($f) ?> )');"> <i class="fa fa-trash-o"></i></a>
-                            {{-- <a title="<?php echo lng('Rename') ?>" href="#" onclick="rename('<?php echo fm_enc(addslashes(FM_PATH)) ?>', '<?php echo fm_enc(addslashes($f)) ?>');return false;"><i class="fa fa-pencil-square-o"></i></a> --}}
-                            {{-- <a title="<?php echo lng('CopyTo') ?>..." --}}{{-- href="?p=<?php echo urlencode(FM_PATH) ?>&amp;copy=<?php echo urlencode(trim(FM_PATH . '/' . $f, '/')) ?>"><i class="fa fa-files-o"></i></a> --}}
-                        {{-- <?php endif; ?> --}}
-                        <!--a title="<?php echo lng('DirectLink') ?>" href="<?php echo fm_enc(FM_ROOT_URL . (FM_PATH != '' ? '/' . FM_PATH : '') . '/' . $f) ?>" target="_blank"><i class="fa fa-link"></i></a-->
-                        <a title="<?php echo lng('Download') ?>" href="?p=<?php echo urlencode(FM_PATH) ?>&amp;dl=<?php echo urlencode($f) ?>"><i class="fa fa-download"></i></a>
+                        {{-- ① 削除 --}}
+                        <span style="display:inline-block;width:24px;text-align:center;vertical-align:middle;">
+<a title="<?php echo lng('Delete') ?>" href="?p=<?php echo urlencode(FM_PATH) ?>&amp;del=<?php echo urlencode($f) ?>" onclick="return confirm('<?php echo lng('Delete').' '.lng('File').'?'; ?>\n \n ( <?php echo ($f) ?> )');"><i class="fa fa-trash-o"></i></a>
+                        </span>
+                        {{-- ② ダウンロード --}}
+                        <span style="display:inline-block;width:24px;text-align:center;vertical-align:middle;">
+                            <a title="<?php echo lng('Download') ?>" href="?p=<?php echo urlencode(FM_PATH) ?>&amp;dl=<?php echo urlencode($f) ?>"><i class="fa fa-download"></i></a>
+                        </span>
+                        {{-- ③ プレビュー（対応外は空欄） --}}
+                        <?php
+                        $ext_prev = strtolower(pathinfo($f, PATHINFO_EXTENSION));
+                        $img_exts_prev    = ['gif', 'jpg', 'jpeg', 'png', 'bmp', 'svg', 'webp', 'avif'];
+                        $pdf_exts_prev    = ['pdf'];
+                        $txt_exts_prev    = ['txt', 'csv'];
+                        $office_exts_prev = ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'];
+                        $all_prev_exts    = array_merge($img_exts_prev, $pdf_exts_prev, $txt_exts_prev, $office_exts_prev);
+                        if (in_array($ext_prev, $all_prev_exts)):
+                            $preview_url  = '?p=' . urlencode(FM_PATH) . '&amp;inline=' . urlencode($f);
+                            $download_url = '?p=' . urlencode(FM_PATH) . '&amp;dl='     . urlencode($f);
+                            if      (in_array($ext_prev, $img_exts_prev))    $preview_type = 'image';
+                            elseif  (in_array($ext_prev, $pdf_exts_prev))    $preview_type = 'pdf';
+                            elseif  (in_array($ext_prev, $txt_exts_prev))    $preview_type = 'text';
+                            else                                              $preview_type = 'office';
+                        ?>
+                        <span style="display:inline-block;width:24px;text-align:center;vertical-align:middle;">
+                            <a title="プレビュー" href="#"
+                               data-preview-url="<?php echo $preview_url ?>"
+                               data-preview-name="<?php echo fm_enc($f) ?>"
+                               data-preview-type="<?php echo $preview_type ?>"
+                               data-download-url="<?php echo $download_url ?>"
+                               onclick="return open_preview(this);"><i class="fa fa-eye"></i></a>
+                        </span>
+                        <?php else: ?>
+                        <span style="display:inline-block;width:24px;vertical-align:middle;"></span>
+                        <?php endif; ?>
+                        {{-- ④ チェックボックス --}}
+                        <span style="display:inline-block;width:24px;text-align:center;vertical-align:middle;">
+                            <input type="checkbox" id="<?php echo $ik ?>" name="file[]" value="<?php echo fm_enc($f) ?>" style="width:14px;height:14px;cursor:pointer;margin:0;vertical-align:middle;">
+                        </span>
                     </td>
                 </tr>
                 <?php
@@ -2229,8 +2279,7 @@ $tableTheme = (FM_THEME == "dark") ? "text-white bg-dark table-dark" : "bg-white
             if (empty($folders) && empty($files)) {
                 ?>
                 <tfoot>
-                    <tr><?php if (!FM_READONLY): ?>
-                            <td></td><?php endif; ?>
+                    <tr>
                         <td colspan="<?php echo (!FM_IS_WIN && !$hide_Cols) ? '6' : '4' ?>"><em><?php echo '空のフォルダです' ?></em></td>
                     </tr>
                 </tfoot>
@@ -2238,8 +2287,7 @@ $tableTheme = (FM_THEME == "dark") ? "text-white bg-dark table-dark" : "bg-white
             } else {
                 ?>
                 <tfoot>
-                    <tr><?php if (!FM_READONLY): ?>
-                            <td class="gray"></td><?php endif; ?>
+                    <tr>
                         <td class="gray" colspan="<?php echo (!FM_IS_WIN && !$hide_Cols) ? '6' : '4' ?>">
                             <?php echo lng('FullSize').': <span class="badge badge-light">'.fm_get_filesize($all_files_size).'</span>' ?>
                             <?php echo lng('File').': <span class="badge badge-light">'.$num_files.'</span>' ?>
@@ -2261,6 +2309,7 @@ $tableTheme = (FM_THEME == "dark") ? "text-white bg-dark table-dark" : "bg-white
                 <li class="list-inline-item"> <a href="#/select-all" class="btn btn-small btn-outline-primary btn-2" onclick="select_all();return false;"><i class="fa fa-check-square"></i> <?php echo lng('SelectAll') ?> </a></li>
                 <li class="list-inline-item"><a href="#/unselect-all" class="btn btn-small btn-outline-primary btn-2" onclick="unselect_all();return false;"><i class="fa fa-window-close"></i> <?php echo lng('UnSelectAll') ?> </a></li>
                 <li class="list-inline-item"><a href="#/invert-all" class="btn btn-small btn-outline-primary btn-2" onclick="invert_all();return false;"><i class="fa fa-th-list"></i> <?php echo lng('InvertSelection') ?> </a></li>
+                <li class="list-inline-item"><a href="#/download-selected" class="btn btn-small btn-outline-success btn-2" onclick="download_selected();return false;"><i class="fa fa-download"></i> 選択ダウンロード </a></li>
                 <li class="list-inline-item"><input type="submit" class="hidden" name="delete" id="a-delete" value="Delete" onclick="return confirm('<?php echo lng('Delete selected files and folders?'); ?>')">
                     <a href="javascript:document.getElementById('a-delete').click();" class="btn btn-small btn-outline-primary btn-2"><i class="fa fa-trash"></i> <?php echo lng('Delete') ?> </a></li>
                 <li class="list-inline-item"><input type="submit" class="hidden" name="zip" id="a-zip" value="zip" onclick="return confirm('<?php echo lng('Create archive?'); ?>')">
@@ -2278,6 +2327,30 @@ $tableTheme = (FM_THEME == "dark") ? "text-white bg-dark table-dark" : "bg-white
     </div>
 
 </form>
+
+{{-- 選択ダウンロード用フォーム --}}
+<form id="fm-download-selected-form" action="{{ route('filemngdownsel') }}" method="post" style="display:none;">
+    @csrf
+    <input type="hidden" name="p" value="<?php echo fm_enc(FM_PATH) ?>">
+    <div id="fm-download-selected-inputs"></div>
+</form>
+
+{{-- プレビューモーダル --}}
+<div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-labelledby="previewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="previewModalLabel">プレビュー</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body p-1" id="previewModalBody" style="min-height:200px; text-align:center; background:#f8f9fa;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php
 fm_show_footer();
@@ -3748,6 +3821,13 @@ function fm_show_nav_path($path)
 {{-- <a title="<?php echo lng('Delete') ?>" href="?p=<?php echo urlencode(FM_PATH) ?>&amp;del=<?php echo urlencode($f) ?>" onclick="return confirm('<?php echo lng('Delete').' '.lng('File').'?'; ?>\n \n ( <?php echo ($f) ?> )');"> <i class="fa fa-trash-o"></i></a> --}}
 <a style="color: rgb(255, 0, 0); " title="<?php echo '一括削除' ?>"  onclick="return confirm('<?php echo lng('Delete').' '.lng('File').'?'; ?>\n \n ( <?php echo '全件削除' ?> )');" class="dropdown-item nav-link" href="{{route('filemngdell')}}"><i class="fa fa-trash-o" aria-hidden="true"></i> <?php echo '一括削除' ?></a>
 <a style="color: rgb(0, 0, 255); " title="<?php echo '一括ダウンロード' ?>" class="dropdown-item nav-link" href="{{route('filemngdown')}}"><i class="fa fa-download" aria-hidden="true"></i> <?php echo '一括ダウンロード' ?></a>
+<span style="display:inline-flex;align-items:center;gap:4px;border-left:2px solid #dee2e6;padding-left:10px;margin-left:4px;">
+    <label style="margin:0;cursor:pointer;display:inline-flex;align-items:center;gap:4px;font-size:0.85em;color:#555;white-space:nowrap;" title="全選択 / 全解除">
+        <input type="checkbox" id="navbar-select-all-cb" style="cursor:pointer;width:15px;height:15px;" onchange="navbar_toggle_all(this)"> 全選択
+    </label>
+    <a style="color:rgb(220,53,69);" title="選択削除" class="dropdown-item nav-link py-0" href="#" onclick="return navbar_sel_delete();"><i class="fa fa-trash-o" aria-hidden="true"></i> 選択削除</a>
+    <a style="color:rgb(0,123,255);" title="選択ダウンロード" class="dropdown-item nav-link py-0" href="#" onclick="download_selected();return false;"><i class="fa fa-download" aria-hidden="true"></i> 選択ダウンロード</a>
+</span>
                     <!--li class="nav-item mr-2">
                         <div class="input-group input-group-sm mr-1" style="margin-top:4px;">
                             <input type="text" class="form-control" placeholder="<?php echo lng('Search') ?>" aria-label="<?php echo lng('Search') ?>" aria-describedby="search-addon2" id="search-addon">
@@ -4189,6 +4269,145 @@ $isStickyNavBar = $sticky_navbar ? 'navbar-fixed' : 'navbar-normal';
     function unselect_all() { change_checkboxes(get_checkboxes(), !1) }
     function invert_all() { change_checkboxes(get_checkboxes()) }
     function checkbox_toggle() { var e = get_checkboxes(); e.push(this), change_checkboxes(e) }
+    // ナビバー 全選択チェックボックス
+    function navbar_toggle_all(cb) {
+        if (cb.checked) { select_all(); } else { unselect_all(); }
+    }
+    // ナビバー 選択削除
+    function navbar_sel_delete() {
+        var checked = [];
+        var checkboxes = document.getElementsByName('file[]');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) checked.push(checkboxes[i].value);
+        }
+        if (checked.length === 0) {
+            alert('ファイルを選択してください。');
+            return false;
+        }
+        if (!confirm('選択した ' + checked.length + ' 件を削除しますか？')) {
+            return false;
+        }
+        // hidden submit を .click() するとブラウザによって name/value がPOSTに含まれない場合があるため、
+        // hidden input を手動追加してフォームを直接 submit する
+        var aDelete = document.getElementById('a-delete');
+        var form = aDelete ? aDelete.form : document.querySelector('form[action*="filemngupdate"]');
+        if (!form) { alert('フォームが見つかりません。'); return false; }
+        var inp = document.createElement('input');
+        inp.type  = 'hidden';
+        inp.name  = 'delete';
+        inp.value = 'Delete';
+        form.appendChild(inp);
+        form.submit();
+        return false;
+    }
+    // ファイルチェックボックスの変化をナビバー全選択CBに同期
+    $(document).on('change', 'input[name="file[]"]', function() {
+        var all = document.getElementsByName('file[]');
+        var checked = 0;
+        for (var i = 0; i < all.length; i++) { if (all[i].checked) checked++; }
+        var navCb = document.getElementById('navbar-select-all-cb');
+        if (navCb) {
+            navCb.checked = (checked > 0 && checked === all.length);
+            navCb.indeterminate = (checked > 0 && checked < all.length);
+        }
+    });
+    function download_selected() {
+        var checked = [];
+        var checkboxes = document.getElementsByName('file[]');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) checked.push(checkboxes[i].value);
+        }
+        if (checked.length === 0) {
+            alert('ファイルを選択してください。');
+            return false;
+        }
+        var form = document.getElementById('fm-download-selected-form');
+        var container = document.getElementById('fm-download-selected-inputs');
+        container.innerHTML = '';
+        for (var j = 0; j < checked.length; j++) {
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'file[]';
+            input.value = checked[j];
+            container.appendChild(input);
+        }
+        form.submit();
+        return false;
+    }
+    function open_preview(el) {
+        var url   = el.getAttribute('data-preview-url');
+        var name  = el.getAttribute('data-preview-name');
+        var type  = el.getAttribute('data-preview-type');
+        var dlUrl = (el.getAttribute('data-download-url') || '').replace(/&amp;/g, '&');
+        document.getElementById('previewModalLabel').textContent = name;
+        var body = document.getElementById('previewModalBody');
+        body.innerHTML = '<div style="padding:40px;color:#888;">読み込み中...</div>';
+
+        if (type === 'image') {
+            var img = document.createElement('img');
+            img.onload = function() { body.innerHTML = ''; body.appendChild(img); };
+            img.onerror = function() { body.innerHTML = '<div style="padding:20px;color:red;">画像を読み込めませんでした。</div>'; };
+            img.src = url.replace(/&amp;/g, '&');
+            img.style.maxWidth = '100%';
+            img.style.maxHeight = '75vh';
+            img.style.display = 'block';
+            img.style.margin = '0 auto';
+
+        } else if (type === 'pdf') {
+            var iframe = document.createElement('iframe');
+            iframe.src = url.replace(/&amp;/g, '&');
+            iframe.style.width = '100%';
+            iframe.style.height = '75vh';
+            iframe.style.border = 'none';
+            body.innerHTML = '';
+            body.appendChild(iframe);
+
+        } else if (type === 'text') {
+            fetch(url.replace(/&amp;/g, '&'))
+                .then(function(r) {
+                    // Shift-JIS(CSV等)はarrayBufferで受けてデコード試行
+                    return r.arrayBuffer();
+                })
+                .then(function(buf) {
+                    var text;
+                    try {
+                        // まずUTF-8で試みる
+                        text = new TextDecoder('utf-8', {fatal: true}).decode(buf);
+                    } catch(e) {
+                        // 失敗したらShift-JISで再試行
+                        try {
+                            text = new TextDecoder('shift-jis').decode(buf);
+                        } catch(e2) {
+                            text = new TextDecoder('utf-8', {fatal: false}).decode(buf);
+                        }
+                    }
+                    var pre = document.createElement('pre');
+                    pre.style.cssText = 'text-align:left;padding:12px;max-height:75vh;overflow:auto;font-size:13px;background:#fff;margin:0;white-space:pre-wrap;word-break:break-all;';
+                    pre.textContent = text;
+                    body.innerHTML = '';
+                    body.appendChild(pre);
+                })
+                .catch(function() {
+                    body.innerHTML = '<div style="padding:20px;color:red;">ファイルを読み込めませんでした。</div>';
+                });
+
+        } else if (type === 'office') {
+            var iconMap = {doc:'fa-file-word-o', docx:'fa-file-word-o', xls:'fa-file-excel-o', xlsx:'fa-file-excel-o', ppt:'fa-file-powerpoint-o', pptx:'fa-file-powerpoint-o'};
+            var ext = name.split('.').pop().toLowerCase();
+            var icon = iconMap[ext] || 'fa-file-o';
+            body.innerHTML = '<div style="padding:30px;">'
+                + '<i class="fa ' + icon + ' fa-4x" style="color:#555;"></i>'
+                + '<p style="margin-top:14px;font-size:14px;">このファイル形式はブラウザでプレビューできません。</p>'
+                + '<a href="' + dlUrl + '" class="btn btn-primary"><i class="fa fa-download"></i>&nbsp;ダウンロードして確認</a>'
+                + '</div>';
+        }
+
+        $('#previewModal').modal('show');
+        return false;
+    }
+    $('#previewModal').on('hidden.bs.modal', function() {
+        document.getElementById('previewModalBody').innerHTML = '';
+    });
     function backup(e, t) { //Create file backup with .bck
         var n = new XMLHttpRequest,
             a = "path=" + e + "&file=" + t + "&type=backup&ajax=true";

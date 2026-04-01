@@ -575,6 +575,63 @@ class FilemngController extends Controller
     }
 
     /**
+     * 選択ファイルをZIPでダウンロード
+     */
+    public function downloadSelected(Request $request)
+    {
+        Log::info('filemng downloadSelected START');
+
+        $user = $this->auth_user_info();
+        $customer_id = $this->get_customer_id_from_json($user->id);
+        if (!$customer_id) {
+            return back()->with('error', '顧客情報が見つかりません。');
+        }
+
+        $customer = $this->auth_user_foldername($customer_id);
+        if (!$customer) {
+            return back()->with('error', '顧客フォルダが見つかりません。');
+        }
+
+        $folderpath = storage_path("app/userdata/{$customer->foldername}");
+        $selectedFiles = $request->input('file', []);
+
+        if (empty($selectedFiles)) {
+            return back()->with('error', 'ファイルを選択してください。');
+        }
+
+        $tmpZipFile = uniqid('sel_dl_') . '.zip';
+        $zipFullPath = storage_path("tmp/{$tmpZipFile}");
+
+        $zip = new \ZipArchive();
+        $result = $zip->open($zipFullPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+        if ($result !== true) {
+            Log::error("downloadSelected ZIPオープン失敗: result={$result}");
+            return back()->with('error', 'ZIPファイルの作成に失敗しました。');
+        }
+
+        set_time_limit(0);
+        foreach ($selectedFiles as $f) {
+            $filePath = $folderpath . '/' . $f;
+            if (is_file($filePath)) {
+                $str = iconv('UTF-8', 'UTF-8//IGNORE', basename($f));
+                $zip->addFile($filePath, $str);
+            }
+        }
+        $zip->close();
+
+        if (!File::exists($zipFullPath)) {
+            Log::error('downloadSelected ZIPファイルが存在しません: ' . $zipFullPath);
+            return back()->with('error', 'ZIPファイルの作成に失敗しました。');
+        }
+
+        $downloadName = $customer->business_name . '_選択_' . date('YmdHis') . '.zip';
+        Log::info('filemng downloadSelected END');
+
+        return response()->download($zipFullPath, $downloadName, [])
+                        ->deleteFileAfterSend(true);
+    }
+
+    /**
      * JSON から顧客IDを取得
      */
     private function get_customer_id_from_json($user_id)
